@@ -3,7 +3,7 @@
  * All rights reserved
  */
 
-package de.eso.modelmaker.core;
+package cn.wagentim.work.core;
 
 public class SysConstBean implements Cloneable
 {

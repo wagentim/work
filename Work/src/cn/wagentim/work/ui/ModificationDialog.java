@@ -1,4 +1,4 @@
-package de.eso.modelmaker.ui;
+package cn.wagentim.work.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import de.eso.modelmaker.share.ModelInstanceConstants;
+import cn.wagentim.work.share.ModelInstanceConstants;
 
 public class ModificationDialog
 {

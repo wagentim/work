@@ -1,4 +1,4 @@
-package de.eso.modelmaker.elements;
+package cn.wagentim.work.elements;
 
 public class AdditionalInfo {
 	

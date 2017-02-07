@@ -3,7 +3,7 @@ package cn.wagentim.work.test;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.eso.modelmaker.ui.CommentsEditor;
+import cn.wagentim.work.ui.CommentsEditor;
 
 public class TestGUI
 {

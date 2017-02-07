@@ -1,4 +1,4 @@
-package de.eso.modelmaker.core;
+package cn.wagentim.work.core;
 
 /**
  * History Object, which is used to save History Record

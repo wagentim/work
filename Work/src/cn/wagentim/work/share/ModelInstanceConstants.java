@@ -1,4 +1,4 @@
-package de.eso.modelmaker.share;
+package cn.wagentim.work.share;
 
 public class ModelInstanceConstants {
 

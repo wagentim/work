@@ -1,4 +1,4 @@
-package de.eso.modelmaker.ui;
+package cn.wagentim.work.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import de.eso.modelmaker.core.SysConstBean;
+import cn.wagentim.work.core.SysConstBean;
 
 public class ValueDialog
 {

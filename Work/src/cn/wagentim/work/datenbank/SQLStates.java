@@ -1,4 +1,4 @@
-package de.eso.modelmaker.datenbank;
+package cn.wagentim.work.datenbank;
 
 public class SQLStates {
 

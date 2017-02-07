@@ -1,6 +1,6 @@
-package de.eso.modelmaker.controller;
+package cn.wagentim.work.controller;
 
-import de.eso.modelmaker.ui.MainWindow;
+import cn.wagentim.work.ui.MainWindow;
 
 public class Starter
 {

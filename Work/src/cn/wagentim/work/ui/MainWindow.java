@@ -1,4 +1,4 @@
-package de.eso.modelmaker.ui;
+package cn.wagentim.work.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -21,11 +21,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.work.controller.IController;
+import cn.wagentim.work.controller.MustFixController;
+import cn.wagentim.work.controller.RawDataController;
 import cn.wagentim.work.listener.ICommentEditorListener;
 import cn.wagentim.work.listener.ISearchTableListener;
-import de.eso.modelmaker.controller.IController;
-import de.eso.modelmaker.controller.MustFixController;
-import de.eso.modelmaker.controller.RawDataController;
 import de.wagentim.qlogger.channel.DefaultChannel;
 import de.wagentim.qlogger.channel.LogChannel;
 import de.wagentim.qlogger.logger.Log;
