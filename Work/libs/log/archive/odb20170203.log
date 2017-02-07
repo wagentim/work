@@ -1,0 +1,84 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2017-02-03 18:13:30 #1 store] 
+Database 'D:\db\mustfix.odb' is opened by 9624@VWAPBJLAU2719
+
+[2017-02-03 18:13:30 #2 type] 
+Type cn.wagentim.entities.work.MustFix is not enhanced.
+
+[2017-02-03 18:13:30 #3 store] 
+Database 'D:\db\tickets.odb' is opened by 9624@VWAPBJLAU2719
+
+[2017-02-03 18:13:30 #4 type] 
+Type cn.wagentim.entities.work.Ticket is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2017-02-03 18:14:06 #1 store] 
+Database 'D:\db\mustfix.odb' is opened by 6744@VWAPBJLAU2719
+
+[2017-02-03 18:14:06 #2 type] 
+Type cn.wagentim.entities.work.MustFix is not enhanced.
+
+[2017-02-03 18:14:06 #3 store] 
+Database 'D:\db\tickets.odb' is opened by 6744@VWAPBJLAU2719
+
+[2017-02-03 18:14:06 #4 type] 
+Type cn.wagentim.entities.work.Ticket is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2017-02-03 18:16:31 #1 store] 
+Database 'D:\db\mustfix.odb' is opened by 7316@VWAPBJLAU2719
+
+[2017-02-03 18:16:32 #2 type] 
+Type cn.wagentim.entities.work.MustFix is not enhanced.
+
+[2017-02-03 18:16:32 #3 store] 
+Database 'D:\db\tickets.odb' is opened by 7316@VWAPBJLAU2719
+
+[2017-02-03 18:16:32 #4 type] 
+Type cn.wagentim.entities.work.Ticket is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2017-02-03 18:18:18 #1 store] 
+Database 'D:\db\mustfix.odb' is opened by 9660@VWAPBJLAU2719
+
+[2017-02-03 18:18:18 #2 type] 
+Type cn.wagentim.entities.work.MustFix is not enhanced.
+
+[2017-02-03 18:18:19 #3 store] 
+Database 'D:\db\tickets.odb' is opened by 9660@VWAPBJLAU2719
+
+[2017-02-03 18:18:19 #4 type] 
+Type cn.wagentim.entities.work.Ticket is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2017-02-03 18:20:32 #1 store] 
+Database 'D:\db\mustfix.odb' is opened by 8108@VWAPBJLAU2719
+
+[2017-02-03 18:20:32 #2 type] 
+Type cn.wagentim.entities.work.MustFix is not enhanced.
+
+[2017-02-03 18:20:32 #3 store] 
+Database 'D:\db\tickets.odb' is opened by 8108@VWAPBJLAU2719
+
+[2017-02-03 18:20:32 #4 type] 
+Type cn.wagentim.entities.work.Ticket is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2017-02-03 18:35:03 #1 store] 
+Database 'D:\db\mustfix.odb' is opened by 4436@VWAPBJLAU2719
+
+[2017-02-03 18:35:03 #2 type] 
+Type cn.wagentim.entities.work.MustFix is not enhanced.
+
+[2017-02-03 18:35:03 #3 store] 
+Database 'D:\db\tickets.odb' is opened by 4436@VWAPBJLAU2719
+
+[2017-02-03 18:35:03 #4 type] 
+Type cn.wagentim.entities.work.Ticket is not enhanced.
+

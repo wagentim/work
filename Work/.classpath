@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="libs/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="libs/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="libs/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="libs/poi-3.15.jar"/>
+	<classpathentry kind="lib" path="libs/poi-examples-3.15.jar"/>
+	<classpathentry kind="lib" path="libs/poi-excelant-3.15.jar"/>
+	<classpathentry kind="lib" path="libs/poi-ooxml-3.15.jar"/>
+	<classpathentry kind="lib" path="libs/poi-ooxml-schemas-3.15.jar"/>
+	<classpathentry kind="lib" path="libs/poi-scratchpad-3.15.jar"/>
+	<classpathentry kind="lib" path="libs/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="libs/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="libs/xmlbeans-2.3.0.jar"/>
+	<classpathentry kind="lib" path="libs/javax.persistence_2.1.0.v201304241213.jar"/>
+	<classpathentry kind="lib" path="libs/objectdb.jar"/>
+	<classpathentry kind="lib" path="libs/opal-0.9.5.2.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.swt.win32.win32.x86_3.100.0.v4233d.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.swt.win32.win32.x86_64_3.6.0.v3650b.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/BasicUtils"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/QLogger"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Persistance"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
