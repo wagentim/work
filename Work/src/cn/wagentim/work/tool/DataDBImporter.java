@@ -290,7 +290,7 @@ public class DataDBImporter
 			}
 			else if(columnName.equals("B"))
 			{
-				int number = (int)myCell.getNumericCellValue();
+				int number = getCellValueAsInteger(myCell);
 				
 				if( number <= 0 )
 				{
@@ -517,6 +517,25 @@ public class DataDBImporter
 			else if(cell.getCellTypeEnum() == CellType.STRING)
 			{
 				result = cell.getStringCellValue();
+			}
+		}
+		
+		return result;
+	}
+	
+	private int getCellValueAsInteger(Cell cell)
+	{
+		int result = -1;
+		
+		if( null != cell )
+		{
+			if(cell.getCellTypeEnum() == CellType.NUMERIC)
+			{
+				result = (int) cell.getNumericCellValue();
+			}
+			else if(cell.getCellTypeEnum() == CellType.STRING)
+			{
+				result = Integer.valueOf(cell.getStringCellValue());
 			}
 		}
 		

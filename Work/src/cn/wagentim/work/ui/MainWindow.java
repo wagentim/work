@@ -176,6 +176,7 @@ public class MainWindow implements ISearchTableListener, ICommentEditorListener
 			@Override
 			public void handleEvent(final Event event)
 			{
+				
 			}
 		});
 	}

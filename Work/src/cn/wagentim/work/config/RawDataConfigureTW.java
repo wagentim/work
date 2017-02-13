@@ -1,5 +1,7 @@
 package cn.wagentim.work.config;
 
+import cn.wagentim.work.datenbank.IDBConstants;
+
 public class RawDataConfigureTW implements IConfigure
 {
 	final private String sourceFilePath = "d:/Work/KPM List/Cluster 8/original_tw.xlsx";
@@ -49,13 +51,13 @@ public class RawDataConfigureTW implements IConfigure
 	public String getDBName()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return IDBConstants.DB_TICKET;
 	}
 
 	@Override
 	public int getFirstSkippedRows()
 	{
 		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 }
