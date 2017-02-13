@@ -1,10 +1,12 @@
 package cn.wagentim.work.filter;
 
-import org.apache.poi.ss.usermodel.Row;
+import java.util.List;
+
+import cn.wagentim.entities.work.Ticket;
 
 public interface ISelector
 {
 
-	Row check(Row row);
+	List<Ticket> check(List<Ticket> list);
 
 }

@@ -109,7 +109,7 @@ public class DataDBImporter
 	{
 		String dbName = configure.getDBName();
 		
-		if( IConstants.DB_ROW_DATA.equals(dbName) )
+		if( IConstants.DB_ROW_DATA.equals(dbName) || "sven.odb".equals(dbName) )
 		{
 			return assignTicketValues(myRow);
 		}
@@ -286,7 +286,7 @@ public class DataDBImporter
 			
 			if(columnName.equals("A"))
 			{
-				// To Nothing
+				ticket.setAction(getCellValueAsString(myCell));
 			}
 			else if(columnName.equals("B"))
 			{
@@ -303,6 +303,10 @@ public class DataDBImporter
 			else if(columnName.equals("C"))
 			{
 				ticket.setChangeTS(getCellValueAsString(myCell));
+			}
+			else if(columnName.equals("G"))
+			{
+				ticket.setMarket(decorateMarket(getCellValueAsString(myCell)));
 			}
 			else if(columnName.equals("I"))
 			{
@@ -340,17 +344,17 @@ public class DataDBImporter
 			{
 				ticket.setDeviceType(getCellValueAsString(myCell));
 			}
-			else if(columnName.equals("AK"))
+			else if(columnName.equals("AL"))
 			{
 				ticket.setRating(getCellValueAsString(myCell));
 			}
 			else if(columnName.equals("AM"))
 			{
-				ticket.setStatus((int)myCell.getNumericCellValue());
+				ticket.setStatus(getCellValueAsInteger(myCell));
 			}
 			else if(columnName.equals("AN"))
 			{
-				ticket.setEnginerringStatus((int)myCell.getNumericCellValue());
+				ticket.setEnginerringStatus(getCellValueAsInteger(myCell));
 			}
 			else if(columnName.equals("AO"))
 			{
@@ -425,6 +429,40 @@ public class DataDBImporter
 		return ticket;
 	}
 
+	private String decorateMarket(String cellValueAsString)
+	{
+		String result = StringConstants.EMPTY_STRING;
+		
+		if( !StringConstants.EMPTY_STRING.equals(cellValueAsString))
+		{
+			if( cellValueAsString.contains("China") )
+			{
+				result = "CN";
+			}
+			else if( cellValueAsString.contains("Japan") )
+			{
+				result = "JP";
+			}
+			else if( cellValueAsString.contains("South Korea") )
+			{
+				result = "KR";
+			}
+			else if( cellValueAsString.contains("Taiwan") )
+			{
+				result = "TW";
+			}
+			
+//			if( !Validator.isNullOrEmpty(result) )
+//			{
+//				int start = result.indexOf(index);
+//				
+//				result = result.substring(start);
+//			}
+		}
+		
+		return result;
+	}
+
 	private int skipRows(Iterator rowIter, IConfigure configure)
 	{
 		int skipRows = configure.getFirstSkippedRows();
@@ -477,8 +515,13 @@ public class DataDBImporter
 	
 	public List<Ticket> getAllTickets()
 	{
+		return getAllTickets(IConstants.DB_ROW_DATA);
+	}
+	
+	public List<Ticket> getAllTickets(String dbName)
+	{
 		IPersistanceManager manager = new ObjectDBManager();
-		manager.connectDB(StringConstants.EMPTY_STRING, 0, IConstants.DB_ROW_DATA);
+		manager.connectDB(StringConstants.EMPTY_STRING, 0, dbName);
 		TypedQuery<Ticket> query = manager.getEntityManager().createQuery("SELECT c FROM Ticket c", Ticket.class);
 		return query.getResultList();
 	}
@@ -535,7 +578,12 @@ public class DataDBImporter
 			}
 			else if(cell.getCellTypeEnum() == CellType.STRING)
 			{
-				result = Integer.valueOf(cell.getStringCellValue());
+				String s = cell.getStringCellValue();
+				if( s.equals("-"))
+				{
+					s = "0";
+				}
+				result = Integer.valueOf(s);
 			}
 		}
 		

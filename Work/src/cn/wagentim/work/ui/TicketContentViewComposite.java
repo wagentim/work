@@ -13,11 +13,11 @@ import cn.wagentim.entities.work.Ticket;
 public class TicketContentViewComposite extends Composite
 {
 	private Text txtKpmNum, txtShortText, txtSupplier, txtProblemStatus, txtEngineerStatus,
-			txtDescription, txtAnalysis, txtSupplierStatus;
+			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency;
 	private static final GridLayout grpLayout = new GridLayout(1, false);
 	private static final GridData longInfoGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 	
-	private static final int GRID_SHORT = 5;
+	private static final int GRID_SHORT = 6;
 	private static final int GRID_LONG = 3;
 	
 	private Composite shortInfo, longInfo;
@@ -133,6 +133,15 @@ public class TicketContentViewComposite extends Composite
 		GridData gdEngineerStatus = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gdEngineerStatus.widthHint = 30;
 		txtEngineerStatus.setLayoutData(gdEngineerStatus);
+		
+		final Group grpFrequency = new Group(shortInfo, SWT.NONE);
+		grpFrequency.setText("Frequency");
+		grpFrequency.setLayout(grpLayout);
+		txtFrequency = new Text(grpFrequency, SWT.SINGLE);
+		txtFrequency.setEditable(false);
+		GridData gdFrequencyStatus = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gdFrequencyStatus.widthHint = 60;
+		txtFrequency.setLayoutData(gdFrequencyStatus);
 	}
 
 	public void setSelectedTicket(Ticket selectedTicket)
@@ -147,6 +156,7 @@ public class TicketContentViewComposite extends Composite
 			txtDescription.setText(StringConstants.EMPTY_STRING);
 			txtAnalysis.setText(StringConstants.EMPTY_STRING);
 			txtSupplierStatus.setText(StringConstants.EMPTY_STRING);
+			txtFrequency.setText(StringConstants.EMPTY_STRING);
 		}
 		else
 		{
@@ -158,6 +168,7 @@ public class TicketContentViewComposite extends Composite
 			txtDescription.setText(selectedTicket.getProblemDescription());
 			txtAnalysis.setText(selectedTicket.getAnalysis());
 			txtSupplierStatus.setText(selectedTicket.getSupplierInfo() + "\n" + selectedTicket.getSupplierResponse());
+			txtFrequency.setText(selectedTicket.getFaultFrequency());
 		}
 	}
 

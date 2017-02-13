@@ -2,9 +2,6 @@ package cn.wagentim.work.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.List;
-
-import javax.jdo.Constants;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -19,9 +16,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-
-import cn.wagentim.work.share.ModelInstanceConstants;
 
 public class ModificationDialog
 {

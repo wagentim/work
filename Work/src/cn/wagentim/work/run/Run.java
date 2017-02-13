@@ -25,6 +25,8 @@ public class Run
 	private  void updateDBData()
 	{
 		DataDBImporter helper = new DataDBImporter();
+		
+//		helper.readDataToDB(new SvenConfigure());
 		for(int i = 0; i < RAW_DATA_LIST.length; i++ )
 		{
 			helper.readDataToDB(RAW_DATA_LIST[i]);

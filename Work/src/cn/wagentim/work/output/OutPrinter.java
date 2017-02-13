@@ -155,7 +155,7 @@ public class OutPrinter
 
 				if (null != selector)
 				{
-					row = selector.check(row);
+//					row = selector.check(row);
 				}
 				
 				if (null == row)

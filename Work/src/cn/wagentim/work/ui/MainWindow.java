@@ -126,9 +126,6 @@ public class MainWindow implements ISearchTableListener, ICommentEditorListener
 				statusBarContent.setText(controller.getTotalDisplayedTicketNumber());
 				
 				openCommentEditor();
-				
-				
-				
 			}
 		});
 	}
