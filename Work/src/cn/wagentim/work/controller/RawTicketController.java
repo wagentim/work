@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.EmptyMarketSelector;
@@ -15,7 +16,7 @@ import cn.wagentim.work.filter.SupplierSelector;
 import cn.wagentim.work.filter.SvenSelector;
 import cn.wagentim.work.tool.DataDBImporter;
 
-public class RawDataController implements IController
+public class RawTicketController extends AbstractController
 {
 	private final DataDBImporter importer = new DataDBImporter();
 	private int ticketNumber;
@@ -23,10 +24,16 @@ public class RawDataController implements IController
 			new Header("KPM", 60),
 			new Header("Short Text", 340),
 			new Header("Rating", 60),
-			new Header("Market", 100)
+			new Header("Market", 60),
+			new Header("Problem Solver", 200)
 			};
 	
-	private List<ISelector> selectors = new ArrayList<ISelector>(); 
+	private List<Ticket> ticketList;
+	
+	public RawTicketController()
+	{
+		ticketList = new ArrayList<Ticket>();
+	}
 	
 	@Override
 	public Header[] getColumnHeaders()
@@ -34,34 +41,48 @@ public class RawDataController implements IController
 		return TABLE_HEADERS;
 	}
 	
-	private void addSelectors()
+	private void Sven()
 	{
-		selectors.add(new RemoveFinishSelector());
-		selectors.add(new SvenSelector());
-		selectors.add(new EmptyMarketSelector());
-		selectors.add(new ShortTextSelector());
-		selectors.add(new RatingSelector());
-//		selectors.add(new CNSelector());
-		selectors.add(new SupplierSelector());
+//		selectors.add(new RemoveFinishSelector());
+//		selectors.add(new SvenSelector());
+//		selectors.add(new EmptyMarketSelector());
+//		selectors.add(new ShortTextSelector());
+//		selectors.add(new RatingSelector());
+////		selectors.add(new CNSelector());
+//		selectors.add(new SupplierSelector());
+	}
+	
+	@Override
+	public void addSelectors(ISelector selector)
+	{
+		selectors.add(selector);
+	}
+	
+	@Override
+	public void clearSelectors()
+	{
+		selectors.clear();
 	}
 
 	@Override
 	public List<String[]> getTableContents(boolean fromDB)
 	{
-		addSelectors();
-		List<Ticket> list = importer.getAllTickets();
+		if(fromDB)
+		{
+			ticketList = importer.getAllTickets();
+		}
 		
-		list = filter(list);
 		
-		ticketNumber = list.size();
+		ticketNumber = ticketList.size();
 		List<String[]> result = new ArrayList<String[]>();
 		
 		String number;
 		String shortText;
 		String rating;
 		String market;
+		String problemSolver;
 		
-		for(Ticket t : list)
+		for(Ticket t : ticketList)
 		{
 			
 			if( null == t )
@@ -70,6 +91,7 @@ public class RawDataController implements IController
 				shortText = StringConstants.EMPTY_STRING;
 				rating = StringConstants.EMPTY_STRING;
 				market = StringConstants.EMPTY_STRING;
+				problemSolver = StringConstants.EMPTY_STRING;
 			}
 			else
 			{
@@ -77,9 +99,10 @@ public class RawDataController implements IController
 				shortText = t.getShortText();
 				rating = t.getRating();
 				market = t.getMarket();
+				problemSolver = t.getResponsibleProblemSolverUser();
 			}
 			
-			result.add(new String[]{number, shortText, rating, market});
+			result.add(new String[]{number, shortText, rating, market, problemSolver});
 		}
 		return result;
 	}
@@ -106,6 +129,12 @@ public class RawDataController implements IController
 	public String getTotalDisplayedTicketNumber()
 	{
 		return String.valueOf(ticketNumber);
+	}
+
+	@Override
+	public void updateRecord(IEntity entity)
+	{
+		
 	}
 
 }

@@ -109,7 +109,7 @@ public class DataDBImporter
 	{
 		String dbName = configure.getDBName();
 		
-		if( IConstants.DB_ROW_DATA.equals(dbName) || "sven.odb".equals(dbName) )
+		if( IConstants.DB_TICKET.equals(dbName) || "sven.odb".equals(dbName) )
 		{
 			return assignTicketValues(myRow);
 		}
@@ -513,16 +513,30 @@ public class DataDBImporter
 		manager.addOrUpdateEntityList(list);
 	}
 	
-	public List<Ticket> getAllTickets()
+	public void updateEntity(IEntity entity, String dbName)
 	{
-		return getAllTickets(IConstants.DB_ROW_DATA);
+		if( Validator.isNull(entity) || Validator.isNullOrEmpty(dbName) )
+		{
+			return;
+		}
+		
+		IPersistanceManager manager = new ObjectDBManager();
+		manager.connectDB(StringConstants.EMPTY_STRING, 0, dbName);
+		manager.addOrUpdateEntity(entity);
 	}
 	
-	public List<Ticket> getAllTickets(String dbName)
+	
+	@SuppressWarnings("unchecked")
+	public List<Ticket> getAllTickets()
+	{
+		return (List<Ticket>) getAllRecord(IConstants.DB_TICKET, "Ticket", Ticket.class);
+	}
+	
+	public List<?> getAllRecord(String dbName, String type, Class<?> clazz)
 	{
 		IPersistanceManager manager = new ObjectDBManager();
 		manager.connectDB(StringConstants.EMPTY_STRING, 0, dbName);
-		TypedQuery<Ticket> query = manager.getEntityManager().createQuery("SELECT c FROM Ticket c", Ticket.class);
+		TypedQuery<?> query = manager.getEntityManager().createQuery("SELECT c FROM " + type + " c", clazz);
 		return query.getResultList();
 	}
 	
@@ -530,7 +544,7 @@ public class DataDBImporter
 	{
 		logger.log(Log.LEVEL_INFO, "Loaing the ticket with the number %1", String.valueOf(number));
 		IPersistanceManager manager = new ObjectDBManager();
-		manager.connectDB(StringConstants.EMPTY_STRING, 0, IConstants.DB_ROW_DATA);
+		manager.connectDB(StringConstants.EMPTY_STRING, 0, IConstants.DB_TICKET);
 		TypedQuery<Ticket> query = manager.getEntityManager().createQuery("SELECT c FROM Ticket c Where c.number="+number, Ticket.class);
 		
 		if( null == query || query.getResultList().size() == 0 )

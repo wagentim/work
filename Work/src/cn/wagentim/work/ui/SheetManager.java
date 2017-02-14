@@ -23,9 +23,14 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.basicutils.Validator;
+import cn.wagentim.entities.work.Sheet;
+import cn.wagentim.work.controller.SheetManagerController;
+import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.listener.ICompositeListener;
 
-public class CommentsEditor implements IExternalComposite
+public class SheetManager implements IExternalComposite
 {
 	
 	private final Shell shell;
@@ -39,15 +44,18 @@ public class CommentsEditor implements IExternalComposite
 
 	private Table table;
 
-	private Button btnUpdate;
+	private Button btnCreate;
 	
-	private Text comment;
+	private Text txtSheetName;
 	
 	private ICompositeListener listener = null;
-
-	public CommentsEditor()
+	
+	private SheetManagerController controller = null;
+	
+	public SheetManager()
 	{
 		shell = new Shell();
+		controller = new SheetManagerController();
 	}
 	
 	public void setListener(ICompositeListener listener)
@@ -64,7 +72,7 @@ public class CommentsEditor implements IExternalComposite
 
 		shell.setSize(SHELL_WIDTH, SHELL_HEIGH);
 		shell.setBackground(COLOR_BACKGROUD);
-		shell.setText("Comments Viewer V0.1 HB");
+		shell.setText("Sheet Manager V0.1 HB");
 
 		GridLayout layout = new GridLayout(1, false);
 		shell.setLayout(layout);
@@ -72,8 +80,8 @@ public class CommentsEditor implements IExternalComposite
 		genTable();
 		genBottomPanel();
 		setActions();
-
 		setCenter();
+		loadData();
 
 		shell.open();
 		while (!shell.isDisposed())
@@ -87,7 +95,12 @@ public class CommentsEditor implements IExternalComposite
 		shell.dispose();
 
 	}
-	
+
+	private void loadData()
+	{
+		updateContent(controller.getTableContents(true));
+	}
+
 	private void setActions()
 	{
 		shell.addDisposeListener(new DisposeListener() {
@@ -127,23 +140,38 @@ public class CommentsEditor implements IExternalComposite
 		GridData gdBottonPane = new GridData(SWT.FILL, SWT.FILL, true, false);
 		bottonPane.setLayoutData(gdBottonPane);
 		
-		comment = new Text(bottonPane, SWT.SINGLE | SWT.BORDER );
-		comment.setEditable(true);
+		txtSheetName = new Text(bottonPane, SWT.SINGLE | SWT.BORDER );
+		txtSheetName.setEditable(true);
 		GridData gdComment = new GridData(SWT.FILL, SWT.FILL, true, true);
-		comment.setLayoutData(gdComment);
+		txtSheetName.setLayoutData(gdComment);
 
-		btnUpdate = new Button(bottonPane, SWT.PUSH);
-		btnUpdate.setText("Create");
-		btnUpdate.setBackground(COLOR_BACKGROUD);
+		btnCreate = new Button(bottonPane, SWT.PUSH);
+		btnCreate.setText("Create");
+		btnCreate.setBackground(COLOR_BACKGROUD);
 		GridData gdBtn = new GridData(SWT.RIGHT, SWT.FILL, false, true);
 		gdBtn.widthHint = 60;
-		btnUpdate.setLayoutData(gdBtn);
-		btnUpdate.addListener(SWT.Selection, new Listener()
+		btnCreate.setLayoutData(gdBtn);
+		btnCreate.addListener(SWT.Selection, new Listener()
 		{
 			@Override
 			public void handleEvent(final Event arg0)
 			{
-//				shell.dispose();
+				String name = txtSheetName.getText();
+				
+				if( Validator.isNullOrEmpty(name) )
+				{
+					return;
+				}
+				
+				Sheet s = new Sheet();
+				s.setName(name);
+				s.setTime(System.currentTimeMillis());
+				
+				controller.updateRecord(s);
+				
+				loadData();
+				
+				txtSheetName.setText(StringConstants.EMPTY_STRING);
 			}
 		});
 	}
@@ -156,14 +184,16 @@ public class CommentsEditor implements IExternalComposite
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		table.setHeaderVisible(true);
-
-		final TableColumn type = new TableColumn(table, SWT.LEFT);
-		type.setText("Date");
-		type.setWidth(100);
-
-		final TableColumn tcName = new TableColumn(table, SWT.LEFT);
-		tcName.setText("Comments");
-		tcName.setWidth(500);
+		
+		Header[] headers = controller.getColumnHeaders();
+		
+		for(int i = 0; i < headers.length; i++)
+		{
+			Header header = headers[i];
+			final TableColumn tc = new TableColumn(table, SWT.LEFT);
+			tc.setText(header.getName());
+			tc.setWidth(header.getWidth());
+		}
 	}
 	
 	public void dispose()

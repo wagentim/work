@@ -1,7 +1,5 @@
 package cn.wagentim.work.config;
 
-import cn.wagentim.work.datenbank.IDBConstants;
-
 public class SvenConfigure implements IConfigure
 {
 	final private String sourceFilePath = "d:/Work/KPM List/Cluster 8/sven.xlsx";
@@ -51,7 +49,7 @@ public class SvenConfigure implements IConfigure
 	public String getDBName()
 	{
 		// TODO Auto-generated method stub
-		return "sven.odb";
+		return IConstants.DB_SVEN;
 	}
 
 	@Override

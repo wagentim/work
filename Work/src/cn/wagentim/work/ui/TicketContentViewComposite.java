@@ -13,11 +13,11 @@ import cn.wagentim.entities.work.Ticket;
 public class TicketContentViewComposite extends Composite
 {
 	private Text txtKpmNum, txtShortText, txtSupplier, txtProblemStatus, txtEngineerStatus,
-			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency;
+			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency, txtProblemSolver;
 	private static final GridLayout grpLayout = new GridLayout(1, false);
 	private static final GridData longInfoGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 	
-	private static final int GRID_SHORT = 6;
+	private static final int GRID_SHORT = 7;
 	private static final int GRID_LONG = 3;
 	
 	private Composite shortInfo, longInfo;
@@ -142,6 +142,15 @@ public class TicketContentViewComposite extends Composite
 		GridData gdFrequencyStatus = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gdFrequencyStatus.widthHint = 60;
 		txtFrequency.setLayoutData(gdFrequencyStatus);
+		
+//		final Group grpProblemSolver = new Group(shortInfo, SWT.NONE);
+//		grpProblemSolver.setText("Pro Solver");
+//		grpProblemSolver.setLayout(grpLayout);
+//		txtProblemSolver = new Text(grpProblemSolver, SWT.SINGLE);
+//		txtProblemSolver.setEditable(false);
+//		GridData gdProblemSolver = new GridData(SWT.FILL, SWT.FILL, true, true);
+//		gdProblemSolver.widthHint = 150;
+//		txtProblemSolver.setLayoutData(gdProblemSolver);
 	}
 
 	public void setSelectedTicket(Ticket selectedTicket)
@@ -157,6 +166,7 @@ public class TicketContentViewComposite extends Composite
 			txtAnalysis.setText(StringConstants.EMPTY_STRING);
 			txtSupplierStatus.setText(StringConstants.EMPTY_STRING);
 			txtFrequency.setText(StringConstants.EMPTY_STRING);
+//			txtProblemSolver.setText(StringConstants.EMPTY_STRING);
 		}
 		else
 		{
@@ -169,6 +179,7 @@ public class TicketContentViewComposite extends Composite
 			txtAnalysis.setText(selectedTicket.getAnalysis());
 			txtSupplierStatus.setText(selectedTicket.getSupplierInfo() + "\n" + selectedTicket.getSupplierResponse());
 			txtFrequency.setText(selectedTicket.getFaultFrequency());
+//			txtProblemSolver.setText(selectedTicket.getResponsibleProblemSolverUser());
 		}
 	}
 

@@ -3,8 +3,6 @@ package cn.wagentim.work.ui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import javax.jdo.Constants;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -23,7 +21,6 @@ public class MsgDialog {
 	private String text = null;
 	private int type = -1;
 	private String title = null;
-//	private Image image;
 
 	private Shell shell;
 
@@ -37,7 +34,6 @@ public class MsgDialog {
 		this.text = text;
 		this.type = type;
 		this.title = title;
-//		this.image = image;
 	}
 
 	public void show() {
@@ -58,8 +54,6 @@ public class MsgDialog {
 
 		parent.setEnabled(false);
 		
-//		genImage();
-
 		genText();
 
 		addActions();

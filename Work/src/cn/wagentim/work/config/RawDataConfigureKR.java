@@ -1,7 +1,5 @@
 package cn.wagentim.work.config;
 
-import cn.wagentim.work.datenbank.IDBConstants;
-
 public class RawDataConfigureKR implements IConfigure
 {
 	final private String sourceFilePath = "d:/Work/KPM List/Cluster 8/original_kr.xlsx";
@@ -51,7 +49,7 @@ public class RawDataConfigureKR implements IConfigure
 	public String getDBName()
 	{
 		// TODO Auto-generated method stub
-		return IDBConstants.DB_TICKET;
+		return IConstants.DB_TICKET;
 	}
 
 	@Override

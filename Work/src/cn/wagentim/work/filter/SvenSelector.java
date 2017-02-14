@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.tool.DataDBImporter;
 
 public class SvenSelector implements ISelector
@@ -38,7 +39,8 @@ public class SvenSelector implements ISelector
 	{
 		List<Integer> result = new ArrayList<Integer>();
 		
-		List<Ticket> tickets = importer.getAllTickets("sven.odb");
+		@SuppressWarnings("unchecked")
+		List<Ticket> tickets = (List<Ticket>) importer.getAllRecord(IConstants.DB_SVEN, "Ticket", Ticket.class);
 		
 		for(Ticket t : tickets)
 		{

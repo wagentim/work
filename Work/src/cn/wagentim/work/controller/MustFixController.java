@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultComboBoxModel;
-
 import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.MustFix;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.entities.work.TicketComment;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.IDecorator;
+import cn.wagentim.work.filter.ISelector;
 import cn.wagentim.work.filter.MustFixDataDecorator;
 import cn.wagentim.work.tool.DataDBImporter;
 import de.wagentim.qlogger.channel.DefaultChannel;
@@ -22,7 +22,7 @@ import de.wagentim.qlogger.channel.LogChannel;
 import de.wagentim.qlogger.logger.Log;
 import de.wagentim.qlogger.service.QLoggerService;
 
-public class MustFixController implements IController
+public class MustFixController extends AbstractController
 {
 	private final Map<Integer, Ticket> mustFixTicket;
 	private List<MustFix> mustFixes;
@@ -39,7 +39,7 @@ public class MustFixController implements IController
 			new Header("Priority", 60),
 			new Header("Next Step", 100)
 			};
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd"); 
+	public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd"); 
 	
 	public MustFixController()
 	{
@@ -171,5 +171,26 @@ public class MustFixController implements IController
 		}
 		
 		return result;
+	}
+
+	@Override
+	public void updateRecord(IEntity entity)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addSelectors(ISelector selector)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearSelectors()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

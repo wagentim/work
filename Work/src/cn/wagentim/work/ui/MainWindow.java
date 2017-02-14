@@ -2,6 +2,8 @@ package cn.wagentim.work.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -23,15 +25,17 @@ import org.eclipse.swt.widgets.Text;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.controller.IController;
 import cn.wagentim.work.controller.MustFixController;
-import cn.wagentim.work.controller.RawDataController;
-import cn.wagentim.work.listener.ICommentEditorListener;
+import cn.wagentim.work.controller.RawTicketController;
+import cn.wagentim.work.importer.Cluster8TicketImporter;
+import cn.wagentim.work.importer.IImporter;
+import cn.wagentim.work.listener.ICompositeListener;
 import cn.wagentim.work.listener.ISearchTableListener;
 import de.wagentim.qlogger.channel.DefaultChannel;
 import de.wagentim.qlogger.channel.LogChannel;
 import de.wagentim.qlogger.logger.Log;
 import de.wagentim.qlogger.service.QLoggerService;
 
-public class MainWindow implements ISearchTableListener, ICommentEditorListener
+public class MainWindow implements ISearchTableListener, ICompositeListener
 {
 	private static final float version = 0.1f;
 	private static final String title = "KPM Ticket Viewer "+String.valueOf(version) + " HB";
@@ -49,6 +53,7 @@ public class MainWindow implements ISearchTableListener, ICommentEditorListener
 	
 	private TicketContentViewComposite contentViewerComposite;
 	private DefaultSearchAndTableComposite listViewerComposite;
+	private SheetManager sm = null;
 
 	private IController controller = null;
 	
@@ -57,7 +62,13 @@ public class MainWindow implements ISearchTableListener, ICommentEditorListener
 	private static final LogChannel logger = QLoggerService.getChannel(QLoggerService.addChannel(new DefaultChannel(MainWindow.class.getSimpleName())));
 	
 	private CommentsEditor commentsEditor = null;
-
+	
+	private List<IExternalComposite> externalComposite;
+	
+	public MainWindow()
+	{
+		externalComposite = new ArrayList<IExternalComposite>();
+	}
 	// open the main window
 	public void open()
 	{
@@ -84,9 +95,17 @@ public class MainWindow implements ISearchTableListener, ICommentEditorListener
 				display.sleep();
 			}
 		}
+		
 		display.dispose();
 	}
 	
+	private void clearAllExternalComposites()
+	{
+		for(IExternalComposite ec : externalComposite)
+		{
+			ec.dispose();
+		}
+	}
 	private void genFileMenu(final Menu menu)
 	{
 		final MenuItem miFile = new MenuItem(menu, SWT.CASCADE);
@@ -104,42 +123,52 @@ public class MainWindow implements ISearchTableListener, ICommentEditorListener
 			{
 				if( null == controller || !(controller instanceof MustFixController) );
 				{
-					controller = new RawDataController();
+					controller = new RawTicketController();
 				}
 				updateTable(true);
 				statusBarContent.setText(controller.getTotalDisplayedTicketNumber());
 			}
 		});
 
-		final MenuItem miLoadMustFix = new MenuItem(mFile, SWT.NONE);
-		miLoadMustFix.setText("Load Clu8 Must Fix");
-		miLoadMustFix.addListener(SWT.Selection, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				if( null == controller || !(controller instanceof MustFixController) );
-				{
-					controller = new MustFixController();
-				}
-				updateTable(true);
-				statusBarContent.setText(controller.getTotalDisplayedTicketNumber());
-				
-				openCommentEditor();
-			}
-		});
+//		final MenuItem miLoadMustFix = new MenuItem(mFile, SWT.NONE);
+//		miLoadMustFix.setText("Load Clu8 Must Fix");
+//		miLoadMustFix.addListener(SWT.Selection, new Listener()
+//		{
+//			@Override
+//			public void handleEvent(final Event event)
+//			{
+//				if( null == controller || !(controller instanceof MustFixController) );
+//				{
+//					controller = new MustFixController();
+//				}
+//				updateTable(true);
+//				statusBarContent.setText(controller.getTotalDisplayedTicketNumber());
+//				
+//				openCommentEditor();
+//			}
+//		});
 	}
 	
 	private void openCommentEditor()
 	{
-		if( null != commentsEditor )
+		if( null == commentsEditor )
 		{
-			commentsEditor.dispose();
+			commentsEditor = new CommentsEditor();
+			externalComposite.add(commentsEditor);
+			commentsEditor.setListener(this);
+			commentsEditor.open();
 		}
-		
-		commentsEditor = new CommentsEditor();
-		commentsEditor.setListener(this);
-		commentsEditor.open();
+	}
+	
+	private void openSheetManager()
+	{
+		if( null == sm )
+		{
+			sm = new SheetManager();
+			externalComposite.add(sm);
+			sm.setListener(this);
+			sm.open();
+		}
 	}
 	
 	private void updateTable(boolean loadDataFromDB)
@@ -153,29 +182,58 @@ public class MainWindow implements ISearchTableListener, ICommentEditorListener
 		final MenuItem miFile = new MenuItem(menu, SWT.CASCADE);
 		miFile.setText("Tool");
 
-		final Menu mFile = new Menu(miFile);
-		miFile.setMenu(mFile);
+		final Menu mTool = new Menu(miFile);
+		miFile.setMenu(mTool);
 		
-		final MenuItem miLoadClu8 = new MenuItem(mFile, SWT.NONE);
+		final MenuItem miSheetManager = new MenuItem(mTool, SWT.NONE);
+		miSheetManager.setText("Sheet Manager");
+		miSheetManager.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				if(null == sm)
+				{
+					openSheetManager();
+				}
+			}
+		});
+		
+		new MenuItem(mTool, SWT.SEPARATOR);
+		
+		final MenuItem miLoadClu8 = new MenuItem(mTool, SWT.NONE);
 		miLoadClu8.setText("Import Clu8 Tickets");
 		miLoadClu8.addListener(SWT.Selection, new Listener()
 		{
 			@Override
 			public void handleEvent(final Event event)
 			{
+				IImporter importer = new Cluster8TicketImporter();
+				importer.exec();
 			}
 		});
 
-		final MenuItem miLoadMustFix = new MenuItem(mFile, SWT.NONE);
-		miLoadMustFix.setText("Import Clu8 Must Fix Ticket");
-		miLoadMustFix.addListener(SWT.Selection, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				
-			}
-		});
+		
+//		final MenuItem miLoadClu8 = new MenuItem(mTool, SWT.NONE);
+//		miLoadClu8.setText("Import Clu8 Tickets");
+//		miLoadClu8.addListener(SWT.Selection, new Listener()
+//		{
+//			@Override
+//			public void handleEvent(final Event event)
+//			{
+//			}
+//		});
+
+//		final MenuItem miLoadMustFix = new MenuItem(mTool, SWT.NONE);
+//		miLoadMustFix.setText("Import Clu8 Must Fix Ticket");
+//		miLoadMustFix.addListener(SWT.Selection, new Listener()
+//		{
+//			@Override
+//			public void handleEvent(final Event event)
+//			{
+//				
+//			}
+//		});
 	}
 	
 	private void genFilterMenu(final Menu menu)
@@ -267,11 +325,7 @@ public class MainWindow implements ISearchTableListener, ICommentEditorListener
 			@Override
 			public void widgetDisposed(final DisposeEvent arg0)
 			{
-				if( null != commentsEditor )
-				{
-					commentsEditor.dispose();
-					commentsEditor = null;
-				}
+				clearAllExternalComposites();
 			}
 		});
 
@@ -295,8 +349,16 @@ public class MainWindow implements ISearchTableListener, ICommentEditorListener
 	}
 
 	@Override
-	public void commentEditorDispose()
+	public void compositeDispose(IExternalComposite externalComposite)
 	{
-		commentsEditor = null;
+		this.externalComposite.remove(externalComposite);
+		if( externalComposite == commentsEditor )
+		{
+			commentsEditor = null;
+		}
+		else if( externalComposite == sm )
+		{
+			sm = null;
+		}
 	}
 }
