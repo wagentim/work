@@ -13,7 +13,7 @@ import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.ISelector;
 import cn.wagentim.work.tool.DataDBImporter;
 
-public class SheetManagerController extends AbstractController
+public class SheetManagerController implements IController
 {
 	private final DataDBImporter importer = new DataDBImporter();
 	private int ticketNumber;
@@ -41,6 +41,7 @@ public class SheetManagerController extends AbstractController
 		long id;
 		String date;
 		String sheetName;
+		int counter = 1;
 		
 		for(Sheet t : list)
 		{
@@ -53,7 +54,7 @@ public class SheetManagerController extends AbstractController
 			}
 			else
 			{
-				id = t.getId();
+				id = counter++;
 				date = MustFixController.sdf.format(new Date(t.getTime()));
 				sheetName = t.getName();
 			}
@@ -100,6 +101,18 @@ public class SheetManagerController extends AbstractController
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Sheet> getAllSheets()
+	{
+		return null;
+	}
+
+	@Override
+	public void deleteEntity(String db, String entity, String column, String value, Class clazz)
+	{
+		importer.deleteEntity(db, entity, column, value, clazz);
 	}
 
 	

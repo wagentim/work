@@ -13,8 +13,8 @@ import cn.wagentim.work.config.IConstants;
 
 public class TicketContentViewComposite extends Composite
 {
-	private Text txtKpmNum, txtShortText, txtSupplier, txtProblemStatus, txtEngineerStatus,
-			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency, txtProblemSolver;
+	private Text txtKpmNum, txtShortText, txtSupplier, txtEngineerStatus,
+			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency;
 	private static final GridLayout grpLayout = new GridLayout(1, false);
 	private static final GridData longInfoGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 	
@@ -116,14 +116,14 @@ public class TicketContentViewComposite extends Composite
 		txtSupplier.setLayoutData(gdSupplier);
 
 		// Problem Status
-		final Group grpProStat = new Group(shortInfo, SWT.NONE);
-		grpProStat.setText("Pro Stat");
-		grpProStat.setLayout(grpLayout);
-		txtProblemStatus = new Text(grpProStat, SWT.SINGLE);
-		txtProblemStatus.setEditable(false);
-		GridData gdProblemStatus = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gdProblemStatus.widthHint = 30;
-		txtProblemStatus.setLayoutData(gdProblemStatus);
+//		final Group grpProStat = new Group(shortInfo, SWT.NONE);
+//		grpProStat.setText("Pro Stat");
+//		grpProStat.setLayout(grpLayout);
+//		txtProblemStatus = new Text(grpProStat, SWT.SINGLE);
+//		txtProblemStatus.setEditable(false);
+//		GridData gdProblemStatus = new GridData(SWT.FILL, SWT.FILL, true, true);
+//		gdProblemStatus.widthHint = 30;
+//		txtProblemStatus.setLayoutData(gdProblemStatus);
 		
 		// Engineer Status
 		final Group grpEngStat = new Group(shortInfo, SWT.NONE);
@@ -161,7 +161,7 @@ public class TicketContentViewComposite extends Composite
 			txtKpmNum.setText(StringConstants.EMPTY_STRING);
 			txtShortText.setText(StringConstants.EMPTY_STRING);
 			txtSupplier.setText(StringConstants.EMPTY_STRING);
-			txtProblemStatus.setText(StringConstants.EMPTY_STRING);
+//			txtProblemStatus.setText(StringConstants.EMPTY_STRING);
 			txtEngineerStatus.setText(StringConstants.EMPTY_STRING);
 			txtDescription.setText(StringConstants.EMPTY_STRING);
 			txtAnalysis.setText(StringConstants.EMPTY_STRING);
@@ -174,7 +174,7 @@ public class TicketContentViewComposite extends Composite
 			txtKpmNum.setText(String.valueOf(selectedTicket.getNumber()));
 			txtShortText.setText(selectedTicket.getShortText());
 			txtSupplier.setText(selectedTicket.getSupplier());
-			txtProblemStatus.setText("0");
+//			txtProblemStatus.setText("0");
 			txtEngineerStatus.setText(String.valueOf(selectedTicket.getEnginerringStatus()));
 			txtDescription.setText(selectedTicket.getProblemDescription());
 			txtAnalysis.setText(selectedTicket.getAnalysis());

@@ -7,9 +7,12 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -17,6 +20,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -26,6 +31,7 @@ import org.eclipse.swt.widgets.Text;
 import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.entities.work.Sheet;
+import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.controller.SheetManagerController;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.listener.ICompositeListener;
@@ -112,21 +118,47 @@ public class SheetManager implements IExternalComposite
 			}
 		});
 		
-		table.addSelectionListener(new SelectionListener()
+	
+		table.addMouseListener(new MouseListener()
 		{
-			
 			@Override
-			public void widgetSelected(SelectionEvent se)
+			public void mouseUp(final MouseEvent e) {}
+
+			@Override
+			public void mouseDown(final MouseEvent e)
 			{
-				// TODO Auto-generated method stub
-				
+				if (e.button == 3)
+				{
+					final Point pt = new Point(e.x, e.y);
+					final TableItem item = table.getItem(pt);
+
+					if (item == null)
+					{
+						return;
+					}
+					createPopup();
+				}
+				else if (e.button == 1)
+				{
+				}
+
+				if( table.getSelection().length <= 0 )
+				{
+					return;
+				}
 			}
-			
+
 			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0)
+			public void mouseDoubleClick(final MouseEvent e)
 			{
-				// TODO Auto-generated method stub
-				
+				if (table == null || table.getSelectionCount() <= 0)
+				{
+					return;
+				}
+
+				if (e.button == 1)
+				{
+				}
 			}
 		});
 	}
@@ -172,10 +204,42 @@ public class SheetManager implements IExternalComposite
 				loadData();
 				
 				txtSheetName.setText(StringConstants.EMPTY_STRING);
+				
+				listener.sheetValueUpdated();
 			}
 		});
 	}
 
+	private void createPopup()
+	{
+		final Menu menu = new Menu(table.getShell(), SWT.POP_UP);
+
+		final MenuItem miDelete = new MenuItem(menu, SWT.CASCADE);
+		miDelete.setText("Delete");
+		miDelete.addSelectionListener(new SelectionListener()
+		{
+			@Override
+			public void widgetSelected(final SelectionEvent arg0)
+			{
+				String name = table.getItem(table.getSelectionIndex()).getText(2);
+				if( !Validator.isNullOrEmpty(name) )
+				{
+					controller.deleteEntity(IConstants.DB_SHEET, "Sheet", "name", name, Sheet.class);
+					loadData();
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(final SelectionEvent arg0)
+			{
+			}
+		});
+		
+		final Point pt = Display.getCurrent().getCursorLocation();
+		menu.setLocation(pt.x, pt.y);
+		menu.setVisible(true);
+	}
+	
 	private void genTable()
 	{
 		table = new Table(shell, SWT.SINGLE | SWT.V_SCROLL | SWT.BORDER
@@ -214,11 +278,6 @@ public class SheetManager implements IExternalComposite
 	
 	public void updateContent(List<String[]> contents)
 	{
-		if( contents.isEmpty() )
-		{
-			return;
-		}
-		
 		table.removeAll();
 		
 		int count = 0;

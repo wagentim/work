@@ -11,17 +11,22 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.entities.work.Sheet;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.listener.ISearchTableListener;
@@ -132,7 +137,15 @@ public class DefaultSearchAndTableComposite extends Composite
 			{
 				if (e.button == 3)
 				{
+					final Point pt = new Point(e.x, e.y);
+					final TableItem item = table.getItem(pt);
 
+					if (item == null)
+					{
+						return;
+					}
+					handleSelectedTicket();
+					createPopup();
 				}
 				else if (e.button == 1)
 				{
@@ -235,5 +248,35 @@ public class DefaultSearchAndTableComposite extends Composite
 		{
 		    table.getColumns()[0].dispose();
 		}
+	}
+	
+	private void createPopup()
+	{
+		final Menu menu = new Menu(table.getShell(), SWT.POP_UP);
+
+		List<Sheet> sheets = searchTableListener.getAllSheet();
+		
+		for( Sheet s : sheets)
+		{
+			final MenuItem mi = new MenuItem(menu, SWT.CASCADE);
+			mi.setText("Add to " + s.getName());
+			mi.addSelectionListener(new SelectionListener()
+			{
+				@Override
+				public void widgetSelected(final SelectionEvent arg0)
+				{
+					
+				}
+				
+				@Override
+				public void widgetDefaultSelected(final SelectionEvent arg0)
+				{
+				}
+			});
+		}
+		
+		final Point pt = Display.getCurrent().getCursorLocation();
+		menu.setLocation(pt.x, pt.y);
+		menu.setVisible(true);
 	}
  }

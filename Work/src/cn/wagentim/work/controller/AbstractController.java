@@ -8,6 +8,6 @@ import cn.wagentim.work.filter.ISelector;
 public abstract class AbstractController implements IController
 {
 
-	protected List<ISelector> selectors = new ArrayList<ISelector>();
+	
 
 }

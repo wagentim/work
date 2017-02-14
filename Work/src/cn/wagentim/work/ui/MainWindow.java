@@ -23,11 +23,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.entities.work.Sheet;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.controller.IController;
 import cn.wagentim.work.controller.MustFixController;
-import cn.wagentim.work.controller.RawTicketController;
+import cn.wagentim.work.controller.DefaultController;
 import cn.wagentim.work.filter.TicketIDSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
 import cn.wagentim.work.importer.IImporter;
@@ -68,9 +69,15 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	
 	private List<IExternalComposite> externalComposite;
 	
+	private Menu mSheet;
+	
+	private List<MenuItem> sheetItems;
+	
 	public MainWindow()
 	{
 		externalComposite = new ArrayList<IExternalComposite>();
+		sheetItems = new ArrayList<MenuItem>();
+		controller = new DefaultController();
 	}
 	// open the main window
 	public void open()
@@ -124,31 +131,13 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 			@Override
 			public void handleEvent(final Event event)
 			{
-				if( null == controller || !(controller instanceof MustFixController) );
+				if( null == controller || !(controller instanceof DefaultController) );
 				{
-					controller = new RawTicketController();
+					controller = new DefaultController();
 				}
 				updateTable(true);
 			}
 		});
-
-//		final MenuItem miLoadMustFix = new MenuItem(mFile, SWT.NONE);
-//		miLoadMustFix.setText("Load Clu8 Must Fix");
-//		miLoadMustFix.addListener(SWT.Selection, new Listener()
-//		{
-//			@Override
-//			public void handleEvent(final Event event)
-//			{
-//				if( null == controller || !(controller instanceof MustFixController) );
-//				{
-//					controller = new MustFixController();
-//				}
-//				updateTable(true);
-//				statusBarContent.setText(controller.getTotalDisplayedTicketNumber());
-//				
-//				openCommentEditor();
-//			}
-//		});
 	}
 	
 	private void openCommentEditor()
@@ -197,7 +186,30 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		final Menu mTool = new Menu(miFile);
 		miFile.setMenu(mTool);
 		
-		final MenuItem miSheetManager = new MenuItem(mTool, SWT.NONE);
+//		new MenuItem(mTool, SWT.SEPARATOR);
+		
+		final MenuItem miLoadClu8 = new MenuItem(mTool, SWT.NONE);
+		miLoadClu8.setText("Import Clu8 Tickets");
+		miLoadClu8.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				IImporter importer = new Cluster8TicketImporter();
+				importer.exec();
+			}
+		});
+	}
+	
+	private void genSheetMenu(final Menu menu)
+	{
+		final MenuItem miSheet = new MenuItem(menu, SWT.CASCADE);
+		miSheet.setText("Sheet");
+
+		mSheet = new Menu(miSheet);
+		miSheet.setMenu(mSheet);
+		
+		final MenuItem miSheetManager = new MenuItem(mSheet, SWT.NONE);
 		miSheetManager.setText("Sheet Manager");
 		miSheetManager.addListener(SWT.Selection, new Listener()
 		{
@@ -211,43 +223,47 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 			}
 		});
 		
-		new MenuItem(mTool, SWT.SEPARATOR);
+		new MenuItem(mSheet, SWT.SEPARATOR);
 		
-		final MenuItem miLoadClu8 = new MenuItem(mTool, SWT.NONE);
-		miLoadClu8.setText("Import Clu8 Tickets");
-		miLoadClu8.addListener(SWT.Selection, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				IImporter importer = new Cluster8TicketImporter();
-				importer.exec();
-			}
-		});
-
-		
-//		final MenuItem miLoadClu8 = new MenuItem(mTool, SWT.NONE);
-//		miLoadClu8.setText("Import Clu8 Tickets");
-//		miLoadClu8.addListener(SWT.Selection, new Listener()
-//		{
-//			@Override
-//			public void handleEvent(final Event event)
-//			{
-//			}
-//		});
-
-//		final MenuItem miLoadMustFix = new MenuItem(mTool, SWT.NONE);
-//		miLoadMustFix.setText("Import Clu8 Must Fix Ticket");
-//		miLoadMustFix.addListener(SWT.Selection, new Listener()
-//		{
-//			@Override
-//			public void handleEvent(final Event event)
-//			{
-//				
-//			}
-//		});
+		loadSelfDefinedSheets();
 	}
 	
+	public void loadSelfDefinedSheets()
+	{
+		clearMenuSheetItems();
+		List<Sheet> sheets = controller.getAllSheets();
+		
+		if( !sheets.isEmpty() )
+		{
+			for(Sheet s : sheets)
+			{
+				final MenuItem miSheet = new MenuItem(mSheet, SWT.NONE);
+				miSheet.setText(s.getName());
+				miSheet.addListener(SWT.Selection, new Listener()
+				{
+					@Override
+					public void handleEvent(final Event event)
+					{
+					}
+				});
+				
+				sheetItems.add(miSheet);
+			}
+		}
+	}
+	
+	private void clearMenuSheetItems()
+	{
+		if( null != sheetItems)
+		{
+			for(MenuItem mi : sheetItems)
+			{
+				sheetItems.remove(mi);
+				mi.dispose();
+				mi = null;
+			}
+		}
+	}
 	private void genFilterMenu(final Menu menu)
 	{
 		final MenuItem miFilter = new MenuItem(menu, SWT.CASCADE);
@@ -285,6 +301,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		
 		genFileMenu(menu);
 		genToolMenu(menu);
+		genSheetMenu(menu);
 		genFilterMenu(menu);
 		genAboutMenu(menu);
 	}
@@ -393,5 +410,15 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	{
 		controller.setSearchContent(content);
 		updateTableContent(false);
+	}
+	@Override
+	public void sheetValueUpdated()
+	{
+//		loadSelfDefinedSheets();
+	}
+	@Override
+	public List<Sheet> getAllSheet()
+	{
+		return controller.getAllSheets();
 	}
 }

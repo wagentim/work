@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -635,5 +636,18 @@ public class DataDBImporter
 		}
 		
 		return new ArrayList<TicketComment>();
+	}
+
+	public void deleteEntity(String db, String entity, String column, String value, Class clazz)
+	{
+		IPersistanceManager manager = new ObjectDBManager();
+		manager.connectDB(StringConstants.EMPTY_STRING, 0, db);
+		@SuppressWarnings("unchecked")
+		TypedQuery<TicketComment> query = manager.getEntityManager().createQuery("SELECT c FROM " + entity + " c where c." + column + "=" + "'" + value + "'", clazz);
+		IEntity result = query.getSingleResult();
+		manager.getEntityManager().getTransaction().begin();
+		manager.getEntityManager().remove(result);
+		manager.getEntityManager().getTransaction().commit();
+		manager.getEntityManager().close();
 	}
 }

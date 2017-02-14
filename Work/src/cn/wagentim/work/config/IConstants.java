@@ -52,6 +52,7 @@ public class IConstants
 	public static final String DB_TICKET_COMMENT = "ticketcomments.odb";
 	public static final String DB_SVEN = "sven.odb";
 	public static final String DB_SHEET = "sheet.odb";
+	public static final String DB_SURFIX = ".odb";
 
 	private static final Map<Integer,String> projectIndexToName;
 	private static final Map<String,Integer> projectNameToIndex;

@@ -5,15 +5,17 @@ import java.util.List;
 
 import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.web.IEntity;
+import cn.wagentim.entities.work.Sheet;
 import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.ISelector;
 import cn.wagentim.work.tool.DataDBImporter;
 
-public class RawTicketController extends AbstractController
+public class DefaultController extends AbstractController
 {
-	private final DataDBImporter importer = new DataDBImporter();
-	private int ticketNumber;
+	protected final DataDBImporter importer = new DataDBImporter();
+	protected int ticketNumber;
 	private static final Header[] TABLE_HEADERS = new Header[]{
 			new Header("KPM", 60),
 			new Header("Short Text", 340),
@@ -24,7 +26,9 @@ public class RawTicketController extends AbstractController
 	
 	private List<Ticket> ticketList;
 	
-	public RawTicketController()
+	protected List<ISelector> selectors = new ArrayList<ISelector>();
+	
+	public DefaultController()
 	{
 		ticketList = new ArrayList<Ticket>();
 	}
@@ -141,6 +145,19 @@ public class RawTicketController extends AbstractController
 		{
 			sel.setSearchContent(content);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Sheet> getAllSheets()
+	{
+		return (List<Sheet>) importer.getAllRecord(IConstants.DB_SHEET, "Sheet", Sheet.class);
+	}
+
+	@Override
+	public void deleteEntity(String db, String entity, String column, String value, Class clazz)
+	{
+		importer.deleteEntity(db, entity, column, value, clazz);
 	}
 
 }

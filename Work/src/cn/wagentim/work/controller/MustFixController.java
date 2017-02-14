@@ -22,7 +22,7 @@ import de.wagentim.qlogger.channel.LogChannel;
 import de.wagentim.qlogger.logger.Log;
 import de.wagentim.qlogger.service.QLoggerService;
 
-public class MustFixController extends AbstractController
+public class MustFixController extends DefaultController
 {
 	private final Map<Integer, Ticket> mustFixTicket;
 	private List<MustFix> mustFixes;
