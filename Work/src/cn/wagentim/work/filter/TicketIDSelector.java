@@ -3,10 +3,12 @@ package cn.wagentim.work.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.work.Ticket;
 
-public class RemoveFinishSelector implements ISelector
+public class TicketIDSelector implements ISelector
 {
+	private String id = StringConstants.EMPTY_STRING;
 
 	@Override
 	public List<Ticket> check(List<Ticket> list)
@@ -20,13 +22,7 @@ public class RemoveFinishSelector implements ISelector
 				continue;
 			}
 			
-			int engineerStatus = t.getEnginerringStatus();
-			
-			if( engineerStatus == 5 || engineerStatus == 6 || engineerStatus == 4 )
-			{
-				continue;
-			}
-			else
+			if( String.valueOf(t.getId()).startsWith(id) )
 			{
 				result.add(t);
 			}
@@ -38,8 +34,7 @@ public class RemoveFinishSelector implements ISelector
 	@Override
 	public void setSearchContent(String content)
 	{
-		// TODO Auto-generated method stub
-		
+		this.id = content;
 	}
 
 }

@@ -22,10 +22,13 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.controller.IController;
 import cn.wagentim.work.controller.MustFixController;
 import cn.wagentim.work.controller.RawTicketController;
+import cn.wagentim.work.filter.TicketIDSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
 import cn.wagentim.work.importer.IImporter;
 import cn.wagentim.work.listener.ICompositeListener;
@@ -126,7 +129,6 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 					controller = new RawTicketController();
 				}
 				updateTable(true);
-				statusBarContent.setText(controller.getTotalDisplayedTicketNumber());
 			}
 		});
 
@@ -171,10 +173,20 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		}
 	}
 	
-	private void updateTable(boolean loadDataFromDB)
+	public void updateTable(boolean loadDataFromDB)
+	{
+		updateTableHeaders();
+		updateTableContent(loadDataFromDB);
+	}
+	
+	public void updateTableContent(boolean loadDataFromDB)
+	{
+		listViewerComposite.updateTableContent(controller.getTableContents(loadDataFromDB));
+		statusBarContent.setText(controller.getTotalDisplayedTicketNumber());
+	}
+	public void updateTableHeaders()
 	{
 		listViewerComposite.updateTableColumn(controller.getColumnHeaders());
-		listViewerComposite.updateTableContent(controller.getTableContents(loadDataFromDB));
 	}
 	
 	private void genToolMenu(final Menu menu)
@@ -360,5 +372,26 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		{
 			sm = null;
 		}
+	}
+	@Override
+	public void selectedSearchItem(String item)
+	{
+		controller.clearSelectors();
+		
+		if( StringConstants.EMPTY_STRING.equals(item) )
+		{
+			updateTableContent(true);
+		}
+		else if( IConstants.STRING_TICKET_ID.equals(item) )
+		{
+			controller.addSelectors(new TicketIDSelector());
+		}
+		
+	}
+	@Override
+	public void setSearchContent(String content)
+	{
+		controller.setSearchContent(content);
+		updateTableContent(false);
 	}
 }

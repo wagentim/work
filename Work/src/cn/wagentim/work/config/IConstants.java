@@ -37,11 +37,14 @@ public class IConstants
 	public static final int DB_DEFAULT = 0;
 	public static final int DB_SDIS = 1;
 
-	public static final String STRING_KPM_NUMBER = "KPM Nr.";
-	public static final String STRING_SHORT_TEXT = "Title: ";
+	public static final String STRING_KPM_ID = "KPM ID";
+	public static final String STRING_SHORT_TEXT = "Short Text";
 	public static final String STRING_SUPPLIER = "Supplier: ";
 	public static final String STRING_PROBLEM_STATUS = "P Status: ";
 	public static final String STRING_ENGINEER_STATUS = "E Status: ";
+	
+	
+	public static final String STRING_TICKET_ID = "Ticket ID";
 
 
 	public static final String DB_MUAS_FIX = "mustfix.odb";

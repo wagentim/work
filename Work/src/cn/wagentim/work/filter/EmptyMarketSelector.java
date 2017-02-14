@@ -30,4 +30,11 @@ public class EmptyMarketSelector implements ISelector
 		return result;
 	}
 
+	@Override
+	public void setSearchContent(String content)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

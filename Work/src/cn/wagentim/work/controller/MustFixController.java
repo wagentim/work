@@ -193,4 +193,11 @@ public class MustFixController extends AbstractController
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setSearchContent(String content)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

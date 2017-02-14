@@ -7,13 +7,7 @@ import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.entity.Header;
-import cn.wagentim.work.filter.EmptyMarketSelector;
 import cn.wagentim.work.filter.ISelector;
-import cn.wagentim.work.filter.RatingSelector;
-import cn.wagentim.work.filter.RemoveFinishSelector;
-import cn.wagentim.work.filter.ShortTextSelector;
-import cn.wagentim.work.filter.SupplierSelector;
-import cn.wagentim.work.filter.SvenSelector;
 import cn.wagentim.work.tool.DataDBImporter;
 
 public class RawTicketController extends AbstractController
@@ -72,8 +66,11 @@ public class RawTicketController extends AbstractController
 			ticketList = importer.getAllTickets();
 		}
 		
+		List<Ticket> tmp = ticketList;
 		
-		ticketNumber = ticketList.size();
+		tmp = filter(tmp);
+		
+		ticketNumber = tmp.size();
 		List<String[]> result = new ArrayList<String[]>();
 		
 		String number;
@@ -82,7 +79,7 @@ public class RawTicketController extends AbstractController
 		String market;
 		String problemSolver;
 		
-		for(Ticket t : ticketList)
+		for(Ticket t : tmp)
 		{
 			
 			if( null == t )
@@ -135,6 +132,15 @@ public class RawTicketController extends AbstractController
 	public void updateRecord(IEntity entity)
 	{
 		
+	}
+
+	@Override
+	public void setSearchContent(String content)
+	{
+		for(ISelector sel : selectors)
+		{
+			sel.setSearchContent(content);
+		}
 	}
 
 }

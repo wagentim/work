@@ -50,5 +50,12 @@ public class MustFixFilter implements ISelector
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void setSearchContent(String content)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

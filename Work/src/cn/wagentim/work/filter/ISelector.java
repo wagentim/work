@@ -8,5 +8,7 @@ public interface ISelector
 {
 
 	List<Ticket> check(List<Ticket> list);
+	
+	void setSearchContent(String content);
 
 }

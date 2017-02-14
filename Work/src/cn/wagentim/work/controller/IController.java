@@ -23,4 +23,6 @@ public interface IController
 	void addSelectors(ISelector selector);
 	
 	void clearSelectors();
+	
+	void setSearchContent(String content);
 }

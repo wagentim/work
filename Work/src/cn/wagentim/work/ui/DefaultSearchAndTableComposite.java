@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -17,6 +21,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.listener.ISearchTableListener;
 
@@ -24,7 +30,10 @@ public class DefaultSearchAndTableComposite extends Composite
 {
 	protected Table table;
 	private ISearchTableListener searchTableListener = null;
-	
+	private Text searchText;
+	private Combo comboBox;
+	private static final String[] SEARCH_ITEM = {StringConstants.EMPTY_STRING, IConstants.STRING_TICKET_ID};
+		
 	public DefaultSearchAndTableComposite(Composite parent, int style)
 	{
 		super(parent, style);
@@ -70,16 +79,14 @@ public class DefaultSearchAndTableComposite extends Composite
 		Label label = new Label(this, SWT.BOLD);
 		label.setText("Search: ");
 		
-		Combo comboBox = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
+		comboBox = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
 		
-//		String[] searchItems = getSearchItems();
-//		
-//		for(int i = 0; i < searchItems.length; i++)
-//		{
-//			comboBox.add(searchItems[i]);
-//		}
+		for(int i = 0; i < SEARCH_ITEM.length; i++)
+		{
+			comboBox.add(SEARCH_ITEM[i]);
+		}
 		
-		Text searchText = new Text(this, SWT.SINGLE | SWT.BORDER);
+		searchText = new Text(this, SWT.SINGLE | SWT.BORDER);
 		searchText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		
 		table = new Table(this, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.BORDER);
@@ -167,6 +174,41 @@ public class DefaultSearchAndTableComposite extends Composite
 
 			@Override
 			public void keyPressed(final org.eclipse.swt.events.KeyEvent arg0) {}
+		});
+		
+		searchText.addModifyListener(new ModifyListener()
+		{
+			@Override
+			public void modifyText(final ModifyEvent e)
+			{
+				if (table == null)
+				{
+					return;
+				}
+				
+				searchTableListener.setSearchContent(searchText.getText());
+			}
+		});
+		
+		comboBox.addSelectionListener(new SelectionListener()
+		{
+			
+			@Override
+			public void widgetSelected(SelectionEvent se)
+			{
+				if( StringConstants.EMPTY_STRING.equals(comboBox.getText()))
+				{
+					searchText.setText(StringConstants.EMPTY_STRING);
+				}
+				searchTableListener.selectedSearchItem(comboBox.getText());
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0)
+			{
+				// TODO Auto-generated method stub
+				
+			}
 		});
 	}
 	

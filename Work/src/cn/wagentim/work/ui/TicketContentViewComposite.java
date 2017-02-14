@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.work.config.IConstants;
 
 public class TicketContentViewComposite extends Composite
 {
@@ -85,7 +86,7 @@ public class TicketContentViewComposite extends Composite
 	{
 		// KPM Number
 		final Group grpKPM = new Group(shortInfo, SWT.NONE);
-		grpKPM.setText("KPM ID");
+		grpKPM.setText(IConstants.STRING_KPM_ID);
 		grpKPM.setLayout(grpLayout);
 		txtKpmNum = new Text(grpKPM, SWT.SINGLE);
 		txtKpmNum.setEditable(false);
@@ -95,7 +96,7 @@ public class TicketContentViewComposite extends Composite
 
 		// Short Text
 		final Group grpShortText = new Group(shortInfo, SWT.NONE);
-		grpShortText.setText("Short Text");
+		grpShortText.setText(IConstants.STRING_SHORT_TEXT);
 		grpShortText.setLayout(grpLayout);
 		txtShortText = new Text(grpShortText, SWT.SINGLE);
 		txtShortText.setEditable(false);
