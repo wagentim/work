@@ -10,4 +10,5 @@ public interface ISearchTableListener
 	void selectedSearchItem(String item);
 	void setSearchContent(String content);
 	List<Sheet> getAllSheet();
+	void addTicketToSheet(String dbName, int kpmid);
 }

@@ -27,7 +27,7 @@ import cn.wagentim.entities.work.Sheet;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.controller.IController;
-import cn.wagentim.work.controller.MustFixController;
+import cn.wagentim.work.controller.TicketCommentController;
 import cn.wagentim.work.controller.DefaultController;
 import cn.wagentim.work.filter.TicketIDSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
@@ -231,11 +231,12 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	public void loadSelfDefinedSheets()
 	{
 		clearMenuSheetItems();
+		
 		List<Sheet> sheets = controller.getAllSheets();
 		
 		if( !sheets.isEmpty() )
 		{
-			for(Sheet s : sheets)
+			for(final Sheet s : sheets)
 			{
 				final MenuItem miSheet = new MenuItem(mSheet, SWT.NONE);
 				miSheet.setText(s.getName());
@@ -244,6 +245,18 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 					@Override
 					public void handleEvent(final Event event)
 					{
+						String dbName = s.getName() + IConstants.DB_SURFIX;
+						
+						if(controller instanceof TicketCommentController)
+						{
+							((TicketCommentController)controller).setSheet(dbName);
+						}
+						else
+						{
+							controller = new TicketCommentController(dbName);
+						}
+						
+						updateTable(true);
 					}
 				});
 				
@@ -371,9 +384,9 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		
 		contentViewerComposite.setSelectedTicket(selectedTicket);
 		
-		if((controller instanceof MustFixController) && ( null != commentsEditor) )
+		if((controller instanceof TicketCommentController) && ( null != commentsEditor) )
 		{
-			commentsEditor.updateContent(((MustFixController)controller).getComments(selectedTicketNumber));
+			commentsEditor.updateContent(((TicketCommentController)controller).getComments(selectedTicketNumber));
 		}
 	}
 
@@ -420,5 +433,10 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	public List<Sheet> getAllSheet()
 	{
 		return controller.getAllSheets();
+	}
+	@Override
+	public void addTicketToSheet(String dbName, int kpmid)
+	{
+		controller.addTicketComment(dbName, kpmid);
 	}
 }

@@ -18,18 +18,19 @@ public class SvenConfigure implements IConfigure
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
-	public int getSourceKeyColumnIndex()
+	public int getSourceKPMIdColumnIndex()
 	{
 		// TODO Auto-generated method stub
 		return sourceKeyColumnIndex;
 	}
 
 	@Override
-	public int getTargetKeyColumnIndex()
+	public int getTargetKPMIdColumnIndex()
 	{
-		return sourceSheetIndex;
+		// TODO Auto-generated method stub
+		return sourceKeyColumnIndex;
 	}
 
 	@Override

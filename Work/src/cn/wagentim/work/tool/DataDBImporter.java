@@ -247,7 +247,7 @@ public class DataDBImporter
 		TicketComment tc = new TicketComment();
 		tc.setTime(parserTime(time));
 		tc.setNumber(number);
-		tc.setContent(comment.toString());
+		tc.setComment(comment.toString());
 		return tc;
 	}
 
@@ -627,15 +627,17 @@ public class DataDBImporter
 	
 	public List<TicketComment> getComments(int ticketNumber)
 	{
+		List<TicketComment> result = new ArrayList<TicketComment>();
+		
 		if( ticketNumber > 0 )
 		{
 			IPersistanceManager manager = new ObjectDBManager();
 			manager.connectDB(StringConstants.EMPTY_STRING, 0, IConstants.DB_TICKET_COMMENT);
 			TypedQuery<TicketComment> query = manager.getEntityManager().createQuery("SELECT c FROM TicketComment c where c.number="+ticketNumber, TicketComment.class);
-			return query.getResultList();
+			result = query.getResultList();
 		}
 		
-		return new ArrayList<TicketComment>();
+		return result;
 	}
 
 	public void deleteEntity(String db, String entity, String column, String value, Class clazz)

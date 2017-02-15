@@ -24,13 +24,13 @@ public class MustFixTicketConfigure implements IConfigure
 	}
 
 	@Override
-	public int getSourceKeyColumnIndex()
+	public int getSourceKPMIdColumnIndex()
 	{
 		return sourceKeyColumnIndex;
 	}
 
 	@Override
-	public int getTargetKeyColumnIndex()
+	public int getTargetKPMIdColumnIndex()
 	{
 		return targetKeyColumnIndex;
 	}

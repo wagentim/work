@@ -75,8 +75,8 @@ public class OutPrinter
 		// Strategy is to add new ticket from source file into target file and
 		// mark the remove ticket
 
-		int sourceKeyIndex = configure.getSourceKeyColumnIndex();
-		int targetKeyIndex = configure.getTargetKeyColumnIndex();
+		int sourceKeyIndex = configure.getSourceKPMIdColumnIndex();
+		int targetKeyIndex = configure.getTargetKPMIdColumnIndex();
 
 		if (0 > sourceKeyIndex || 0 > targetKeyIndex)
 		{

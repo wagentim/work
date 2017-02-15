@@ -19,15 +19,14 @@ public class RawDataConfigureTW implements IConfigure
 		return null;
 	}
 
-	@Override
-	public int getSourceKeyColumnIndex()
+	public int getSourceKPMIdColumnIndex()
 	{
 		// TODO Auto-generated method stub
 		return sourceKeyColumnIndex;
 	}
 
 	@Override
-	public int getTargetKeyColumnIndex()
+	public int getTargetKPMIdColumnIndex()
 	{
 		return sourceSheetIndex;
 	}

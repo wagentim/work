@@ -15,7 +15,7 @@ public class TicketContentViewComposite extends Composite
 {
 	private Text txtKpmNum, txtShortText, txtSupplier, txtEngineerStatus,
 			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency;
-	private static final GridLayout grpLayout = new GridLayout(1, false);
+	public static final GridLayout GRP_LAYOUT = new GridLayout(1, false);
 	private static final GridData longInfoGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 	
 	private static final int GRID_SHORT = 7;
@@ -41,7 +41,7 @@ public class TicketContentViewComposite extends Composite
 		// Description Block
 		final Group desc = new Group(longInfo, SWT.NONE);
 		desc.setText("Description");
-		desc.setLayout(grpLayout);
+		desc.setLayout(GRP_LAYOUT);
 		desc.setLayoutData(longInfoGridData);
 		txtDescription = new Text(desc, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		txtDescription.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -50,7 +50,7 @@ public class TicketContentViewComposite extends Composite
 		// Analysis Block
 		final Group analysis = new Group(longInfo, SWT.NONE);
 		analysis.setText("Analysis");
-		analysis.setLayout(grpLayout);
+		analysis.setLayout(GRP_LAYOUT);
 		analysis.setLayoutData(longInfoGridData);
 		txtAnalysis = new Text(analysis, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		txtAnalysis.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -59,7 +59,7 @@ public class TicketContentViewComposite extends Composite
 		// Supplier Status
 		final Group supplierStatus = new Group(longInfo, SWT.NONE);
 		supplierStatus.setText("Supplier Status");
-		supplierStatus.setLayout(grpLayout);
+		supplierStatus.setLayout(GRP_LAYOUT);
 		supplierStatus.setLayoutData(longInfoGridData);
 		txtSupplierStatus = new Text(supplierStatus, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		txtSupplierStatus.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -87,7 +87,7 @@ public class TicketContentViewComposite extends Composite
 		// KPM Number
 		final Group grpKPM = new Group(shortInfo, SWT.NONE);
 		grpKPM.setText(IConstants.STRING_KPM_ID);
-		grpKPM.setLayout(grpLayout);
+		grpKPM.setLayout(GRP_LAYOUT);
 		txtKpmNum = new Text(grpKPM, SWT.SINGLE);
 		txtKpmNum.setEditable(false);
 		GridData gdKPM = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -97,7 +97,7 @@ public class TicketContentViewComposite extends Composite
 		// Short Text
 		final Group grpShortText = new Group(shortInfo, SWT.NONE);
 		grpShortText.setText(IConstants.STRING_SHORT_TEXT);
-		grpShortText.setLayout(grpLayout);
+		grpShortText.setLayout(GRP_LAYOUT);
 		txtShortText = new Text(grpShortText, SWT.SINGLE);
 		txtShortText.setEditable(false);
 		GridData gdShortText = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -108,7 +108,7 @@ public class TicketContentViewComposite extends Composite
 		// supplier
 		final Group grpSupplier = new Group(shortInfo, SWT.NONE);
 		grpSupplier.setText("Supplier");
-		grpSupplier.setLayout(grpLayout);
+		grpSupplier.setLayout(GRP_LAYOUT);
 		txtSupplier = new Text(grpSupplier, SWT.SINGLE);
 		txtSupplier.setEditable(false);
 		GridData gdSupplier = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -128,7 +128,7 @@ public class TicketContentViewComposite extends Composite
 		// Engineer Status
 		final Group grpEngStat = new Group(shortInfo, SWT.NONE);
 		grpEngStat.setText("Eng Stat");
-		grpEngStat.setLayout(grpLayout);
+		grpEngStat.setLayout(GRP_LAYOUT);
 		txtEngineerStatus = new Text(grpEngStat, SWT.SINGLE);
 		txtEngineerStatus.setEditable(false);
 		GridData gdEngineerStatus = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -137,7 +137,7 @@ public class TicketContentViewComposite extends Composite
 		
 		final Group grpFrequency = new Group(shortInfo, SWT.NONE);
 		grpFrequency.setText("Frequency");
-		grpFrequency.setLayout(grpLayout);
+		grpFrequency.setLayout(GRP_LAYOUT);
 		txtFrequency = new Text(grpFrequency, SWT.SINGLE);
 		txtFrequency.setEditable(false);
 		GridData gdFrequencyStatus = new GridData(SWT.FILL, SWT.FILL, true, true);

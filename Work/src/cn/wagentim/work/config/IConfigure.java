@@ -7,8 +7,8 @@ public interface IConfigure
 //	void setSourceFilePath(String sourceFilePath);
 //	void setTargetFilePath(String targetFilePath);
 	
-	int getSourceKeyColumnIndex();
-	int getTargetKeyColumnIndex();
+	int getSourceKPMIdColumnIndex();
+	int getTargetKPMIdColumnIndex();
 //	void setSourceKeyColumnIndex(int sourceKeyColumnIndex);
 //	void setTargetKeyColumnIndex(int targetKeyColumnIndex);
 	

@@ -53,12 +53,13 @@ public class DefaultSearchAndTableComposite extends Composite
 	
 	public void updateTableContent(List<String[]> contents)
 	{
+		table.removeAll();
+
 		if( contents.isEmpty() )
 		{
 			return;
 		}
 		
-		table.removeAll();
 		
 		int count = 0;
 		
@@ -256,7 +257,7 @@ public class DefaultSearchAndTableComposite extends Composite
 
 		List<Sheet> sheets = searchTableListener.getAllSheet();
 		
-		for( Sheet s : sheets)
+		for( final Sheet s : sheets)
 		{
 			final MenuItem mi = new MenuItem(menu, SWT.CASCADE);
 			mi.setText("Add to " + s.getName());
@@ -265,7 +266,9 @@ public class DefaultSearchAndTableComposite extends Composite
 				@Override
 				public void widgetSelected(final SelectionEvent arg0)
 				{
-					
+					int kpmid = Integer.valueOf(table.getItem(table.getSelectionIndex()).getText(0));
+					String dbName = s.getName() + IConstants.DB_SURFIX;
+					searchTableListener.addTicketToSheet(dbName, kpmid);
 				}
 				
 				@Override

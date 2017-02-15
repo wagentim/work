@@ -63,6 +63,16 @@ public class IConstants
 
 	private final static boolean verificationProcessRequired;
 
+	public static final String String_SHEET_INDEX = "Sheet Index";
+
+	public static final String String_IGNORE_LINES = "Ignore Lines";
+
+	public static final String String_KPM_ID_INDEX = "KPM ID Index";
+
+	public static final String String_COMMENT_INDEX = "Comment Index";
+
+	public static final String String_STATUS_INDEX = "Status Index";
+
 	static {
 		projectIndexToName = null; //DBManager.sqlGetAllProjectIDNameMappings();
 

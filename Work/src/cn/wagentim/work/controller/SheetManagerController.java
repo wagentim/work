@@ -55,7 +55,7 @@ public class SheetManagerController implements IController
 			else
 			{
 				id = counter++;
-				date = MustFixController.sdf.format(new Date(t.getTime()));
+				date = TicketCommentController.sdf.format(new Date(t.getTime()));
 				sheetName = t.getName();
 			}
 			
@@ -113,6 +113,13 @@ public class SheetManagerController implements IController
 	public void deleteEntity(String db, String entity, String column, String value, Class clazz)
 	{
 		importer.deleteEntity(db, entity, column, value, clazz);
+	}
+
+	@Override
+	public void addTicketComment(String dbName, int kpmid)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 	

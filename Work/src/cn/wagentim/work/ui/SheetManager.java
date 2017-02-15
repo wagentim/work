@@ -235,6 +235,25 @@ public class SheetManager implements IExternalComposite
 			}
 		});
 		
+		new MenuItem(menu, SWT.SEPARATOR);
+		
+		final MenuItem miImport = new MenuItem(menu, SWT.CASCADE);
+		miImport.setText("Import From Excel File");
+		miImport.addSelectionListener(new SelectionListener()
+		{
+			@Override
+			public void widgetSelected(final SelectionEvent arg0)
+			{
+				String name = table.getItem(table.getSelectionIndex()).getText(2);
+				new ExcelImportComposite().open();
+			}
+
+			@Override
+			public void widgetDefaultSelected(final SelectionEvent arg0)
+			{
+			}
+		});
+		
 		final Point pt = Display.getCurrent().getCursorLocation();
 		menu.setLocation(pt.x, pt.y);
 		menu.setVisible(true);

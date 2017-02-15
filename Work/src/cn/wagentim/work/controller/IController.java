@@ -30,4 +30,6 @@ public interface IController
 	List<Sheet> getAllSheets();
 	
 	void deleteEntity(String db, String entity, String column, String value, Class clazz);
+
+	void addTicketComment(String dbName, int kpmid);
 }

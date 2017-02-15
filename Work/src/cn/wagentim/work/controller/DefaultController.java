@@ -7,6 +7,7 @@ import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.Sheet;
 import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.TicketComment;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.ISelector;
@@ -24,7 +25,7 @@ public class DefaultController extends AbstractController
 			new Header("Problem Solver", 200)
 			};
 	
-	private List<Ticket> ticketList;
+	protected List<Ticket> ticketList;
 	
 	protected List<ISelector> selectors = new ArrayList<ISelector>();
 	
@@ -61,13 +62,18 @@ public class DefaultController extends AbstractController
 	{
 		selectors.clear();
 	}
+	
+	protected void getTicketListFromDB()
+	{
+		ticketList = importer.getAllTickets();
+	}
 
 	@Override
 	public List<String[]> getTableContents(boolean fromDB)
 	{
 		if(fromDB)
 		{
-			ticketList = importer.getAllTickets();
+			getTicketListFromDB();
 		}
 		
 		List<Ticket> tmp = ticketList;
@@ -155,9 +161,16 @@ public class DefaultController extends AbstractController
 	}
 
 	@Override
-	public void deleteEntity(String db, String entity, String column, String value, Class clazz)
+	public void deleteEntity(String db, String entity, String column, String value, @SuppressWarnings("rawtypes") Class clazz)
 	{
 		importer.deleteEntity(db, entity, column, value, clazz);
 	}
 
+	@Override
+	public void addTicketComment(String dbName, int kpmid)
+	{
+		TicketComment tc = new TicketComment();
+		tc.setNumber(kpmid);
+		importer.updateEntity(tc, dbName);
+	}
 }
