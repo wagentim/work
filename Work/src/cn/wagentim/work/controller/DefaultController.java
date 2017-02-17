@@ -7,17 +7,17 @@ import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.Sheet;
 import cn.wagentim.entities.work.Ticket;
-import cn.wagentim.entities.work.TicketComment;
+import cn.wagentim.entities.work.SheetTicket;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.ISelector;
-import cn.wagentim.work.tool.DataDBImporter;
+import cn.wagentim.work.importer.DataDBImporter;
 
 public class DefaultController extends AbstractController
 {
 	protected final DataDBImporter importer = new DataDBImporter();
 	protected int ticketNumber;
-	private static final Header[] TABLE_HEADERS = new Header[]{
+	protected static final Header[] TABLE_HEADERS = new Header[]{
 			new Header("KPM", 60),
 			new Header("Short Text", 340),
 			new Header("Rating", 60),
@@ -83,37 +83,40 @@ public class DefaultController extends AbstractController
 		ticketNumber = tmp.size();
 		List<String[]> result = new ArrayList<String[]>();
 		
-		String number;
-		String shortText;
-		String rating;
-		String market;
-		String problemSolver;
-		
 		for(Ticket t : tmp)
 		{
-			
-			if( null == t )
-			{
-				number = StringConstants.EMPTY_STRING;
-				shortText = StringConstants.EMPTY_STRING;
-				rating = StringConstants.EMPTY_STRING;
-				market = StringConstants.EMPTY_STRING;
-				problemSolver = StringConstants.EMPTY_STRING;
-			}
-			else
-			{
-				number = String.valueOf(t.getNumber());
-				shortText = t.getShortText();
-				rating = t.getRating();
-				market = t.getMarket();
-				problemSolver = t.getResponsibleProblemSolverUser();
-			}
-			
-			result.add(new String[]{number, shortText, rating, market, problemSolver});
+			String[] row = handleTableRowContent(t, getColumnHeaders().length);
+			result.add(row);
 		}
 		return result;
 	}
 
+	protected String[] handleTableRowContent(IEntity entity, int columns)
+	{
+		Ticket t = (Ticket)entity;
+		
+		String[] result = new String[columns];
+		
+		if( null == t )
+		{
+			result[0] = StringConstants.EMPTY_STRING;
+			result[1] = StringConstants.EMPTY_STRING;
+			result[2] = StringConstants.EMPTY_STRING;
+			result[3] = StringConstants.EMPTY_STRING;
+			result[4] = StringConstants.EMPTY_STRING;
+		}
+		else
+		{
+			result[0] = String.valueOf(t.getNumber());
+			result[1] = t.getShortText();
+			result[2] = t.getRating();
+			result[3] = t.getMarket();
+			result[4] = t.getResponsibleProblemSolverUser();
+		}
+		
+		return result;
+	}
+	
 	private List<Ticket> filter(List<Ticket> list)
 	{
 		List<Ticket> result = list;
@@ -169,8 +172,8 @@ public class DefaultController extends AbstractController
 	@Override
 	public void addTicketComment(String dbName, int kpmid)
 	{
-		TicketComment tc = new TicketComment();
-		tc.setNumber(kpmid);
+		SheetTicket tc = new SheetTicket();
+		tc.setKpmID(kpmid);
 		importer.updateEntity(tc, dbName);
 	}
 }

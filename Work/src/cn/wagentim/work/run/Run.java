@@ -5,7 +5,7 @@ import cn.wagentim.work.config.RawDataConfigureCN;
 import cn.wagentim.work.config.RawDataConfigureJP;
 import cn.wagentim.work.config.RawDataConfigureKR;
 import cn.wagentim.work.config.RawDataConfigureTW;
-import cn.wagentim.work.tool.DataDBImporter;
+import cn.wagentim.work.importer.DataDBImporter;
 
 public class Run
 {

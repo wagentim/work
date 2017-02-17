@@ -11,6 +11,8 @@ public class TicketCommentConfigure implements ITicketCommentConfigure
 	private int ignoreLines = -1;
 	private int commentColumnIndex = -1;
 	private int statusColumnIndex = -1;
+	private int priorityColumnIndex = -1;
+	private int nextStepColumnIndex = -1;
 
 	@Override
 	public String getSourceFilePath()
@@ -131,7 +133,29 @@ public class TicketCommentConfigure implements ITicketCommentConfigure
 	{
 		this.statusColumnIndex = statusColumnIndex;
 	}
-	
-	
+
+	@Override
+	public int getPriorityColumnIndex()
+	{
+		// TODO Auto-generated method stub
+		return priorityColumnIndex;
+	}
+
+	@Override
+	public int getNextStepColumnIndex()
+	{
+		// TODO Auto-generated method stub
+		return nextStepColumnIndex;
+	}
+
+	public void setPriorityColumnIndex(int priorityColumnIndex)
+	{
+		this.priorityColumnIndex = priorityColumnIndex;
+	}
+
+	public void setNextStepColumnIndex(int nextStepColumnIndex)
+	{
+		this.nextStepColumnIndex = nextStepColumnIndex;
+	}
 
 }

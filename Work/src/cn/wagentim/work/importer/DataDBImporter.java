@@ -1,4 +1,4 @@
-package cn.wagentim.work.tool;
+package cn.wagentim.work.importer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -21,7 +20,7 @@ import cn.wagentim.basicutils.Validator;
 import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.MustFix;
 import cn.wagentim.entities.work.Ticket;
-import cn.wagentim.entities.work.TicketComment;
+import cn.wagentim.entities.work.SheetTicket;
 import cn.wagentim.managers.IPersistanceManager;
 import cn.wagentim.managers.ObjectDBManager;
 import cn.wagentim.work.config.IConfigure;
@@ -44,7 +43,7 @@ public class DataDBImporter
 
 	private static final LogChannel logger = QLoggerService.getChannel(QLoggerService.addChannel(new DefaultChannel(DataDBImporter.class.getSimpleName())));
 	
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd"); 
+	public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd"); 
 	
 	public static void main(String[] args)
 	{
@@ -192,7 +191,7 @@ public class DataDBImporter
 	private List<IEntity> parserComments(int number, String cellValueAsString)
 	{
 		List<IEntity> result = new ArrayList<IEntity>();
-		TicketComment tc = null;
+		SheetTicket tc = null;
 		
 		if( !cellValueAsString.isEmpty() )
 		{
@@ -207,7 +206,7 @@ public class DataDBImporter
 				switch (c)
 				{
 					case '[':
-						if( null != (tc = parserComment(number, time, comment))) result.add(tc) ;
+//						if( null != (tc = parserComment(number, time, comment))) result.add(tc) ;
 						isTime = true;
 						comment.delete(0, comment.length());
 						time.delete(0, time.length());
@@ -229,7 +228,7 @@ public class DataDBImporter
 				
 				if( i == cellValueAsString.length() - 1 )
 				{
-					if( null != (tc = parserComment(number, time, comment))) result.add(tc) ;
+//					if( null != (tc = parserComment(number, time, comment))) result.add(tc) ;
 				}
 			}
 		}
@@ -237,19 +236,19 @@ public class DataDBImporter
 		return result;
 	}
 
-	private TicketComment parserComment(int number, StringBuffer time, StringBuffer comment)
-	{
-		if( time.length() <=0 && comment.length() <= 0 )
-		{
-			return null;
-		}
-		
-		TicketComment tc = new TicketComment();
-		tc.setTime(parserTime(time));
-		tc.setNumber(number);
-		tc.setComment(comment.toString());
-		return tc;
-	}
+//	private TicketComment parserComment(int number, StringBuffer time, StringBuffer comment)
+//	{
+//		if( time.length() <=0 && comment.length() <= 0 )
+//		{
+//			return null;
+//		}
+//		
+//		TicketComment tc = new TicketComment();
+//		tc.setTime(parserTime(time));
+//		tc.setNumber(number);
+//		tc.setComment(comment.toString());
+//		return tc;
+//	}
 
 	private long parserTime(StringBuffer time)
 	{
@@ -625,15 +624,15 @@ public class DataDBImporter
 		return query.getResultList();
 	}
 	
-	public List<TicketComment> getComments(int ticketNumber)
+	public List<SheetTicket> getComments(int ticketNumber)
 	{
-		List<TicketComment> result = new ArrayList<TicketComment>();
+		List<SheetTicket> result = new ArrayList<SheetTicket>();
 		
 		if( ticketNumber > 0 )
 		{
 			IPersistanceManager manager = new ObjectDBManager();
 			manager.connectDB(StringConstants.EMPTY_STRING, 0, IConstants.DB_TICKET_COMMENT);
-			TypedQuery<TicketComment> query = manager.getEntityManager().createQuery("SELECT c FROM TicketComment c where c.number="+ticketNumber, TicketComment.class);
+			TypedQuery<SheetTicket> query = manager.getEntityManager().createQuery("SELECT c FROM TicketComment c where c.number="+ticketNumber, SheetTicket.class);
 			result = query.getResultList();
 		}
 		
@@ -645,7 +644,7 @@ public class DataDBImporter
 		IPersistanceManager manager = new ObjectDBManager();
 		manager.connectDB(StringConstants.EMPTY_STRING, 0, db);
 		@SuppressWarnings("unchecked")
-		TypedQuery<TicketComment> query = manager.getEntityManager().createQuery("SELECT c FROM " + entity + " c where c." + column + "=" + "'" + value + "'", clazz);
+		TypedQuery<SheetTicket> query = manager.getEntityManager().createQuery("SELECT c FROM " + entity + " c where c." + column + "=" + "'" + value + "'", clazz);
 		IEntity result = query.getSingleResult();
 		manager.getEntityManager().getTransaction().begin();
 		manager.getEntityManager().remove(result);

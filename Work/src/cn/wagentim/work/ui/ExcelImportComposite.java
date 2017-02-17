@@ -19,12 +19,14 @@ import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.work.config.IConstants;
+import cn.wagentim.work.config.TicketCommentConfigure;
+import cn.wagentim.work.importer.ExcelDataImporter;
 
 public class ExcelImportComposite implements IExternalComposite
 {
 	private Shell shell;
 	private static final int SHELL_WIDTH = 600;
-	private static final int SHELL_HEIGH = 200;
+	private static final int SHELL_HEIGH = 250;
 	private static final String DEFAULT_INDEX = "-1";
 
 	private static final String title = "Excel Import Manager V0.1 HB";
@@ -32,9 +34,15 @@ public class ExcelImportComposite implements IExternalComposite
 	// ########################## GUI elements ####################################################
 
 	private Label labelFileSelector;
-	private Text txtFileSelector, txtSheetIndex, txtIgnoreLines, txtKPMIDIndex, txtCommentIndex, txtStatusIndex;
+	private Text txtFileSelector, txtSheetIndex, txtIgnoreLines, txtKPMIDIndex, txtCommentIndex, txtStatusIndex, txtPriorityIndex, txtNextStepIndex;
 	private Button btnFileSelector, btnExec;
 	
+	private String sheetName;
+	
+	public ExcelImportComposite(String sheetName)
+	{
+		this.sheetName = sheetName;
+	}
 	
 	public void open()
 	{
@@ -118,7 +126,30 @@ public class ExcelImportComposite implements IExternalComposite
 					statusIndex = -1;
 				}
 				
+				int priorityIndex = Integer.valueOf(txtPriorityIndex.getText());
+				if( priorityIndex < 0 )
+				{
+					priorityIndex = -1;
+				}
 				
+				int nextStepIndex = Integer.valueOf(txtNextStepIndex.getText());
+				if( nextStepIndex < 0 )
+				{
+					nextStepIndex = -1;
+				}
+				
+				TicketCommentConfigure configure = new TicketCommentConfigure();
+				configure.setExcelFilePath(fileLocation);
+				configure.setCommentColumnIndex(commentIndex);
+				configure.setIgnoreLines(ignoreLines);
+				configure.setKpmIdColumnIndex(kpmIdIndex);
+				configure.setSheetDBName(sheetName + IConstants.DB_SURFIX);
+				configure.setSheetIndex(sheetIndex);
+				configure.setStatusColumnIndex(statusIndex);
+				configure.setPriorityColumnIndex(priorityIndex);
+				configure.setNextStepColumnIndex(nextStepIndex);
+				
+				new ExcelDataImporter(configure).exec();
 			}
 		});
 	}
@@ -136,7 +167,7 @@ public class ExcelImportComposite implements IExternalComposite
 		txtSheetIndex = new Text(grpSheet, SWT.SINGLE);
 		txtSheetIndex.setText(DEFAULT_INDEX);
 		GridData gdtxtSheetIndex = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gdtxtSheetIndex.widthHint = 40;
+		gdtxtSheetIndex.widthHint = 90;
 		txtSheetIndex.setLayoutData(gdtxtSheetIndex);
 		
 		final Group grpIgnoreLines = new Group(options, SWT.NONE);
@@ -145,7 +176,7 @@ public class ExcelImportComposite implements IExternalComposite
 		txtIgnoreLines = new Text(grpIgnoreLines, SWT.SINGLE);
 		txtIgnoreLines.setText(DEFAULT_INDEX);
 		GridData gdtxtIgnoreLines = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gdtxtIgnoreLines.widthHint = 40;
+		gdtxtIgnoreLines.widthHint = 90;
 		txtIgnoreLines.setLayoutData(gdtxtIgnoreLines);
 		
 		final Group grpKPMIDIndex = new Group(options, SWT.NONE);
@@ -154,7 +185,7 @@ public class ExcelImportComposite implements IExternalComposite
 		txtKPMIDIndex = new Text(grpKPMIDIndex, SWT.SINGLE);
 		txtKPMIDIndex.setText(DEFAULT_INDEX);
 		GridData gdtxtKPMIDIndex = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gdtxtKPMIDIndex.widthHint = 40;
+		gdtxtKPMIDIndex.widthHint = 90;
 		txtKPMIDIndex.setLayoutData(gdtxtKPMIDIndex);
 		
 		final Group grpCommentIndex = new Group(options, SWT.NONE);
@@ -163,7 +194,7 @@ public class ExcelImportComposite implements IExternalComposite
 		txtCommentIndex = new Text(grpCommentIndex, SWT.SINGLE);
 		txtCommentIndex.setText(DEFAULT_INDEX);
 		GridData gdtxtCommentIndex = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gdtxtCommentIndex.widthHint = 40;
+		gdtxtCommentIndex.widthHint = 90;
 		txtCommentIndex.setLayoutData(gdtxtCommentIndex);
 		
 		final Group grpStatusIndex = new Group(options, SWT.NONE);
@@ -172,8 +203,26 @@ public class ExcelImportComposite implements IExternalComposite
 		txtStatusIndex = new Text(grpStatusIndex, SWT.SINGLE);
 		txtStatusIndex.setText(DEFAULT_INDEX);
 		GridData gdtxtStatusIndex = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gdtxtCommentIndex.widthHint = 40;
+		gdtxtCommentIndex.widthHint = 90;
 		txtStatusIndex.setLayoutData(gdtxtStatusIndex);
+		
+		final Group grpPriorityIndex = new Group(options, SWT.NONE);
+		grpPriorityIndex.setText(IConstants.String_PRIORITY_INDEX);
+		grpPriorityIndex.setLayout(TicketContentViewComposite.GRP_LAYOUT);
+		txtPriorityIndex = new Text(grpPriorityIndex, SWT.SINGLE);
+		txtPriorityIndex.setText(DEFAULT_INDEX);
+		GridData gdtxtPriorityIndex = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gdtxtPriorityIndex.widthHint = 90;
+		txtPriorityIndex.setLayoutData(gdtxtPriorityIndex);
+		
+		final Group grpNextStepIndex = new Group(options, SWT.NONE);
+		grpNextStepIndex.setText(IConstants.String_NEXT_STEP_INDEX);
+		grpNextStepIndex.setLayout(TicketContentViewComposite.GRP_LAYOUT);
+		txtNextStepIndex = new Text(grpNextStepIndex, SWT.SINGLE);
+		txtNextStepIndex.setText(DEFAULT_INDEX);
+		GridData gdtxtNextStepIndex = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gdtxtNextStepIndex.widthHint = 90;
+		txtNextStepIndex.setLayoutData(gdtxtNextStepIndex);
 		
 	}
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.config.IConstants;
-import cn.wagentim.work.tool.DataDBImporter;
+import cn.wagentim.work.importer.DataDBImporter;
 
 public class SvenSelector implements ISelector
 {

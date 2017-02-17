@@ -2,6 +2,7 @@ package cn.wagentim.work.test;
 
 import org.eclipse.swt.widgets.Shell;
 
+import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.work.ui.ExcelImportComposite;
 
 public class TestGUI
@@ -11,7 +12,7 @@ public class TestGUI
 	public TestGUI()
 	{
 		
-		new ExcelImportComposite().open();
+		new ExcelImportComposite(StringConstants.EMPTY_STRING).open();
 //		final Display display = Display.getDefault();
 //		
 ////		shell = new Shell();

@@ -245,7 +245,7 @@ public class SheetManager implements IExternalComposite
 			public void widgetSelected(final SelectionEvent arg0)
 			{
 				String name = table.getItem(table.getSelectionIndex()).getText(2);
-				new ExcelImportComposite().open();
+				new ExcelImportComposite(name).open();
 			}
 
 			@Override

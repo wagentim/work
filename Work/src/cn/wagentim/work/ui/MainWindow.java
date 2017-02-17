@@ -27,7 +27,7 @@ import cn.wagentim.entities.work.Sheet;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.controller.IController;
-import cn.wagentim.work.controller.TicketCommentController;
+import cn.wagentim.work.controller.SheetTicketController;
 import cn.wagentim.work.controller.DefaultController;
 import cn.wagentim.work.filter.TicketIDSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
@@ -95,7 +95,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		genStatusBar();
 
 		shell.setSize(SHELL_WIDTH, SHELL_HEIGH);
-//		setCenter();
+		setCenter();
 		shell.open();
 
 		while (!shell.isDisposed())
@@ -149,6 +149,10 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 			commentsEditor.setListener(this);
 			commentsEditor.open();
 		}
+		else
+		{
+			commentsEditor.open();
+		}
 	}
 	
 	private void openSheetManager()
@@ -170,7 +174,8 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	
 	public void updateTableContent(boolean loadDataFromDB)
 	{
-		listViewerComposite.updateTableContent(controller.getTableContents(loadDataFromDB));
+		List<String[]> content = controller.getTableContents(loadDataFromDB);
+		listViewerComposite.updateTableContent(content);
 		statusBarContent.setText(controller.getTotalDisplayedTicketNumber());
 	}
 	public void updateTableHeaders()
@@ -186,7 +191,18 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		final Menu mTool = new Menu(miFile);
 		miFile.setMenu(mTool);
 		
-//		new MenuItem(mTool, SWT.SEPARATOR);
+		final MenuItem miOpenCommentDialog = new MenuItem(mTool, SWT.NONE);
+		miOpenCommentDialog.setText("Open Comment Dialog");
+		miOpenCommentDialog.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				openCommentEditor();
+			}
+		});
+		
+		new MenuItem(mTool, SWT.SEPARATOR);
 		
 		final MenuItem miLoadClu8 = new MenuItem(mTool, SWT.NONE);
 		miLoadClu8.setText("Import Clu8 Tickets");
@@ -247,13 +263,13 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 					{
 						String dbName = s.getName() + IConstants.DB_SURFIX;
 						
-						if(controller instanceof TicketCommentController)
+						if(controller instanceof SheetTicketController)
 						{
-							((TicketCommentController)controller).setSheet(dbName);
+							((SheetTicketController)controller).setSheet(dbName);
 						}
 						else
 						{
-							controller = new TicketCommentController(dbName);
+							controller = new SheetTicketController(dbName);
 						}
 						
 						updateTable(true);
@@ -384,9 +400,9 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		
 		contentViewerComposite.setSelectedTicket(selectedTicket);
 		
-		if((controller instanceof TicketCommentController) && ( null != commentsEditor) )
+		if((controller instanceof SheetTicketController) && ( null != commentsEditor) )
 		{
-			commentsEditor.updateContent(((TicketCommentController)controller).getComments(selectedTicketNumber));
+			commentsEditor.updateContent(((SheetTicketController)controller).getComments(selectedTicketNumber));
 		}
 	}
 

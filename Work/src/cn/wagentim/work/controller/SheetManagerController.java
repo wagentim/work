@@ -11,7 +11,7 @@ import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.ISelector;
-import cn.wagentim.work.tool.DataDBImporter;
+import cn.wagentim.work.importer.DataDBImporter;
 
 public class SheetManagerController implements IController
 {
@@ -55,7 +55,7 @@ public class SheetManagerController implements IController
 			else
 			{
 				id = counter++;
-				date = TicketCommentController.sdf.format(new Date(t.getTime()));
+				date = SheetTicketController.sdf.format(new Date(t.getTime()));
 				sheetName = t.getName();
 			}
 			
