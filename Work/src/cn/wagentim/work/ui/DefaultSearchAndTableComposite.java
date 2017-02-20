@@ -1,5 +1,7 @@
 package cn.wagentim.work.ui;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -281,5 +283,63 @@ public class DefaultSearchAndTableComposite extends Composite
 		final Point pt = Display.getCurrent().getCursorLocation();
 		menu.setLocation(pt.x, pt.y);
 		menu.setVisible(true);
+	}
+
+	public String[] getCurrentTableHeaders()
+	{
+		if( null == table )
+		{
+			return StringConstants.EMPTY_STRING_ARRAY;
+		}
+		
+		TableColumn[] columns = table.getColumns();
+		
+		if( null == columns || columns.length <= 0 )
+		{
+			return StringConstants.EMPTY_STRING_ARRAY;
+		}
+		
+		String[] result = new String[table.getColumnCount()];
+		
+		for(int i = 0; i < columns.length; i++)
+		{
+			result[i] = columns[i].getText();
+		}
+		
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String[]> getCurrentTableContent()
+	{
+		if( null == table )
+		{
+			return Collections.EMPTY_LIST;
+		}
+		
+		int rows = table.getItemCount();
+		
+		if( rows <= 0 )
+		{
+			return Collections.EMPTY_LIST;
+		}
+		
+		List<String[]> result = new ArrayList<String[]>();
+		
+		TableItem[] items = table.getItems();
+		int columns = table.getColumnCount();
+		
+		for(int i = 0; i < rows; i++)
+		{
+			String[] cells = new String[columns];
+			for(int j = 0; j < columns; j++)
+			{
+				cells[j] = items[i].getText(j);
+			}
+			
+			result.add(cells);
+		}
+		
+		return result;
 	}
  }

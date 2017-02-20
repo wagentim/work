@@ -11,11 +11,9 @@ import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.ISelector;
-import cn.wagentim.work.importer.DataDBImporter;
 
-public class SheetManagerController implements IController
+public class SheetManagerController extends AbstractController
 {
-	private final DataDBImporter importer = new DataDBImporter();
 	private int ticketNumber;
 	private static final Header[] TABLE_HEADERS = new Header[]{
 			new Header("ID", 30),

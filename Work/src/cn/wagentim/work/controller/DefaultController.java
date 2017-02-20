@@ -11,11 +11,10 @@ import cn.wagentim.entities.work.SheetTicket;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.ISelector;
-import cn.wagentim.work.importer.DataDBImporter;
+import cn.wagentim.work.importer.ImportTickets;
 
 public class DefaultController extends AbstractController
 {
-	protected final DataDBImporter importer = new DataDBImporter();
 	protected int ticketNumber;
 	protected static final Header[] TABLE_HEADERS = new Header[]{
 			new Header("KPM", 60),

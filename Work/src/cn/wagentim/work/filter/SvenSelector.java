@@ -5,12 +5,12 @@ import java.util.List;
 
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.config.IConstants;
-import cn.wagentim.work.importer.DataDBImporter;
+import cn.wagentim.work.importer.ImportTickets;
 
 public class SvenSelector implements ISelector
 {
 	
-	private final DataDBImporter importer = new DataDBImporter();
+	private final ImportTickets importer = new ImportTickets();
 
 	@Override
 	public List<Ticket> check(List<Ticket> list)

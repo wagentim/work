@@ -1,7 +1,6 @@
 package cn.wagentim.work.importer;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -19,13 +18,12 @@ import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.MustFix;
-import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.entities.work.SheetTicket;
+import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.managers.IPersistanceManager;
 import cn.wagentim.managers.ObjectDBManager;
-import cn.wagentim.work.config.IConfigure;
+import cn.wagentim.work.config.IImportConfigure;
 import cn.wagentim.work.config.IConstants;
-import cn.wagentim.work.config.MustFixTicketConfigure;
 import cn.wagentim.work.excel.ExcelReader;
 import de.wagentim.qlogger.channel.DefaultChannel;
 import de.wagentim.qlogger.channel.LogChannel;
@@ -38,27 +36,16 @@ import de.wagentim.qlogger.service.QLoggerService;
  * @author ehuabi0
  *
  */
-public class DataDBImporter
+public class ImportTickets
 {
 
-	private static final LogChannel logger = QLoggerService.getChannel(QLoggerService.addChannel(new DefaultChannel(DataDBImporter.class.getSimpleName())));
-	
-	public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd"); 
-	
-	public static void main(String[] args)
-	{
-		DataDBImporter importer = new DataDBImporter();
-		
-		MustFixTicketConfigure configure = new MustFixTicketConfigure();
-		
-		importer.readDataToDB(configure);
-	}
+	private static final LogChannel logger = QLoggerService.getChannel(QLoggerService.addChannel(new DefaultChannel(ImportTickets.class.getSimpleName())));
 	
 	/*
 	 * Update the KPM Raw Data into the internal DB for the further analysis and
 	 * update
 	 */
-	public void readDataToDB(IConfigure configure)
+	public void importStandardTicket(IImportConfigure configure)
 	{
 		logger.log(Log.LEVEL_INFO, "Start to reading raw data: %1", configure.getSourceFilePath());
 		
@@ -105,7 +92,7 @@ public class DataDBImporter
 		logger.log(Log.LEVEL_INFO, "%1 records has been saved to DB", String.valueOf(list.size()));
 	}
 	
-	private IEntity assignValues(IConfigure configure, Row myRow)
+	private IEntity assignValues(IImportConfigure configure, Row myRow)
 	{
 		String dbName = configure.getDBName();
 		
@@ -256,7 +243,7 @@ public class DataDBImporter
 		
 		try
 		{
-			date = sdf.parse(time.toString());
+			date = IConstants.SIMPLE_DATE_FORMAT.parse(time.toString());
 		}
 		catch (ParseException e)
 		{
@@ -463,7 +450,7 @@ public class DataDBImporter
 		return result;
 	}
 
-	private int skipRows(Iterator rowIter, IConfigure configure)
+	private int skipRows(Iterator rowIter, IImportConfigure configure)
 	{
 		int skipRows = configure.getFirstSkippedRows();
 		
@@ -483,7 +470,7 @@ public class DataDBImporter
 		return result;
 	}
 
-	private Sheet loadingSheet(IConfigure configure)
+	private Sheet loadingSheet(IImportConfigure configure)
 	{
 		Sheet sheet = null;
 		
@@ -501,7 +488,7 @@ public class DataDBImporter
 		return sheet;
 	}
 
-	private void updateDBEntities(List<IEntity> list, IConfigure configure)
+	private void updateDBEntities(List<IEntity> list, IImportConfigure configure)
 	{
 		if(list.isEmpty())
 		{

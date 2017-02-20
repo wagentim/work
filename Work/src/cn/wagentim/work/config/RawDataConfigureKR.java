@@ -1,6 +1,6 @@
 package cn.wagentim.work.config;
 
-public class RawDataConfigureKR implements IConfigure
+public class RawDataConfigureKR implements IImportConfigure
 {
 	final private String sourceFilePath = "d:/Work/KPM List/Cluster 8/original_kr.xlsx";
 	final private int sourceKeyColumnIndex = 0;
@@ -13,13 +13,6 @@ public class RawDataConfigureKR implements IConfigure
 	}
 
 	@Override
-	public String getTargetFilePath()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int getSourceKPMIdColumnIndex()
 	{
 		// TODO Auto-generated method stub
@@ -27,22 +20,9 @@ public class RawDataConfigureKR implements IConfigure
 	}
 
 	@Override
-	public int getTargetKPMIdColumnIndex()
-	{
-		return sourceSheetIndex;
-	}
-
-	@Override
 	public int getSourceSheetIndex()
 	{
 		return sourceSheetIndex;
-	}
-
-	@Override
-	public int getTargetSheetIndex()
-	{
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

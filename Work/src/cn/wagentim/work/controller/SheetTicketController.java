@@ -2,11 +2,15 @@ package cn.wagentim.work.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.entities.work.Comment;
 import cn.wagentim.entities.work.SheetTicket;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.entity.Header;
@@ -69,7 +73,7 @@ public class SheetTicketController extends DefaultController
 		{
 			mapComments2.put(st.getKpmID(), st);
 		}
-	}
+	}	
 
 	protected String[] handleTableRowContent(Ticket t, int columns)
 	{
@@ -98,16 +102,26 @@ public class SheetTicketController extends DefaultController
 	public List<String[]> getComments(int selectedTicketNumber)
 	{
 		List<String[]> result = new ArrayList<String[]>();
-
-		List<SheetTicket> comments = importer.getComments(selectedTicketNumber);
 		
-		if( !comments.isEmpty() )
+		List<Comment> listComments = new ArrayList<Comment>();
+		listComments.addAll(((SheetTicket)mapComments.get(selectedTicketNumber)).getComments());
+		Collections.sort(listComments, new Comparator<Comment>()
 		{
-			for(SheetTicket tc : comments)
+
+			@Override
+			public int compare(Comment o1, Comment o2)
 			{
-				if( null != tc )
+				return o1.compareTo(o2);
+			}
+		});
+		
+		if( !listComments.isEmpty() )
+		{
+			for(Comment c : listComments)
+			{
+				if( null != c )
 				{
-//					result.add(new String[]{sdf.format(new Date(tc.getTime())), tc.getComment()});
+					result.add(new String[]{sdf.format(new Date(c.getTime())), c.getAuthor(), c.getComment()});
 				}
 			}
 		}

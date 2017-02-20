@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Text;
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.config.TicketCommentConfigure;
-import cn.wagentim.work.importer.ExcelDataImporter;
+import cn.wagentim.work.importer.ExcelFileImporter;
 
 public class ExcelImportComposite implements IExternalComposite
 {
@@ -149,7 +149,7 @@ public class ExcelImportComposite implements IExternalComposite
 				configure.setPriorityColumnIndex(priorityIndex);
 				configure.setNextStepColumnIndex(nextStepIndex);
 				
-				new ExcelDataImporter(configure).exec();
+				new ExcelFileImporter(configure).exec();
 			}
 		});
 	}
@@ -263,9 +263,9 @@ public class ExcelImportComposite implements IExternalComposite
 	protected void openFileChooser()
 	{
 		FileDialog dialog = new FileDialog(shell);
-	    dialog.setFilterExtensions(new String[] { "*.xlsx"}); // Windows
+	    dialog.setFilterExtensions(MainWindow.FILE_EXTENDSION); // Windows
 	    dialog.setFilterPath("c:\\"); // Windows path
-		    txtFileSelector.setText( dialog.open() );
+		txtFileSelector.setText( dialog.open() );
 	}
 
 	private void setCenter() {

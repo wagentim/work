@@ -21,33 +21,15 @@ public class TicketCommentConfigure implements ITicketCommentConfigure
 	}
 
 	@Override
-	public String getTargetFilePath()
-	{
-		return StringConstants.EMPTY_STRING;
-	}
-
-	@Override
 	public int getSourceKPMIdColumnIndex()
 	{
 		return kpmIdColumnIndex;
 	}
 	
 	@Override
-	public int getTargetKPMIdColumnIndex()
-	{
-		return kpmIdColumnIndex;
-	}
-
-	@Override
 	public int getSourceSheetIndex()
 	{
 		return sheetIndex;
-	}
-
-	@Override
-	public int getTargetSheetIndex()
-	{
-		return -1;
 	}
 
 	@Override

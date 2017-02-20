@@ -32,4 +32,6 @@ public interface IController
 	void deleteEntity(String db, String entity, String column, String value, Class clazz);
 
 	void addTicketComment(String dbName, int kpmid);
+
+	void saveDataToExcelFile(String fileName, String[] headers, List<String[]> currentTableContent);
 }

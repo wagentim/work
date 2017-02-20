@@ -2,7 +2,7 @@ package cn.wagentim.work.config;
 
 import cn.wagentim.basicutils.StringConstants;
 
-public class MustFixTicketConfigure implements IConfigure
+public class MustFixTicketConfigure implements IImportConfigure
 {
 	final private String sourceFilePath = "d:/Work/KPM List/Cluster 8/MustFixList.xlsx";
 	final private String targetFilePath = StringConstants.EMPTY_STRING;
@@ -18,33 +18,15 @@ public class MustFixTicketConfigure implements IConfigure
 	}
 
 	@Override
-	public String getTargetFilePath()
-	{
-		return targetFilePath;
-	}
-
-	@Override
 	public int getSourceKPMIdColumnIndex()
 	{
 		return sourceKeyColumnIndex;
 	}
 
 	@Override
-	public int getTargetKPMIdColumnIndex()
-	{
-		return targetKeyColumnIndex;
-	}
-
-	@Override
 	public int getSourceSheetIndex()
 	{
 		return sourceSheetIndex;
-	}
-
-	@Override
-	public int getTargetSheetIndex()
-	{
-		return targetSheetIndex;
 	}
 
 	@Override

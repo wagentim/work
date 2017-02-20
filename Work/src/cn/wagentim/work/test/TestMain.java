@@ -4,7 +4,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import cn.wagentim.work.config.IConfigure;
+import cn.wagentim.work.config.IImportConfigure;
 import cn.wagentim.work.config.MustFixTicketConfigure;
 import cn.wagentim.work.output.OutPrinter;
 
@@ -17,14 +17,13 @@ public class TestMain
 		
 		OutPrinter printer = new OutPrinter();
 		
-		IConfigure mustfixConfigure = new MustFixTicketConfigure();
+		IImportConfigure mustfixConfigure = new MustFixTicketConfigure();
 //		mustfixConfigure.setSourceKeyColumnIndex(0);
 //		mustfixConfigure.setTargetKeyColumnIndex(0);
 //		
 //		mustfixConfigure.setSourceSheetIndex(3);
 //		mustfixConfigure.setTargetSheetIndex(1);
 		
-		printer.compareMustFixTicketList(mustfixConfigure);
 		
 /*		
 		TestMain tm = new TestMain();

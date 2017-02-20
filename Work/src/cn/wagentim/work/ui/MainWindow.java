@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -23,12 +24,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.basicutils.Validator;
 import cn.wagentim.entities.work.Sheet;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.work.config.IConstants;
+import cn.wagentim.work.controller.DefaultController;
 import cn.wagentim.work.controller.IController;
 import cn.wagentim.work.controller.SheetTicketController;
-import cn.wagentim.work.controller.DefaultController;
 import cn.wagentim.work.filter.TicketIDSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
 import cn.wagentim.work.importer.IImporter;
@@ -73,6 +75,8 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	
 	private List<MenuItem> sheetItems;
 	
+	public static final String[] FILE_EXTENDSION = new String[]{"*.xlsx"};
+	
 	public MainWindow()
 	{
 		externalComposite = new ArrayList<IExternalComposite>();
@@ -111,11 +115,12 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	
 	private void clearAllExternalComposites()
 	{
-		for(IExternalComposite ec : externalComposite)
-		{
-			ec.dispose();
-		}
+//		for(IExternalComposite ec : externalComposite)
+//		{
+//			ec.dispose();
+//		}
 	}
+	
 	private void genFileMenu(final Menu menu)
 	{
 		final MenuItem miFile = new MenuItem(menu, SWT.CASCADE);
@@ -138,6 +143,73 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 				updateTable(true);
 			}
 		});
+		
+		new MenuItem(mFile, SWT.SEPARATOR);
+		
+		final MenuItem miImportTicket = new MenuItem(mFile, SWT.NONE);
+		miImportTicket.setText("Import Tickets");
+		miImportTicket.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				
+			}
+		});
+		
+		new MenuItem(mFile, SWT.SEPARATOR);
+		
+		final MenuItem mExporter = new MenuItem(mFile, SWT.NONE);
+		mExporter.setText("Export To Excel File");
+		mExporter.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				if( null == listViewerComposite)
+				{
+					logger.log(Log.LEVEL_INFO, "The Seart Table Component is null");
+					return;
+				}
+				
+				FileDialog fd = new FileDialog(shell, SWT.SAVE);
+				fd.setFilterExtensions(FILE_EXTENDSION);
+				fd.setText(IConstants.STRING_SAVE_TO_EXCEL);
+				fd.setFilterPath("c:\\");
+				fd.setOverwrite(true);
+				String targetLocation = fd.open();
+				
+				if( Validator.isNullOrEmpty(targetLocation) )
+				{
+					logger.log(Log.LEVEL_ERROR, "Cannot save the file to '" + targetLocation + "'");
+					return;
+				}
+				
+				saveTableContentToExcel(targetLocation);
+				
+			}
+		});
+		
+		new MenuItem(mFile, SWT.SEPARATOR);
+		
+		final MenuItem mExit = new MenuItem(mFile, SWT.NONE);
+		mExit.setText("Exit");
+		mExit.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				shell.dispose();			
+			}
+		});
+	}
+	
+	protected void saveTableContentToExcel(String targetLocation)
+	{
+		String[] headers = listViewerComposite.getCurrentTableHeaders();
+		List<String[]> currentTableContent = listViewerComposite.getCurrentTableContent();
+		
+		controller.saveDataToExcelFile(targetLocation, headers, currentTableContent);
 	}
 	
 	private void openCommentEditor()
@@ -393,6 +465,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	public void selectedTicketNumber(int selectedTicketNumber)
 	{
 		Ticket selectedTicket = controller.getSelectedTicket(selectedTicketNumber);
+		
 		if( null == selectedTicket )
 		{
 			logger.log(Log.LEVEL_ERROR, "Cannot find ticket with the number: %1", String.valueOf(selectedTicketNumber));
@@ -400,7 +473,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		
 		contentViewerComposite.setSelectedTicket(selectedTicket);
 		
-		if((controller instanceof SheetTicketController) && ( null != commentsEditor) )
+		if((controller instanceof SheetTicketController) && ( null != commentsEditor) && (!commentsEditor.getShell().isDisposed()) )
 		{
 			commentsEditor.updateContent(((SheetTicketController)controller).getComments(selectedTicketNumber));
 		}

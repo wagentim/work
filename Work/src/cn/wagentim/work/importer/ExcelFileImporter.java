@@ -23,7 +23,8 @@ import cn.wagentim.entities.work.SheetTicket;
 import cn.wagentim.entities.work.Ticket;
 import cn.wagentim.managers.IPersistanceManager;
 import cn.wagentim.managers.ObjectDBManager;
-import cn.wagentim.work.config.IConfigure;
+import cn.wagentim.work.config.IImportConfigure;
+import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.config.ITicketCommentConfigure;
 import cn.wagentim.work.excel.ExcelReader;
 import de.wagentim.qlogger.channel.DefaultChannel;
@@ -31,24 +32,24 @@ import de.wagentim.qlogger.channel.LogChannel;
 import de.wagentim.qlogger.logger.Log;
 import de.wagentim.qlogger.service.QLoggerService;
 
-public class ExcelDataImporter implements IImporter
+public class ExcelFileImporter implements IImporter
 {
 
-	private static final LogChannel logger = QLoggerService.getChannel(QLoggerService.addChannel(new DefaultChannel(ExcelDataImporter.class.getSimpleName())));
+	private static final LogChannel logger = QLoggerService.getChannel(QLoggerService.addChannel(new DefaultChannel(ExcelFileImporter.class.getSimpleName())));
 	
-	private IConfigure configure;
+	private IImportConfigure configure;
 	
-	public ExcelDataImporter(IConfigure configure)
+	public ExcelFileImporter(IImportConfigure configure)
 	{
 		this.configure = configure;
 	}
 	
-	public IConfigure getConfigure()
+	public IImportConfigure getConfigure()
 	{
 		return configure;
 	}
 
-	public void setConfigure(IConfigure configure)
+	public void setConfigure(IImportConfigure configure)
 	{
 		this.configure = configure;
 	}
@@ -101,7 +102,7 @@ public class ExcelDataImporter implements IImporter
 		logger.log(Log.LEVEL_INFO, "%1 records has been saved to DB", String.valueOf(list.size()));
 	}
 	
-	private void updateDBEntities(List<IEntity> list, IConfigure configure)
+	private void updateDBEntities(List<IEntity> list, IImportConfigure configure)
 	{
 		if(list.isEmpty())
 		{
@@ -113,7 +114,7 @@ public class ExcelDataImporter implements IImporter
 		manager.addOrUpdateEntityList(list);
 	}
 	
-	private IEntity assignValues(IConfigure configure, Row myRow)
+	private IEntity assignValues(IImportConfigure configure, Row myRow)
 	{
 		if( configure instanceof ITicketCommentConfigure )
 		{
@@ -227,7 +228,7 @@ public class ExcelDataImporter implements IImporter
 				switch (c)
 				{
 					case '[':
-//						if( null != (tc = parserComment(number, time, comment))) result.add(tc) ;
+						if( null != (tc = parserComment(sheetTicket, timeAndAuthor.toString(), comment.toString()))) result.add(tc) ;
 						isTime = true;
 						comment.delete(0, comment.length());
 						timeAndAuthor.delete(0, timeAndAuthor.length());
@@ -290,7 +291,7 @@ public class ExcelDataImporter implements IImporter
 		
 		try
 		{
-			date = DataDBImporter.sdf.parse(time);
+			date = IConstants.SIMPLE_DATE_FORMAT.parse(time);
 		}
 		catch (ParseException e)
 		{
@@ -506,7 +507,7 @@ public class ExcelDataImporter implements IImporter
 		return result;
 	}
 
-	private Sheet loadingSheet(IConfigure configure)
+	private Sheet loadingSheet(IImportConfigure configure)
 	{
 		Sheet sheet = null;
 		
@@ -524,7 +525,7 @@ public class ExcelDataImporter implements IImporter
 		return sheet;
 	}
 	
-	private int skipRows(Iterator rowIter, IConfigure configure)
+	private int skipRows(Iterator rowIter, IImportConfigure configure)
 	{
 		int skipRows = configure.getFirstSkippedRows();
 		

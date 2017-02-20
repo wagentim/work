@@ -157,13 +157,17 @@ public class CommentsEditor implements IExternalComposite
 
 		table.setHeaderVisible(true);
 
-		final TableColumn type = new TableColumn(table, SWT.LEFT);
-		type.setText("Date");
-		type.setWidth(100);
+		final TableColumn date = new TableColumn(table, SWT.LEFT);
+		date.setText("Date");
+		date.setWidth(100);
 
-		final TableColumn tcName = new TableColumn(table, SWT.LEFT);
-		tcName.setText("Comments");
-		tcName.setWidth(500);
+		final TableColumn author = new TableColumn(table, SWT.LEFT);
+		author.setText("Author");
+		author.setWidth(100);
+		
+		final TableColumn comment = new TableColumn(table, SWT.LEFT);
+		comment.setText("Comments");
+		comment.setWidth(500);
 	}
 	
 	public void dispose()
