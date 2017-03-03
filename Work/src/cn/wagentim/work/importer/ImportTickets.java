@@ -1,5 +1,9 @@
 package cn.wagentim.work.importer;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,13 +21,13 @@ import org.apache.poi.ss.util.CellReference;
 import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.entities.web.IEntity;
-import cn.wagentim.entities.work.MustFix;
-import cn.wagentim.entities.work.SheetTicket;
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.CommentEntity;
+import cn.wagentim.entities.work.SheetTicketEntity;
+import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.managers.IPersistanceManager;
 import cn.wagentim.managers.ObjectDBManager;
-import cn.wagentim.work.config.IImportConfigure;
 import cn.wagentim.work.config.IConstants;
+import cn.wagentim.work.config.IImportConfigure;
 import cn.wagentim.work.excel.ExcelReader;
 import de.wagentim.qlogger.channel.DefaultChannel;
 import de.wagentim.qlogger.channel.LogChannel;
@@ -100,60 +104,10 @@ public class ImportTickets
 		{
 			return assignTicketValues(myRow);
 		}
-		else if( IConstants.DB_MUAS_FIX.equals(dbName) )
-		{
-			return assignMustFix(myRow);
-		}
 		else
 		{
 			return null;
 		}
-	}
-	
-	private MustFix assignMustFix(Row myRow)
-	{
-		MustFix mustFix = new MustFix();
-		
-		Iterator cellIter = myRow.cellIterator();
-
-		while (cellIter.hasNext())
-		{
-
-			int number = 0;
-			
-			Cell myCell = (Cell) cellIter.next();
-			
-			int columnIndex = myCell.getColumnIndex();
-			String columnName = CellReference.convertNumToColString(columnIndex);
-			
-			if(columnName.equals("A"))
-			{
-				number = (int)myCell.getNumericCellValue();
-				
-				if( number <= 0 )
-				{
-					logger.log(Log.LEVEL_INFO, "KPM Number is incorrect with the value: %1", String.valueOf(number));
-					break;
-				}
-				
-				mustFix.setNumber(number);
-			}
-			else if(columnName.equals("E"))
-			{
-				// parser the comments to the DB
-//				handleComment(mustFix.getNumber(), getCellValueAsString(myCell));
-			}
-			else if(columnName.equals("F"))
-			{
-				mustFix.setPriority((int)myCell.getNumericCellValue()); 
-			}
-			else if(columnName.equals("G"))
-			{
-				mustFix.setNext(getCellValueAsString(myCell));
-			}
-		}
-		
-		return mustFix;
 	}
 	
 	private void handleComment(int number, String cellValueAsString)
@@ -178,7 +132,7 @@ public class ImportTickets
 	private List<IEntity> parserComments(int number, String cellValueAsString)
 	{
 		List<IEntity> result = new ArrayList<IEntity>();
-		SheetTicket tc = null;
+		SheetTicketEntity tc = null;
 		
 		if( !cellValueAsString.isEmpty() )
 		{
@@ -258,9 +212,9 @@ public class ImportTickets
 		return date.getTime();
 	}
 
-	private Ticket assignTicketValues(Row myRow)
+	private TicketEntity assignTicketValues(Row myRow)
 	{
-		Ticket ticket = new Ticket();
+		TicketEntity ticket = new TicketEntity();
 		Iterator cellIter = myRow.cellIterator();
 
 		while (cellIter.hasNext())
@@ -514,9 +468,9 @@ public class ImportTickets
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<Ticket> getAllTickets()
+	public List<TicketEntity> getAllTickets()
 	{
-		return (List<Ticket>) getAllRecord(IConstants.DB_TICKET, "Ticket", Ticket.class);
+		return (List<TicketEntity>) getAllRecord(IConstants.DB_TICKET, "TicketEntity", TicketEntity.class);
 	}
 	
 	public List<?> getAllRecord(String dbName, String type, Class<?> clazz)
@@ -527,12 +481,12 @@ public class ImportTickets
 		return query.getResultList();
 	}
 	
-	public Ticket getTicket(int number)
+	public TicketEntity getTicket(int number)
 	{
 		logger.log(Log.LEVEL_INFO, "Loaing the ticket with the number %1", String.valueOf(number));
 		IPersistanceManager manager = new ObjectDBManager();
 		manager.connectDB(StringConstants.EMPTY_STRING, 0, IConstants.DB_TICKET);
-		TypedQuery<Ticket> query = manager.getEntityManager().createQuery("SELECT c FROM Ticket c Where c.number="+number, Ticket.class);
+		TypedQuery<TicketEntity> query = manager.getEntityManager().createQuery("SELECT c FROM TicketEntity c Where c.number="+number, TicketEntity.class);
 		
 		if( null == query || query.getResultList().size() == 0 )
 		{
@@ -597,45 +551,84 @@ public class ImportTickets
 		{
 //			for(int i = 0; i < list.size(); i++ )
 //			{
-				Ticket ticket = (Ticket) list.get(1);
+				TicketEntity ticket = (TicketEntity) list.get(1);
 				System.out.println(ticket.toString());
 //			}
 		}
 	}
 
-	public List<MustFix> getAllMustFixList()
+	public List<CommentEntity> getComments(int ticketNumber)
 	{
-		IPersistanceManager manager = new ObjectDBManager();
-		manager.connectDB(StringConstants.EMPTY_STRING, 0, IConstants.DB_MUAS_FIX);
-		TypedQuery<MustFix> query = manager.getEntityManager().createQuery("SELECT c FROM MustFix c", MustFix.class);
-		return query.getResultList();
-	}
-	
-	public List<SheetTicket> getComments(int ticketNumber)
-	{
-		List<SheetTicket> result = new ArrayList<SheetTicket>();
+		List<CommentEntity> result = new ArrayList<CommentEntity>();
 		
 		if( ticketNumber > 0 )
 		{
 			IPersistanceManager manager = new ObjectDBManager();
 			manager.connectDB(StringConstants.EMPTY_STRING, 0, IConstants.DB_TICKET_COMMENT);
-			TypedQuery<SheetTicket> query = manager.getEntityManager().createQuery("SELECT c FROM TicketComment c where c.number="+ticketNumber, SheetTicket.class);
+			TypedQuery<CommentEntity> query = manager.getEntityManager().createQuery("SELECT c FROM CommentEntity c where c.kpmID="+ticketNumber, CommentEntity.class);
 			result = query.getResultList();
+			
+			manager.getEntityManager().close();
+			manager = null;
 		}
 		
 		return result;
 	}
 
-	public void deleteEntity(String db, String entity, String column, String value, Class clazz)
+	@SuppressWarnings("unchecked")
+	public void deleteEntity(String db, String entity, String column, Object value, Class clazz)
 	{
 		IPersistanceManager manager = new ObjectDBManager();
 		manager.connectDB(StringConstants.EMPTY_STRING, 0, db);
-		@SuppressWarnings("unchecked")
-		TypedQuery<SheetTicket> query = manager.getEntityManager().createQuery("SELECT c FROM " + entity + " c where c." + column + "=" + "'" + value + "'", clazz);
+		TypedQuery<SheetTicketEntity> query;
+		if( value instanceof Integer)
+		{
+			query = manager.getEntityManager().createQuery("SELECT c FROM " + entity + " c where c." + column + "=" + value, clazz);
+		}
+		else
+		{
+			query = manager.getEntityManager().createQuery("SELECT c FROM " + entity + " c where c." + column + "=" + "'" + value + "'", clazz);
+		}
 		IEntity result = query.getSingleResult();
 		manager.getEntityManager().getTransaction().begin();
 		manager.getEntityManager().remove(result);
 		manager.getEntityManager().getTransaction().commit();
 		manager.getEntityManager().close();
+		
+		deleteDBFile(db);
+	}
+	
+	public void deleteDBFile(String dbName)
+	{
+		String dbFullLocation = ObjectDBManager.DB_PATH + dbName;
+		Path p = Paths.get(dbFullLocation);
+		Path pBackup = Paths.get(dbFullLocation+"$");
+		
+		if( Files.exists(p))
+		{
+			try
+			{
+				Files.delete(p);
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if( Files.exists(pBackup))
+		{
+			try
+			{
+				Files.delete(pBackup);
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }

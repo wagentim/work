@@ -2,27 +2,37 @@ package cn.wagentim.work.filter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.entities.work.TicketEntity;
 
-public class SupplierSelector implements ISelector
+public class SupplierSelector extends AbstractSelector
 {
+	
+	List<String> keywords = new ArrayList<String>();
 
 	@Override
-	public List<Ticket> check(List<Ticket> list)
+	public List<TicketEntity> check(List<TicketEntity> list)
 	{
-		List<Ticket> result = new ArrayList<Ticket>();
+		List<TicketEntity> result = new ArrayList<TicketEntity>();
 		
-		for( Ticket t : list )
+		for( TicketEntity t : list )
 		{
 			if( null == t )
 			{
 				continue;
 			}
 			
-			if( t.getSupplier().contains("ESO") )
+			String stext = t.getSupplier();
+			
+			for(String s : keywords)
 			{
-				result.add(t);
+				if( stext.contains(s))
+				{
+					result.add(t);
+					break;
+				}
 			}
 		}
 		
@@ -32,8 +42,13 @@ public class SupplierSelector implements ISelector
 	@Override
 	public void setSearchContent(String content)
 	{
-		// TODO Auto-generated method stub
+		keywords.clear();
+		StringTokenizer st = new StringTokenizer(content, StringConstants.COMMA);
 		
+		while(st.hasMoreTokens())
+		{
+			keywords.add(st.nextToken().trim());
+		}
 	}
 
 }

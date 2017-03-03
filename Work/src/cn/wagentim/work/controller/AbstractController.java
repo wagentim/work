@@ -16,7 +16,7 @@ public abstract class AbstractController implements IController
 		return importer;
 	}
 	
-	public void saveDataToExcelFile(String fileName, String[] headers, List<String[]> currentTableContent)
+	public void saveDataToExcelFile(String fileName, List<String> headers, List<List<String>> currentTableContent)
 	{
 		excelExporter.setTargetFile(fileName);
 		excelExporter.setSheetName("Test");

@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.TicketEntity;
 
-public class MustFixFilter implements ISelector
+public class MustFixFilter extends AbstractSelector
 {
 
 	private final int INDEX_SHORT_TEXT = 7;
@@ -45,7 +45,7 @@ public class MustFixFilter implements ISelector
 	}
 
 	@Override
-	public List<Ticket> check(List<Ticket> list)
+	public List<TicketEntity> check(List<TicketEntity> list)
 	{
 		// TODO Auto-generated method stub
 		return null;

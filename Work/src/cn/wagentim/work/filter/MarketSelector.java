@@ -3,25 +3,24 @@ package cn.wagentim.work.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.wagentim.basicutils.StringConstants;
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.TicketEntity;
 
-public class EmptyMarketSelector implements ISelector
+public class MarketSelector extends AbstractSelector
 {
 
 	@Override
-	public List<Ticket> check(List<Ticket> list)
+	public List<TicketEntity> check(List<TicketEntity> list)
 	{
-		List<Ticket> result = new ArrayList<Ticket>();
+		List<TicketEntity> result = new ArrayList<TicketEntity>();
 		
-		for( Ticket t : list )
+		for( TicketEntity t : list )
 		{
 			if( null == t )
 			{
 				continue;
 			}
 			
-			if( !t.getMarket().equals(StringConstants.EMPTY_STRING))
+			if( t.getMarket().equals("CN") )
 			{
 				result.add(t);
 			}

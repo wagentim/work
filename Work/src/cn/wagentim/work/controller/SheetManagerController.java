@@ -6,8 +6,8 @@ import java.util.List;
 
 import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.web.IEntity;
-import cn.wagentim.entities.work.Sheet;
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.SheetEntity;
+import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.ISelector;
@@ -21,6 +21,11 @@ public class SheetManagerController extends AbstractController
 			new Header("Sheet Name", 200)
 			};
 	
+	public SheetManagerController()
+	{
+		super();
+	}
+	
 	@Override
 	public Header[] getColumnHeaders()
 	{
@@ -31,7 +36,7 @@ public class SheetManagerController extends AbstractController
 	public List<String[]> getTableContents(boolean fromDB)
 	{
 		@SuppressWarnings("unchecked")
-		List<Sheet> list = (List<Sheet>) importer.getAllRecord(IConstants.DB_SHEET, "Sheet", Sheet.class);
+		List<SheetEntity> list = (List<SheetEntity>) importer.getAllRecord(IConstants.DB_SHEET, "SheetEntity", SheetEntity.class);
 		ticketNumber = list.size();
 		
 		List<String[]> result = new ArrayList<String[]>();
@@ -41,7 +46,7 @@ public class SheetManagerController extends AbstractController
 		String sheetName;
 		int counter = 1;
 		
-		for(Sheet t : list)
+		for(SheetEntity t : list)
 		{
 			
 			if( null == t )
@@ -53,7 +58,7 @@ public class SheetManagerController extends AbstractController
 			else
 			{
 				id = counter++;
-				date = SheetTicketController.sdf.format(new Date(t.getTime()));
+				date = IConstants.SINGLE_DATE_FORMAT.format(new Date(t.getTime()));
 				sheetName = t.getName();
 			}
 			
@@ -63,7 +68,7 @@ public class SheetManagerController extends AbstractController
 	}
 
 	@Override
-	public Ticket getSelectedTicket(int selectedTicketNumber)
+	public TicketEntity getSelectedTicket(int selectedTicketNumber)
 	{
 		return importer.getTicket(selectedTicketNumber);
 	}
@@ -102,7 +107,7 @@ public class SheetManagerController extends AbstractController
 	}
 
 	@Override
-	public List<Sheet> getAllSheets()
+	public List<SheetEntity> getAllSheets()
 	{
 		return null;
 	}
@@ -114,7 +119,19 @@ public class SheetManagerController extends AbstractController
 	}
 
 	@Override
-	public void addTicketComment(String dbName, int kpmid)
+	public void columnSelected(String columnName)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void decorateOutput(List<String> headers, List<List<String>> currentTableContent)
+	{
+	}
+
+	@Override
+	public void addTicketComment(String arg0, int arg1)
 	{
 		// TODO Auto-generated method stub
 		

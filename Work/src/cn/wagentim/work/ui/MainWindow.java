@@ -25,15 +25,18 @@ import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.basicutils.Validator;
-import cn.wagentim.entities.work.Sheet;
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.SheetEntity;
+import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.work.config.IConstants;
-import cn.wagentim.work.controller.DefaultController;
 import cn.wagentim.work.controller.IController;
 import cn.wagentim.work.controller.SheetTicketController;
+import cn.wagentim.work.controller.TicketController;
+import cn.wagentim.work.filter.EGGQSelector;
+import cn.wagentim.work.filter.RatingSelector;
 import cn.wagentim.work.filter.TicketIDSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
 import cn.wagentim.work.importer.IImporter;
+import cn.wagentim.work.listener.ICommentEditorListener;
 import cn.wagentim.work.listener.ICompositeListener;
 import cn.wagentim.work.listener.ISearchTableListener;
 import de.wagentim.qlogger.channel.DefaultChannel;
@@ -41,7 +44,7 @@ import de.wagentim.qlogger.channel.LogChannel;
 import de.wagentim.qlogger.logger.Log;
 import de.wagentim.qlogger.service.QLoggerService;
 
-public class MainWindow implements ISearchTableListener, ICompositeListener
+public class MainWindow implements ISearchTableListener, ICompositeListener, ICommentEditorListener
 {
 	private static final float version = 0.1f;
 	private static final String title = "KPM Ticket Viewer "+String.valueOf(version) + " HB";
@@ -81,7 +84,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	{
 		externalComposite = new ArrayList<IExternalComposite>();
 		sheetItems = new ArrayList<MenuItem>();
-		controller = new DefaultController();
+		controller = new TicketController();
 	}
 	// open the main window
 	public void open()
@@ -136,9 +139,9 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 			@Override
 			public void handleEvent(final Event event)
 			{
-				if( null == controller || !(controller instanceof DefaultController) );
+				if( null == controller || !(controller instanceof TicketController) );
 				{
-					controller = new DefaultController();
+					controller = new TicketController();
 				}
 				updateTable(true);
 			}
@@ -146,14 +149,15 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		
 		new MenuItem(mFile, SWT.SEPARATOR);
 		
-		final MenuItem miImportTicket = new MenuItem(mFile, SWT.NONE);
-		miImportTicket.setText("Import Tickets");
-		miImportTicket.addListener(SWT.Selection, new Listener()
+		final MenuItem mImportClu8 = new MenuItem(mFile, SWT.NONE);
+		mImportClu8.setText("Import Clu8 Tickets");
+		mImportClu8.addListener(SWT.Selection, new Listener()
 		{
 			@Override
 			public void handleEvent(final Event event)
 			{
-				
+				IImporter importer = new Cluster8TicketImporter();
+				importer.exec();
 			}
 		});
 		
@@ -186,7 +190,6 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 				}
 				
 				saveTableContentToExcel(targetLocation);
-				
 			}
 		});
 		
@@ -199,15 +202,25 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 			@Override
 			public void handleEvent(final Event event)
 			{
-				shell.dispose();			
+				existProgram();
 			}
 		});
 	}
 	
+	private void existProgram()
+	{
+		if( null != shell )
+		{
+			shell.dispose();
+		}
+	}
+	
 	protected void saveTableContentToExcel(String targetLocation)
 	{
-		String[] headers = listViewerComposite.getCurrentTableHeaders();
-		List<String[]> currentTableContent = listViewerComposite.getCurrentTableContent();
+		List<String> headers = listViewerComposite.getCurrentTableHeaders();
+		List<List<String>> currentTableContent = listViewerComposite.getCurrentTableContent();
+		
+		controller.decorateOutput(headers, currentTableContent);
 		
 		controller.saveDataToExcelFile(targetLocation, headers, currentTableContent);
 	}
@@ -219,13 +232,13 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 			commentsEditor = new CommentsEditor();
 			externalComposite.add(commentsEditor);
 			commentsEditor.setListener(this);
-			commentsEditor.open();
+			commentsEditor.setCommentListener(this);
 		}
-		else
-		{
-			commentsEditor.open();
-		}
+		
+		commentsEditor.setCurrKPMID(listViewerComposite.getSelectedTicketNumber());
+		commentsEditor.open();
 	}
+		
 	
 	private void openSheetManager()
 	{
@@ -250,6 +263,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		listViewerComposite.updateTableContent(content);
 		statusBarContent.setText(controller.getTotalDisplayedTicketNumber());
 	}
+	
 	public void updateTableHeaders()
 	{
 		listViewerComposite.updateTableColumn(controller.getColumnHeaders());
@@ -271,20 +285,6 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 			public void handleEvent(final Event event)
 			{
 				openCommentEditor();
-			}
-		});
-		
-		new MenuItem(mTool, SWT.SEPARATOR);
-		
-		final MenuItem miLoadClu8 = new MenuItem(mTool, SWT.NONE);
-		miLoadClu8.setText("Import Clu8 Tickets");
-		miLoadClu8.addListener(SWT.Selection, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				IImporter importer = new Cluster8TicketImporter();
-				importer.exec();
 			}
 		});
 	}
@@ -320,11 +320,11 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	{
 		clearMenuSheetItems();
 		
-		List<Sheet> sheets = controller.getAllSheets();
+		List<SheetEntity> sheets = controller.getAllSheets();
 		
 		if( !sheets.isEmpty() )
 		{
-			for(final Sheet s : sheets)
+			for(final SheetEntity s : sheets)
 			{
 				final MenuItem miSheet = new MenuItem(mSheet, SWT.NONE);
 				miSheet.setText(s.getName());
@@ -374,23 +374,42 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		miFilter.setMenu(mFilter);
 		
 		final MenuItem miRatingA = new MenuItem(mFilter, SWT.NONE);
-		miRatingA.setText("Rating A");
+		miRatingA.setText("Rating Selector");
 		miRatingA.addListener(SWT.Selection, new Listener()
 		{
 			@Override
 			public void handleEvent(final Event event)
 			{
-				
+				controller.clearSelectors();
+				controller.addSelectors(new RatingSelector());
+				updateTableContent(true);
 			}
 		});
 
-		final MenuItem miLoadMustFix = new MenuItem(mFilter, SWT.NONE);
-		miLoadMustFix.setText("EG Ticket");
-		miLoadMustFix.addListener(SWT.Selection, new Listener()
+		final MenuItem mEGGQFilter = new MenuItem(mFilter, SWT.NONE);
+		mEGGQFilter.setText("EG/GQ Ticket Filter");
+		mEGGQFilter.addListener(SWT.Selection, new Listener()
 		{
 			@Override
 			public void handleEvent(final Event event)
 			{
+				controller.clearSelectors();
+				controller.addSelectors(new EGGQSelector());
+				updateTableContent(true);
+			}
+		});
+		
+		new MenuItem(mFilter, SWT.SEPARATOR);
+		
+		final MenuItem mClearFilter = new MenuItem(mFilter, SWT.NONE);
+		mClearFilter.setText("Clear All Filters");
+		mClearFilter.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.clearSelectors();
+				updateTableContent(true);
 			}
 		});
 	}
@@ -464,7 +483,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 	@Override
 	public void selectedTicketNumber(int selectedTicketNumber)
 	{
-		Ticket selectedTicket = controller.getSelectedTicket(selectedTicketNumber);
+		TicketEntity selectedTicket = controller.getSelectedTicket(selectedTicketNumber);
 		
 		if( null == selectedTicket )
 		{
@@ -475,7 +494,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		
 		if((controller instanceof SheetTicketController) && ( null != commentsEditor) && (!commentsEditor.getShell().isDisposed()) )
 		{
-			commentsEditor.updateContent(((SheetTicketController)controller).getComments(selectedTicketNumber));
+			commentsEditor.updateContent(((SheetTicketController)controller).getCommentsForCommentViewer(selectedTicketNumber));
 		}
 	}
 
@@ -513,19 +532,44 @@ public class MainWindow implements ISearchTableListener, ICompositeListener
 		controller.setSearchContent(content);
 		updateTableContent(false);
 	}
+
 	@Override
-	public void sheetValueUpdated()
-	{
-//		loadSelfDefinedSheets();
-	}
-	@Override
-	public List<Sheet> getAllSheet()
+	public List<SheetEntity> getAllSheet()
 	{
 		return controller.getAllSheets();
 	}
+	
 	@Override
 	public void addTicketToSheet(String dbName, int kpmid)
 	{
 		controller.addTicketComment(dbName, kpmid);
+	}
+	
+	@Override
+	public void columnSelection(String columnName)
+	{
+		controller.columnSelected(columnName);
+		updateTableContent(false);
+	}
+	@Override
+	public void addComment(int kpmID, String[] data)
+	{
+		if( controller instanceof SheetTicketController )
+		{
+			SheetTicketController stc = ((SheetTicketController)controller); 
+			stc.addComment(kpmID, data);
+			commentsEditor.updateContent(stc.getCommentsForCommentViewer(kpmID));			
+		}
+	}
+	@Override
+	public boolean shouldShowDeleteTicketOption()
+	{
+		return controller instanceof SheetTicketController ? true : false;
+	}
+	@Override
+	public void deleteSheetTicket(List<Integer> selectedTicketNumbers)
+	{
+		((SheetTicketController)controller).removeTicket(selectedTicketNumbers);
+		updateTableContent(true);
 	}
 }

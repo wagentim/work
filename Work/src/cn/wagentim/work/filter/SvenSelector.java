@@ -3,30 +3,30 @@ package cn.wagentim.work.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.importer.ImportTickets;
 
-public class SvenSelector implements ISelector
+public class SvenSelector extends AbstractSelector
 {
 	
 	private final ImportTickets importer = new ImportTickets();
 
 	@Override
-	public List<Ticket> check(List<Ticket> list)
+	public List<TicketEntity> check(List<TicketEntity> list)
 	{
 		List<Integer> svenTickets = getSvenTickets();
 		
-		List<Ticket> result = new ArrayList<Ticket>();
+		List<TicketEntity> result = new ArrayList<TicketEntity>();
 		
-		for( Ticket t : list )
+		for( TicketEntity t : list )
 		{
 			if( null == t )
 			{
 				continue;
 			}
 			
-			if( !(svenTickets.contains(t.getNumber())) )
+			if( !(svenTickets.contains(t.getKPMID())) )
 			{
 				result.add(t);
 			}
@@ -40,11 +40,11 @@ public class SvenSelector implements ISelector
 		List<Integer> result = new ArrayList<Integer>();
 		
 		@SuppressWarnings("unchecked")
-		List<Ticket> tickets = (List<Ticket>) importer.getAllRecord(IConstants.DB_SVEN, "Ticket", Ticket.class);
+		List<TicketEntity> tickets = (List<TicketEntity>) importer.getAllRecord(IConstants.DB_SVEN, "TicketEntity", TicketEntity.class);
 		
-		for(Ticket t : tickets)
+		for(TicketEntity t : tickets)
 		{
-			result.add(t.getNumber());
+			result.add(t.getKPMID());
 		}
 		
 		return result;

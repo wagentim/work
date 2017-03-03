@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.basicutils.StringConstants;
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.work.config.IConstants;
 
 public class TicketContentViewComposite extends Composite
@@ -154,7 +154,7 @@ public class TicketContentViewComposite extends Composite
 //		txtProblemSolver.setLayoutData(gdProblemSolver);
 	}
 
-	public void setSelectedTicket(Ticket selectedTicket)
+	public void setSelectedTicket(TicketEntity selectedTicket)
 	{
 		if( null == selectedTicket )
 		{
@@ -171,7 +171,7 @@ public class TicketContentViewComposite extends Composite
 		}
 		else
 		{
-			txtKpmNum.setText(String.valueOf(selectedTicket.getNumber()));
+			txtKpmNum.setText(String.valueOf(selectedTicket.getKPMID()));
 			txtShortText.setText(selectedTicket.getShortText());
 			txtSupplier.setText(selectedTicket.getSupplier());
 //			txtProblemStatus.setText("0");

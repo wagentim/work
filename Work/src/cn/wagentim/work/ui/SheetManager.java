@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.basicutils.Validator;
-import cn.wagentim.entities.work.Sheet;
+import cn.wagentim.entities.work.SheetEntity;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.controller.SheetManagerController;
 import cn.wagentim.work.entity.Header;
@@ -195,7 +195,7 @@ public class SheetManager implements IExternalComposite
 					return;
 				}
 				
-				Sheet s = new Sheet();
+				SheetEntity s = new SheetEntity();
 				s.setName(name);
 				s.setTime(System.currentTimeMillis());
 				
@@ -205,7 +205,7 @@ public class SheetManager implements IExternalComposite
 				
 				txtSheetName.setText(StringConstants.EMPTY_STRING);
 				
-				listener.sheetValueUpdated();
+//				listener.sheetValueUpdated();
 			}
 		});
 	}
@@ -224,7 +224,7 @@ public class SheetManager implements IExternalComposite
 				String name = table.getItem(table.getSelectionIndex()).getText(2);
 				if( !Validator.isNullOrEmpty(name) )
 				{
-					controller.deleteEntity(IConstants.DB_SHEET, "Sheet", "name", name, Sheet.class);
+					controller.deleteEntity(IConstants.DB_SHEET, "SheetEntity", "name", name, SheetEntity.class);
 					loadData();
 				}
 			}

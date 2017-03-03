@@ -23,12 +23,15 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import cn.wagentim.basicutils.Validator;
+import cn.wagentim.work.listener.ICommentEditorListener;
 import cn.wagentim.work.listener.ICompositeListener;
 
 public class CommentsEditor implements IExternalComposite
 {
 	
 	private final Shell shell;
+	private int currKPMID = 0;
 
 	private static final int SHELL_WIDTH = 700;
 	private static final int SHELL_HEIGH = 400;
@@ -39,11 +42,13 @@ public class CommentsEditor implements IExternalComposite
 
 	private Table table;
 
-	private Button btnUpdate;
+	private Button btnCreate;
 	
 	private Text comment;
 	
 	private ICompositeListener listener = null;
+	
+	private ICommentEditorListener commentListener = null;
 
 	public CommentsEditor()
 	{
@@ -132,18 +137,18 @@ public class CommentsEditor implements IExternalComposite
 		GridData gdComment = new GridData(SWT.FILL, SWT.FILL, true, true);
 		comment.setLayoutData(gdComment);
 
-		btnUpdate = new Button(bottonPane, SWT.PUSH);
-		btnUpdate.setText("Create");
-		btnUpdate.setBackground(COLOR_BACKGROUD);
+		btnCreate = new Button(bottonPane, SWT.PUSH);
+		btnCreate.setText("Create");
+		btnCreate.setBackground(COLOR_BACKGROUD);
 		GridData gdBtn = new GridData(SWT.RIGHT, SWT.FILL, false, true);
 		gdBtn.widthHint = 60;
-		btnUpdate.setLayoutData(gdBtn);
-		btnUpdate.addListener(SWT.Selection, new Listener()
+		btnCreate.setLayoutData(gdBtn);
+		btnCreate.addListener(SWT.Selection, new Listener()
 		{
 			@Override
 			public void handleEvent(final Event arg0)
 			{
-//				shell.dispose();
+				addComment();
 			}
 		});
 	}
@@ -207,5 +212,35 @@ public class CommentsEditor implements IExternalComposite
 				item.setBackground(new Color(table.getDisplay(), 230, 235, 249));
 			}
 		}
+	}
+	
+	private void addComment()
+	{
+		String comm = comment.getText();
+		
+		if( null != commentListener && !Validator.isNullOrEmpty(comm) )
+		{
+			commentListener.addComment(this.currKPMID, new String[]{String.valueOf(System.currentTimeMillis()), "HB", comm});
+		}
+	}
+
+	public int getCurrKPMID()
+	{
+		return currKPMID;
+	}
+
+	public void setCurrKPMID(int currKPMID)
+	{
+		this.currKPMID = currKPMID;
+	}
+
+	public ICommentEditorListener getCommentListener()
+	{
+		return commentListener;
+	}
+
+	public void setCommentListener(ICommentEditorListener commentListener)
+	{
+		this.commentListener = commentListener;
 	}
 }

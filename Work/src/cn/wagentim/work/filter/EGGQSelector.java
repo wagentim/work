@@ -3,13 +3,11 @@ package cn.wagentim.work.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.work.TicketEntity;
 
-public class TicketIDSelector extends AbstractSelector
+public class EGGQSelector extends AbstractSelector
 {
-	private String id = StringConstants.EMPTY_STRING;
-
+	
 	@Override
 	public List<TicketEntity> check(List<TicketEntity> list)
 	{
@@ -22,7 +20,8 @@ public class TicketIDSelector extends AbstractSelector
 				continue;
 			}
 			
-			if( String.valueOf(t.getId()).startsWith(id) )
+			if( t.getEnginerringStatus() == 2 && (t.getShortText().toLowerCase().contains("[eg]") || t.getShortText().toLowerCase().contains("[gq]") || t.getShortText().toLowerCase().contains("[i/gq]")) && !t.getShortText().toLowerCase().contains("[appdb]") && !t.getShortText().toLowerCase().contains("[db]")
+					&& !t.getSupplier().toLowerCase().contains("fp"))
 			{
 				result.add(t);
 			}
@@ -34,7 +33,6 @@ public class TicketIDSelector extends AbstractSelector
 	@Override
 	public void setSearchContent(String content)
 	{
-		this.id = content;
+		
 	}
-
 }

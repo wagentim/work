@@ -26,9 +26,9 @@ public class ExcelFileExporter extends AbstractExporter
 {
 	private static final LogChannel logger = QLoggerService.getChannel(QLoggerService.addChannel(new DefaultChannel(ExcelFileExporter.class.getSimpleName())));
 	
-	private String[] tableHeaders = StringConstants.EMPTY_STRING_ARRAY;
+	private List<String> tableHeaders = Collections.EMPTY_LIST;
 	@SuppressWarnings("unused")
-	private List<String[]> tableContents = Collections.EMPTY_LIST;
+	private List<List<String>> tableContents = Collections.EMPTY_LIST;
 	
 	
 	@SuppressWarnings("resource")
@@ -74,7 +74,7 @@ public class ExcelFileExporter extends AbstractExporter
 			return;
 		}
 		
-		if( null !=tableHeaders && tableHeaders.length > 0)
+		if( null !=tableHeaders && tableHeaders.size() > 0)
 		{
 			writeDataToRow(tableHeaders, exportSheet.createRow(0));
 		}
@@ -83,7 +83,7 @@ public class ExcelFileExporter extends AbstractExporter
 		{
 			int rowIndex = 1;
 			
-			for(String[] data : tableContents)
+			for(List<String> data : tableContents)
 			{
 				writeDataToRow(data, exportSheet.createRow(rowIndex++));
 			}
@@ -105,30 +105,30 @@ public class ExcelFileExporter extends AbstractExporter
 		}
 	}
 	
-	private void writeDataToRow(String[] data, Row row)
+	private void writeDataToRow(List<String> data, Row row)
 	{
-		for(int i = 0; i < data.length; i++)
+		for(int i = 0; i < data.size(); i++)
 		{
-			row.createCell(i, CellType.STRING).setCellValue(data[i]);
+			row.createCell(i, CellType.STRING).setCellValue(data.get(i));
 		}
 	}
 
-	public String[] getTableHeaders()
+	public List<String> getTableHeaders()
 	{
 		return tableHeaders;
 	}
 
-	public void setTableHeaders(String[] tableHeaders)
+	public void setTableHeaders(List<String> tableHeaders)
 	{
 		this.tableHeaders = tableHeaders;
 	}
 
-	public List<String[]> getTableContents()
+	public List<List<String>> getTableContents()
 	{
 		return tableContents;
 	}
 
-	public void setTableContents(List<String[]> tableContents)
+	public void setTableContents(List<List<String>> tableContents)
 	{
 		this.tableContents = tableContents;
 	}

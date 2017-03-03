@@ -2,14 +2,15 @@ package cn.wagentim.work.filter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.work.TicketEntity;
 
-public class TicketIDSelector extends AbstractSelector
+public class EngineerStatusSelector extends AbstractSelector
 {
-	private String id = StringConstants.EMPTY_STRING;
-
+	private List<Integer> status = new ArrayList<Integer>();
+	
 	@Override
 	public List<TicketEntity> check(List<TicketEntity> list)
 	{
@@ -22,9 +23,13 @@ public class TicketIDSelector extends AbstractSelector
 				continue;
 			}
 			
-			if( String.valueOf(t.getId()).startsWith(id) )
+			for(Integer i : status)
 			{
-				result.add(t);
+				if( i == t.getEnginerringStatus() )
+				{
+					result.add(t);
+					break;
+				}
 			}
 		}
 		
@@ -34,7 +39,13 @@ public class TicketIDSelector extends AbstractSelector
 	@Override
 	public void setSearchContent(String content)
 	{
-		this.id = content;
+		status.clear();
+		StringTokenizer st = new StringTokenizer(content, StringConstants.COMMA);
+		
+		while(st.hasMoreTokens())
+		{
+			status.add(Integer.valueOf(st.nextToken().trim()));
+		}
 	}
 
 }

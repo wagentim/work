@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import cn.wagentim.basicutils.StringConstants;
-import cn.wagentim.entities.work.Sheet;
+import cn.wagentim.entities.work.SheetEntity;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.listener.ISearchTableListener;
@@ -100,6 +100,7 @@ public class DefaultSearchAndTableComposite extends Composite
 		table = new Table(this, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.BORDER);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 		table.setHeaderVisible(true);
+		
 	}
 	
 	public Table getTable()
@@ -116,16 +117,49 @@ public class DefaultSearchAndTableComposite extends Composite
 			for(int i = 0; i < j; i++)
 			{
 				final TableColumn tc = new TableColumn(table, SWT.LEFT);
-				tc.setText(columnHeaders[i].getName());
+				final String columnName = columnHeaders[i].getName();
+				tc.setText(columnName);
 				tc.setWidth(columnHeaders[i].getWidth());
 				tc.setResizable(true);
+				tc.addSelectionListener(new SelectionListener()
+				{
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0)
+					{
+						searchTableListener.columnSelection(columnName);
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0)
+					{
+						
+					}
+				});
 			}
 		}
 	}
 	
-	private int getSelectedTicketNumber()
+	public int getSelectedTicketNumber()
 	{
 		return Integer.valueOf(table.getItem(table.getSelectionIndex()).getText(0));
+	}
+	
+	public List<Integer> getSelectedTickets()
+	{
+		List<Integer> result = new ArrayList<Integer>();
+		
+		TableItem[] selectedItems = table.getSelection();
+		
+		if(null != selectedItems )
+		{
+			for(TableItem ti : selectedItems)
+			{
+				result.add(Integer.valueOf(ti.getText(0)));
+			}
+		}
+		
+		return result;
 	}
 	
 	private void setActions()
@@ -256,10 +290,35 @@ public class DefaultSearchAndTableComposite extends Composite
 	private void createPopup()
 	{
 		final Menu menu = new Menu(table.getShell(), SWT.POP_UP);
-
-		List<Sheet> sheets = searchTableListener.getAllSheet();
 		
-		for( final Sheet s : sheets)
+		if( searchTableListener.shouldShowDeleteTicketOption())
+		{
+			final MenuItem miDeleteTicket = new MenuItem(menu, SWT.CASCADE);
+			miDeleteTicket.setText("Delete Ticket");
+			miDeleteTicket.addSelectionListener(new SelectionListener()
+			{
+				
+				@Override
+				public void widgetSelected(SelectionEvent arg0)
+				{
+					searchTableListener.deleteSheetTicket(getSelectedTickets());
+					
+				}
+				
+				@Override
+				public void widgetDefaultSelected(SelectionEvent arg0)
+				{
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			new MenuItem(menu, SWT.SEPARATOR);
+		}
+
+		List<SheetEntity> sheets = searchTableListener.getAllSheet();
+		
+		for( final SheetEntity s : sheets)
 		{
 			final MenuItem mi = new MenuItem(menu, SWT.CASCADE);
 			mi.setText("Add to " + s.getName());
@@ -268,9 +327,27 @@ public class DefaultSearchAndTableComposite extends Composite
 				@Override
 				public void widgetSelected(final SelectionEvent arg0)
 				{
-					int kpmid = Integer.valueOf(table.getItem(table.getSelectionIndex()).getText(0));
-					String dbName = s.getName() + IConstants.DB_SURFIX;
-					searchTableListener.addTicketToSheet(dbName, kpmid);
+					TableItem[] selectedItems = table.getSelection();
+					
+					if( null != selectedItems && selectedItems.length > 0 )
+					{
+						String dbName = s.getName();
+						String dbFullName = dbName + IConstants.DB_SURFIX;
+						
+						for(int i = 0; i < selectedItems.length; i++)
+						{
+							int kpmid = Integer.valueOf(selectedItems[i].getText(0));
+							searchTableListener.addTicketToSheet(dbFullName, kpmid);
+						}
+						
+						StringBuffer sb = new StringBuffer("Add ");
+						sb.append(selectedItems.length);
+						sb.append(" tickets to the Sheet: ");
+						sb.append(dbName);
+						
+						new MsgDialog(table.getShell(), sb.toString(), MsgDialog.TYPE_INFO_DIALOG, null, "Copy Tickets").show();
+					}
+					
 				}
 				
 				@Override
@@ -285,32 +362,33 @@ public class DefaultSearchAndTableComposite extends Composite
 		menu.setVisible(true);
 	}
 
-	public String[] getCurrentTableHeaders()
+	public List<String> getCurrentTableHeaders()
 	{
+		List<String> result = new ArrayList<String>();
+		
 		if( null == table )
 		{
-			return StringConstants.EMPTY_STRING_ARRAY;
+			return result;
 		}
 		
 		TableColumn[] columns = table.getColumns();
 		
 		if( null == columns || columns.length <= 0 )
 		{
-			return StringConstants.EMPTY_STRING_ARRAY;
+			return result;
 		}
 		
-		String[] result = new String[table.getColumnCount()];
 		
 		for(int i = 0; i < columns.length; i++)
 		{
-			result[i] = columns[i].getText();
+			result.add(columns[i].getText());
 		}
 		
 		return result;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<String[]> getCurrentTableContent()
+	public List<List<String>> getCurrentTableContent()
 	{
 		if( null == table )
 		{
@@ -324,22 +402,23 @@ public class DefaultSearchAndTableComposite extends Composite
 			return Collections.EMPTY_LIST;
 		}
 		
-		List<String[]> result = new ArrayList<String[]>();
+		List<List<String>> result = new ArrayList<List<String>>();
 		
 		TableItem[] items = table.getItems();
 		int columns = table.getColumnCount();
 		
 		for(int i = 0; i < rows; i++)
 		{
-			String[] cells = new String[columns];
+			List<String> data = new ArrayList<String>();
 			for(int j = 0; j < columns; j++)
 			{
-				cells[j] = items[i].getText(j);
+				data.add(items[i].getText(j));
 			}
 			
-			result.add(cells);
+			result.add(data);
 		}
 		
 		return result;
 	}
+
  }

@@ -46,4 +46,12 @@ public class IConstants
 	public static final String STRING_SAVE_TO_EXCEL = "Save To Excel File";
 	
 	public static final String STRING_IMPORT_TICKETS = "Import Tickets";
+	
+	public static final SimpleDateFormat SINGLE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
+
+	public static final String STRING_HEADER_KPM = "KPM";
+
+	public static final String STRING_HEADER_RATING = "Rating";
+
+	public static final String STRING_HEADER_MARKET = "Market"; 
 }

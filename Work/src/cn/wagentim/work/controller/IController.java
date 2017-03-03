@@ -3,8 +3,8 @@ package cn.wagentim.work.controller;
 import java.util.List;
 
 import cn.wagentim.entities.web.IEntity;
-import cn.wagentim.entities.work.Sheet;
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.SheetEntity;
+import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.work.entity.Header;
 import cn.wagentim.work.filter.ISelector;
 
@@ -15,7 +15,7 @@ public interface IController
 
 	List<String[]> getTableContents(boolean fromDB);
 
-	Ticket getSelectedTicket(int selectedTicketNumber);
+	TicketEntity getSelectedTicket(int selectedTicketNumber);
 
 	String getTotalDisplayedTicketNumber();
 	
@@ -27,11 +27,15 @@ public interface IController
 	
 	void setSearchContent(String content);
 	
-	List<Sheet> getAllSheets();
+	List<SheetEntity> getAllSheets();
 	
 	void deleteEntity(String db, String entity, String column, String value, Class clazz);
 
 	void addTicketComment(String dbName, int kpmid);
 
-	void saveDataToExcelFile(String fileName, String[] headers, List<String[]> currentTableContent);
+	void saveDataToExcelFile(String fileName, List<String> headers, List<List<String>> currentTableContent);
+
+	void columnSelected(String columnName);
+
+	void decorateOutput(List<String> headers, List<List<String>> currentTableContent);
 }

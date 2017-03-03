@@ -16,10 +16,13 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 public class MsgDialog {
+	
+	public static final int TYPE_INFO_DIALOG = 0;
+	public static final int TYPE_CHOICE_DIALOG = 1;
 
 	private Shell parent = null;
 	private String text = null;
-	private int type = -1;
+	private int type = TYPE_INFO_DIALOG;
 	private String title = null;
 
 	private Shell shell;
@@ -43,19 +46,22 @@ public class MsgDialog {
 				| SWT.APPLICATION_MODAL);
 
 		shell.setSize(SHELL_WIDTH, SHELL_HEIGH);
-		if( null != title )
-		{
-			
-		}
 		setCenter();
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginTop = 5;
 		shell.setLayout(layout);
-
 		parent.setEnabled(false);
-		
 		genText();
-
+		
+		if( TYPE_INFO_DIALOG == type )
+		{
+			genSingleBtn();
+		}
+		else
+		{
+			genTwoBtn();
+		}
+		
 		addActions();
 
 		shell.open();
@@ -93,7 +99,7 @@ public class MsgDialog {
 			labelTxt.setText(text);
 			GridData data = new GridData(SWT.CENTER, SWT.FILL, true, true, 1, 1);
 			data.horizontalAlignment = GridData.CENTER;
-//			data.horizontalIndent = 10;
+			data.horizontalIndent = 10;
 			data.verticalIndent = 8;
 			labelTxt.setLayoutData(data);
 		}
@@ -150,7 +156,8 @@ public class MsgDialog {
 	private void addActions() {
 
 		if (btnCancel != null) {
-			btnCancel.addListener(SWT.Selection, new Listener() {
+			btnCancel.addListener(SWT.Selection, new Listener() 
+			{
 
 				@Override
 				public void handleEvent(Event event) {
@@ -160,11 +167,16 @@ public class MsgDialog {
 			});
 		}
 
-		btnOk.addListener(SWT.Selection, new Listener() {
+		btnOk.addListener(SWT.Selection, new Listener() 
+		{
 
 			@Override
-			public void handleEvent(Event event) {
-
+			public void handleEvent(Event event) 
+			{
+				if( TYPE_INFO_DIALOG == type )
+				{
+					shell.dispose();
+				}
 			}
 
 		});

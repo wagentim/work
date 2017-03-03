@@ -19,8 +19,8 @@ import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.Comment;
-import cn.wagentim.entities.work.SheetTicket;
-import cn.wagentim.entities.work.Ticket;
+import cn.wagentim.entities.work.SheetTicketEntity;
+import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.managers.IPersistanceManager;
 import cn.wagentim.managers.ObjectDBManager;
 import cn.wagentim.work.config.IImportConfigure;
@@ -159,9 +159,9 @@ public class ExcelFileImporter implements IImporter
 		return result;
 	}	
 	
-	private SheetTicket assignSheetTicket(ITicketCommentConfigure configure, Row myRow)
+	private SheetTicketEntity assignSheetTicket(ITicketCommentConfigure configure, Row myRow)
 	{
-		SheetTicket sheetTicket = new SheetTicket();
+		SheetTicketEntity sheetTicket = new SheetTicketEntity();
 		
 		Iterator cellIter = myRow.cellIterator();
 		
@@ -205,12 +205,10 @@ public class ExcelFileImporter implements IImporter
 			}
 		}
 		
-		sheetTicket.setComments(getComments(sheetTicket, comment));
-		
 		return sheetTicket;
 	}
 	
-	private Set<Comment> getComments(SheetTicket sheetTicket, String cellValueAsString)
+	private Set<Comment> getComments(SheetTicketEntity sheetTicket, String cellValueAsString)
 	{
 		Set<Comment> result = new HashSet<Comment>();
 		Comment tc = null;
@@ -258,7 +256,7 @@ public class ExcelFileImporter implements IImporter
 		return result;
 	}
 	
-	private Comment parserComment(SheetTicket sheetTicket, String timeAndAuthor, String comment)
+	private Comment parserComment(SheetTicketEntity sheetTicket, String timeAndAuthor, String comment)
 	{
 		if( timeAndAuthor.length() <=0 && comment.length() <= 0 )
 		{
@@ -281,7 +279,7 @@ public class ExcelFileImporter implements IImporter
 		}
 		
 		tc.setComment(comment.toString());
-		tc.setSheetTicket(sheetTicket);
+//		tc.setSheetTicket(sheetTicket);
 		return tc;
 	}
 	
@@ -306,9 +304,9 @@ public class ExcelFileImporter implements IImporter
 		return date.getTime();
 	}
 
-	private Ticket assignTicketValues(Row myRow)
+	private TicketEntity assignTicketValues(Row myRow)
 	{
-		Ticket ticket = new Ticket();
+		TicketEntity ticket = new TicketEntity();
 		Iterator cellIter = myRow.cellIterator();
 
 		while (cellIter.hasNext())
