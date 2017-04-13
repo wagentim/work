@@ -33,6 +33,7 @@ import cn.wagentim.work.controller.SheetTicketController;
 import cn.wagentim.work.controller.TicketController;
 import cn.wagentim.work.filter.EGGQSelector;
 import cn.wagentim.work.filter.RatingSelector;
+import cn.wagentim.work.filter.SupplierSelector;
 import cn.wagentim.work.filter.TicketIDSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
 import cn.wagentim.work.importer.IImporter;
@@ -135,6 +136,21 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 		final MenuItem miLoadClu8 = new MenuItem(mFile, SWT.NONE);
 		miLoadClu8.setText("Load Clu8 Tickets");
 		miLoadClu8.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				if( null == controller || !(controller instanceof TicketController) );
+				{
+					controller = new TicketController();
+				}
+				updateTable(true);
+			}
+		});
+		
+		final MenuItem miLoadNew = new MenuItem(mFile, SWT.NONE);
+		miLoadNew.setText("Load New Tickets");
+		miLoadNew.addListener(SWT.Selection, new Listener()
 		{
 			@Override
 			public void handleEvent(final Event event)
@@ -395,6 +411,21 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			{
 				controller.clearSelectors();
 				controller.addSelectors(new EGGQSelector());
+				updateTableContent(true);
+			}
+		});
+		
+		final MenuItem mSupplierESO = new MenuItem(mFilter, SWT.NONE);
+		mSupplierESO.setText("Supplier ESO");
+		mSupplierESO.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.clearSelectors();
+				SupplierSelector ss = new SupplierSelector();
+				ss.setSearchContent("ESO");
+				controller.addSelectors(ss);
 				updateTableContent(true);
 			}
 		});

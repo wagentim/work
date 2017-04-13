@@ -23,12 +23,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.work.listener.ICommentEditorListener;
 import cn.wagentim.work.listener.ICompositeListener;
 
-public class CommentsEditor implements IExternalComposite
+public class OutputComponent implements IExternalComposite
 {
 	
 	private final Shell shell;
@@ -51,7 +50,7 @@ public class CommentsEditor implements IExternalComposite
 	
 	private ICommentEditorListener commentListener = null;
 
-	public CommentsEditor()
+	public OutputComponent()
 	{
 		shell = new Shell();
 	}
@@ -150,7 +149,6 @@ public class CommentsEditor implements IExternalComposite
 			public void handleEvent(final Event arg0)
 			{
 				addComment();
-				comment.setText(StringConstants.EMPTY_STRING);
 			}
 		});
 	}
@@ -193,28 +191,14 @@ public class CommentsEditor implements IExternalComposite
 		shell.setLocation((int) ((dim.getWidth() - SHELL_WIDTH) / 2),(int) ((dim.getHeight() - SHELL_HEIGH) / 2));
 	}
 	
-	private void clear()
-	{
-		if( null != table )
-		{
-			table.removeAll();
-		}
-		
-		if( null != comment )
-		{
-			comment.setText(StringConstants.EMPTY_STRING);
-		}
-	}
-	
 	public void updateContent(List<String[]> contents)
 	{
-		clear();
-
 		if( contents.isEmpty() )
 		{
 			return;
 		}
 		
+		table.removeAll();
 		
 		int count = 0;
 		

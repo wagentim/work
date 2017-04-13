@@ -125,7 +125,7 @@ public class TicketController extends AbstractController
 		return result;
 	}
 	
-	private List<TicketEntity> filter(List<TicketEntity> list)
+	protected List<TicketEntity> filter(List<TicketEntity> list)
 	{
 		List<TicketEntity> result = list;
 		

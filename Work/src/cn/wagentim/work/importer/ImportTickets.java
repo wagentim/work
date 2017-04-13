@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.persistence.TypedQuery;
 
@@ -22,6 +24,7 @@ import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.CommentEntity;
+import cn.wagentim.entities.work.ITicketStatus;
 import cn.wagentim.entities.work.SheetTicketEntity;
 import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.managers.IPersistanceManager;
@@ -72,6 +75,8 @@ public class ImportTickets
 		
 		int currentRow = skipRows(rowIter, configure);
 		
+		Map<Integer, TicketEntity> ticketMap = getAllTicietMap();
+		
 		while (rowIter.hasNext())
 		{
 			Row myRow = (Row) rowIter.next();
@@ -96,11 +101,29 @@ public class ImportTickets
 		logger.log(Log.LEVEL_INFO, "%1 records has been saved to DB", String.valueOf(list.size()));
 	}
 	
+	private Map<Integer, TicketEntity> getAllTicietMap()
+	{
+		List<TicketEntity> tickets = getAllTickets();
+		
+		Map<Integer, TicketEntity> ticketMap = new TreeMap<Integer, TicketEntity>();
+		
+		Iterator<TicketEntity> it = tickets.iterator();
+		
+		while(it.hasNext())
+		{
+			TicketEntity te = it.next();
+			
+			ticketMap.put(te.getKPMID(), te);
+		}
+		
+		return ticketMap;
+	}
+	
 	private IEntity assignValues(IImportConfigure configure, Row myRow)
 	{
 		String dbName = configure.getDBName();
 		
-		if( IConstants.DB_TICKET.equals(dbName) || "sven.odb".equals(dbName) )
+		if( IConstants.DB_TICKET.equals(dbName) )
 		{
 			return assignTicketValues(myRow);
 		}
@@ -473,11 +496,25 @@ public class ImportTickets
 		return (List<TicketEntity>) getAllRecord(IConstants.DB_TICKET, "TicketEntity", TicketEntity.class);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<TicketEntity> getAllNewTickets()
+	{
+		return (List<TicketEntity>) getAllRecordWithCondition(IConstants.DB_TICKET, "TicketEntity", TicketEntity.class, "c.ticketStatus=" + ITicketStatus.STATUS_NEW);
+	}
+	
 	public List<?> getAllRecord(String dbName, String type, Class<?> clazz)
 	{
 		IPersistanceManager manager = new ObjectDBManager();
 		manager.connectDB(StringConstants.EMPTY_STRING, 0, dbName);
 		TypedQuery<?> query = manager.getEntityManager().createQuery("SELECT c FROM " + type + " c", clazz);
+		return query.getResultList();
+	}
+	
+	public List<?> getAllRecordWithCondition(String dbName, String type, Class<?> clazz, String condition)
+	{
+		IPersistanceManager manager = new ObjectDBManager();
+		manager.connectDB(StringConstants.EMPTY_STRING, 0, dbName);
+		TypedQuery<?> query = manager.getEntityManager().createQuery("SELECT c FROM " + type + " c where " + condition, clazz);
 		return query.getResultList();
 	}
 	

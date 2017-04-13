@@ -2,21 +2,17 @@ package cn.wagentim.work.importer;
 
 import cn.wagentim.work.config.IImportConfigure;
 import cn.wagentim.work.config.RawDataConfigureCN;
-import cn.wagentim.work.config.RawDataConfigureEGGQ;
-import cn.wagentim.work.config.RawDataConfigureJP;
-import cn.wagentim.work.config.RawDataConfigureKR;
-import cn.wagentim.work.config.RawDataConfigureTW;
 
 public class Cluster8TicketImporter implements IImporter
 {
 
 	private static final IImportConfigure RAW_DATA_CONFIGURE_CN = new RawDataConfigureCN();
-	private static final IImportConfigure RAW_DATA_CONFIGURE_JP = new RawDataConfigureJP();
-	private static final IImportConfigure RAW_DATA_CONFIGURE_TW = new RawDataConfigureTW();
-	private static final IImportConfigure RAW_DATA_CONFIGURE_KR = new RawDataConfigureKR();
-	private static final IImportConfigure RAW_DATA_CONFIGURE_EG_GQ = new RawDataConfigureEGGQ();
+//	private static final IImportConfigure RAW_DATA_CONFIGURE_JP = new RawDataConfigureJP();
+//	private static final IImportConfigure RAW_DATA_CONFIGURE_TW = new RawDataConfigureTW();
+//	private static final IImportConfigure RAW_DATA_CONFIGURE_KR = new RawDataConfigureKR();
+//	private static final IImportConfigure RAW_DATA_CONFIGURE_EG_GQ = new RawDataConfigureEGGQ();
 	
-	private IImportConfigure[] RAW_DATA_LIST = {RAW_DATA_CONFIGURE_CN, RAW_DATA_CONFIGURE_JP, RAW_DATA_CONFIGURE_TW, RAW_DATA_CONFIGURE_KR, RAW_DATA_CONFIGURE_EG_GQ};
+	private IImportConfigure[] RAW_DATA_LIST = {RAW_DATA_CONFIGURE_CN};
 	
 	@Override
 	public void exec()

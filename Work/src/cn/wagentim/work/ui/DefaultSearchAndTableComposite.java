@@ -142,7 +142,23 @@ public class DefaultSearchAndTableComposite extends Composite
 	
 	public int getSelectedTicketNumber()
 	{
-		return Integer.valueOf(table.getItem(table.getSelectionIndex()).getText(0));
+		int index = table.getSelectionIndex();
+		
+		if( index < 0 )
+		{
+			return -1;
+		}
+		
+		TableItem item = table.getItem(index);
+
+		if( null != item )
+		{
+		 return Integer.valueOf(item.getText(0));
+		}
+		else
+		{
+			return -1;
+		}
 	}
 	
 	public List<Integer> getSelectedTickets()

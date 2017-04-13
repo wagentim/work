@@ -111,14 +111,13 @@ public class SheetTicketController extends TicketController
 		while(ticketIterator.hasNext())
 		{
 			int kpmID = ticketIterator.next();
-			SheetTicketEntity sheetTicket = sheetTicketsMap.get(kpmID);
 			TicketEntity ticket = (TicketEntity) ticketMap.get(kpmID);
 			List<CommentEntity> comments = commentsMap.get(kpmID);
-			
-			result.add(genTableRowContent(sheetTicket, ticket, comments));
+			result.add(genTableRowContent(sheetTicketsMap.get(kpmID), ticket, comments));
 		}
 		
-		ticketNumber = sheetTicketsMap.keySet().size();
+		
+		ticketNumber = result.size();
 		
 		return result;
 	}
