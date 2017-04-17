@@ -51,4 +51,11 @@ public class SupplierSelector extends AbstractSelector
 		}
 	}
 
+	@Override
+	public void setSearchContent(List<String> content)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

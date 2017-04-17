@@ -30,6 +30,13 @@ public class MarketSelector extends AbstractSelector
 	}
 
 	@Override
+	public void setSearchContent(List<String> content)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void setSearchContent(String content)
 	{
 		// TODO Auto-generated method stub

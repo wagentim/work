@@ -5,7 +5,7 @@ import java.util.List;
 
 import cn.wagentim.entities.work.TicketEntity;
 
-public class RemoveFinishSelector extends AbstractSelector
+public class Clu8P extends AbstractSelector
 {
 
 	@Override
@@ -21,15 +21,22 @@ public class RemoveFinishSelector extends AbstractSelector
 			}
 			
 			int engineerStatus = t.getEnginerringStatus();
+			String swVersion = t.getSw();
 			
 			if( engineerStatus == 5 || engineerStatus == 6 || engineerStatus == 4 )
 			{
 				continue;
 			}
-			else
+			else if(!swVersion.contains("09") )
 			{
-				result.add(t);
+				continue;
 			}
+//			else if( !t.getMarket().equals("CN") )
+//			{
+//				continue;
+//			}
+			
+			result.add(t);
 		}
 		
 		return result;

@@ -9,6 +9,7 @@ public interface ISelector
 
 	List<TicketEntity> check(List<TicketEntity> list);
 	
+	void setSearchContent(List<String> content);
 	void setSearchContent(String content);
 	
 	boolean isExclusive();

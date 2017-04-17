@@ -1,14 +1,26 @@
 package cn.wagentim.work.config;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class IConstants
 {
 	public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
+	
+	/** Title */
+	public static final float VERSION = 0.1f;
+	public static final String TITLE = "KPM Ticket Viewer "+String.valueOf(VERSION) + " HB";
+	
+	/** Menu File */
+	public static final String MENU_FILE = "File";
+	
+	/** Menu Filter */
+	public static final String MENU_FILTER = "Filter";
+	
+	public static final String MENU_FILTER_RATING = "Rating Filter";
+	public static final String MENU_ITEM_RATING_A = "Rating A";
+	public static final String MENU_ITEM_RATING_B = "Rating B";
+	public static final String MENU_ITEM_RATING_C = "Rating C";
+	public static final String MENU_ITEM_RATING_D = "Rating D";
 	
 	public static final String STRING_KPM_ID = "KPM ID";
 	public static final String STRING_SHORT_TEXT = "Short Text";
@@ -51,7 +63,21 @@ public class IConstants
 
 	public static final String STRING_HEADER_KPM = "KPM";
 
-	public static final String STRING_HEADER_RATING = "Rating";
+	public static final String STRING_HEADER_MARKET = "Market";
 
-	public static final String STRING_HEADER_MARKET = "Market"; 
+	public static final String LOAD_MAIN_TICKET = "Load Main DB";
+
+	/** Rating */
+	public static final String STRING_HEADER_RATING = "Rating";
+	public static final String STRING_RATING_A = "A";
+	public static final String STRING_RATING_B = "B";
+	public static final String STRING_RATING_C = "C";
+	public static final String STRING_RATING_D = "D";
+
+
+	
+
+	
+
+	
 }

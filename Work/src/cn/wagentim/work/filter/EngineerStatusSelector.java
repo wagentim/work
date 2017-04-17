@@ -37,6 +37,12 @@ public class EngineerStatusSelector extends AbstractSelector
 	}
 
 	@Override
+	public void setSearchContent(List<String> content)
+	{
+		
+	}
+
+	@Override
 	public void setSearchContent(String content)
 	{
 		status.clear();

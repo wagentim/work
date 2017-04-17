@@ -14,7 +14,7 @@ import cn.wagentim.work.config.IConstants;
 public class TicketContentViewComposite extends Composite
 {
 	private Text txtKpmNum, txtShortText, txtSupplier, txtEngineerStatus,
-			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency;
+			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency, txtFFD;
 	public static final GridLayout GRP_LAYOUT = new GridLayout(1, false);
 	private static final GridData longInfoGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 	
@@ -144,14 +144,14 @@ public class TicketContentViewComposite extends Composite
 		gdFrequencyStatus.widthHint = 60;
 		txtFrequency.setLayoutData(gdFrequencyStatus);
 		
-//		final Group grpProblemSolver = new Group(shortInfo, SWT.NONE);
-//		grpProblemSolver.setText("Pro Solver");
-//		grpProblemSolver.setLayout(grpLayout);
-//		txtProblemSolver = new Text(grpProblemSolver, SWT.SINGLE);
-//		txtProblemSolver.setEditable(false);
-//		GridData gdProblemSolver = new GridData(SWT.FILL, SWT.FILL, true, true);
-//		gdProblemSolver.widthHint = 150;
-//		txtProblemSolver.setLayoutData(gdProblemSolver);
+		final Group grpFFD = new Group(shortInfo, SWT.NONE);
+		grpFFD.setText("FFD");
+		grpFFD.setLayout(GRP_LAYOUT);
+		txtFFD = new Text(grpFFD, SWT.SINGLE);
+		txtFFD.setEditable(false);
+		GridData gdProblemSolver = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gdProblemSolver.widthHint = 60;
+		txtFFD.setLayoutData(gdProblemSolver);
 	}
 
 	public void setSelectedTicket(TicketEntity selectedTicket)
@@ -167,7 +167,7 @@ public class TicketContentViewComposite extends Composite
 			txtAnalysis.setText(StringConstants.EMPTY_STRING);
 			txtSupplierStatus.setText(StringConstants.EMPTY_STRING);
 			txtFrequency.setText(StringConstants.EMPTY_STRING);
-//			txtProblemSolver.setText(StringConstants.EMPTY_STRING);
+			txtFFD.setText(StringConstants.EMPTY_STRING);
 		}
 		else
 		{
@@ -180,7 +180,7 @@ public class TicketContentViewComposite extends Composite
 			txtAnalysis.setText(selectedTicket.getAnalysis());
 			txtSupplierStatus.setText(selectedTicket.getSupplierInfo() + "\n" + selectedTicket.getSupplierResponse());
 			txtFrequency.setText(selectedTicket.getFaultFrequency());
-//			txtProblemSolver.setText(selectedTicket.getResponsibleProblemSolverUser());
+			txtFFD.setText(selectedTicket.getImplementationDate());
 		}
 	}
 

@@ -31,8 +31,10 @@ import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.controller.IController;
 import cn.wagentim.work.controller.SheetTicketController;
 import cn.wagentim.work.controller.TicketController;
+import cn.wagentim.work.filter.Clu8P;
 import cn.wagentim.work.filter.EGGQSelector;
 import cn.wagentim.work.filter.RatingSelector;
+import cn.wagentim.work.filter.ShortTextSelector;
 import cn.wagentim.work.filter.SupplierSelector;
 import cn.wagentim.work.filter.TicketIDSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
@@ -47,9 +49,6 @@ import de.wagentim.qlogger.service.QLoggerService;
 
 public class MainWindow implements ISearchTableListener, ICompositeListener, ICommentEditorListener
 {
-	private static final float version = 0.1f;
-	private static final String title = "KPM Ticket Viewer "+String.valueOf(version) + " HB";
-
 	private static final int SHELL_WIDTH = 950;
 	private static final int SHELL_HEIGH = 700;
 
@@ -93,7 +92,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 		final Display display = Display.getDefault();
 		
 		shell = new Shell();
-		shell.setText(title);
+		shell.setText(IConstants.TITLE);
 		
 		genMenubar();
 
@@ -125,16 +124,13 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 //		}
 	}
 	
+	/** File Main Items */
 	private void genFileMenu(final Menu menu)
 	{
-		final MenuItem miFile = new MenuItem(menu, SWT.CASCADE);
-		miFile.setText("File");
-
-		final Menu mFile = new Menu(miFile);
-		miFile.setMenu(mFile);
+		final Menu mFile = UIHelper.createTopMenu(menu, IConstants.MENU_FILE);
 		
 		final MenuItem miLoadClu8 = new MenuItem(mFile, SWT.NONE);
-		miLoadClu8.setText("Load Clu8 Tickets");
+		miLoadClu8.setText(IConstants.LOAD_MAIN_TICKET);
 		miLoadClu8.addListener(SWT.Selection, new Listener()
 		{
 			@Override
@@ -148,22 +144,24 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			}
 		});
 		
-		final MenuItem miLoadNew = new MenuItem(mFile, SWT.NONE);
-		miLoadNew.setText("Load New Tickets");
-		miLoadNew.addListener(SWT.Selection, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				if( null == controller || !(controller instanceof TicketController) );
-				{
-					controller = new TicketController();
-				}
-				updateTable(true);
-			}
-		});
-		
 		new MenuItem(mFile, SWT.SEPARATOR);
+		
+//		final MenuItem miLoadNew = new MenuItem(mFile, SWT.NONE);
+//		miLoadNew.setText("Load New Tickets");
+//		miLoadNew.addListener(SWT.Selection, new Listener()
+//		{
+//			@Override
+//			public void handleEvent(final Event event)
+//			{
+//				if( null == controller || !(controller instanceof TicketController) );
+//				{
+//					controller = new TicketController();
+//				}
+//				updateTable(true);
+//			}
+//		});
+//		
+//		new MenuItem(mFile, SWT.SEPARATOR);
 		
 		final MenuItem mImportClu8 = new MenuItem(mFile, SWT.NONE);
 		mImportClu8.setText("Import Clu8 Tickets");
@@ -303,6 +301,10 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 				openCommentEditor();
 			}
 		});
+		
+		new MenuItem(menu, SWT.SEPARATOR);
+		
+		
 	}
 	
 	private void genSheetMenu(final Menu menu)
@@ -383,49 +385,100 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 	}
 	private void genFilterMenu(final Menu menu)
 	{
-		final MenuItem miFilter = new MenuItem(menu, SWT.CASCADE);
-		miFilter.setText("Filter");
-
-		final Menu mFilter = new Menu(miFilter);
-		miFilter.setMenu(mFilter);
+		final Menu mFilter = UIHelper.createTopMenu(menu, IConstants.MENU_FILTER);
 		
-		final MenuItem miRatingA = new MenuItem(mFilter, SWT.NONE);
-		miRatingA.setText("Rating Selector");
-		miRatingA.addListener(SWT.Selection, new Listener()
+		final Menu mFilterRating = UIHelper.createTopMenu(mFilter, IConstants.MENU_FILTER_RATING);
+		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_A, new Listener()
 		{
 			@Override
 			public void handleEvent(final Event event)
 			{
 				controller.clearSelectors();
-				controller.addSelectors(new RatingSelector());
-				updateTableContent(true);
-			}
-		});
-
-		final MenuItem mEGGQFilter = new MenuItem(mFilter, SWT.NONE);
-		mEGGQFilter.setText("EG/GQ Ticket Filter");
-		mEGGQFilter.addListener(SWT.Selection, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.clearSelectors();
-				controller.addSelectors(new EGGQSelector());
+				RatingSelector rs = new RatingSelector();
+				rs.setSearchContent(IConstants.STRING_RATING_A);
+				controller.addSelectors(rs);
 				updateTableContent(true);
 			}
 		});
 		
-		final MenuItem mSupplierESO = new MenuItem(mFilter, SWT.NONE);
-		mSupplierESO.setText("Supplier ESO");
-		mSupplierESO.addListener(SWT.Selection, new Listener()
+		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_B, new Listener()
 		{
 			@Override
 			public void handleEvent(final Event event)
 			{
 				controller.clearSelectors();
-				SupplierSelector ss = new SupplierSelector();
-				ss.setSearchContent("ESO");
-				controller.addSelectors(ss);
+				RatingSelector rs = new RatingSelector();
+				rs.setSearchContent(IConstants.STRING_RATING_B);
+				controller.addSelectors(rs);
+				updateTableContent(true);
+			}
+		});
+				
+		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_C, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.clearSelectors();
+				RatingSelector rs = new RatingSelector();
+				rs.setSearchContent(IConstants.STRING_RATING_C);
+				controller.addSelectors(rs);
+				updateTableContent(true);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_D, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.clearSelectors();
+				RatingSelector rs = new RatingSelector();
+				rs.setSearchContent(IConstants.STRING_RATING_D);
+				controller.addSelectors(rs);
+				updateTableContent(true);
+			}
+		});
+		
+//		final MenuItem mEGGQFilter = new MenuItem(mFilter, SWT.NONE);
+//		mEGGQFilter.setText("EG/GQ Ticket Filter");
+//		mEGGQFilter.addListener(SWT.Selection, new Listener()
+//		{
+//			@Override
+//			public void handleEvent(final Event event)
+//			{
+//				controller.clearSelectors();
+//				controller.addSelectors(new EGGQSelector());
+//				updateTableContent(true);
+//			}
+//		});
+//		
+//		final MenuItem mSupplierESO = new MenuItem(mFilter, SWT.NONE);
+//		mSupplierESO.setText("Supplier ESO");
+//		mSupplierESO.addListener(SWT.Selection, new Listener()
+//		{
+//			@Override
+//			public void handleEvent(final Event event)
+//			{
+//				controller.clearSelectors();
+//				SupplierSelector ss = new SupplierSelector();
+//				ss.setSearchContent("ESO");
+//				controller.addSelectors(ss);
+//				updateTableContent(true);
+//			}
+//		});
+//		
+		new MenuItem(mFilter, SWT.SEPARATOR);
+		
+		final MenuItem mClu8P = new MenuItem(mFilter, SWT.NONE);
+		mClu8P.setText("Clu8P");
+		mClu8P.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.clearSelectors();
+				controller.addSelectors(new Clu8P());
 				updateTableContent(true);
 			}
 		});
@@ -443,13 +496,14 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 				updateTableContent(true);
 			}
 		});
+		
+		
 	}
 	
 	private void genMenubar()
 	{
 		final Menu menu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menu);
-		
 		genFileMenu(menu);
 		genToolMenu(menu);
 		genSheetMenu(menu);
@@ -554,6 +608,10 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 		else if( IConstants.STRING_TICKET_ID.equals(item) )
 		{
 			controller.addSelectors(new TicketIDSelector());
+		}
+		else if( IConstants.STRING_SHORT_TEXT.equals(item) )
+		{
+			controller.addSelectors(new ShortTextSelector());
 		}
 		
 	}

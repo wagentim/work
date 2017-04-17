@@ -31,8 +31,15 @@ public class EGGQSelector extends AbstractSelector
 	}
 
 	@Override
+	public void setSearchContent(List<String> content)
+	{
+		
+	}
+
+	@Override
 	public void setSearchContent(String content)
 	{
+		// TODO Auto-generated method stub
 		
 	}
 }

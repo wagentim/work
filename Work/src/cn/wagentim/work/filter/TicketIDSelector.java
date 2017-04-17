@@ -37,4 +37,11 @@ public class TicketIDSelector extends AbstractSelector
 		this.id = content;
 	}
 
+	@Override
+	public void setSearchContent(List<String> content)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

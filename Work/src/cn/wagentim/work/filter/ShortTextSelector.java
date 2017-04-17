@@ -52,4 +52,11 @@ public class ShortTextSelector extends AbstractSelector
 			keywords.add(st.nextToken().trim());
 		}
 	}
+
+	@Override
+	public void setSearchContent(List<String> content)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }
