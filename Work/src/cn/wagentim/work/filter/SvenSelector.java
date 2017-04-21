@@ -64,4 +64,11 @@ public class SvenSelector extends AbstractSelector
 		
 	}
 
+	@Override
+	public List<String> getSearchContent()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

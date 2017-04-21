@@ -67,7 +67,6 @@ public class SheetTicketController extends TicketController
 		if( sheetTicketsList.isEmpty() )
 		{
 			logger.log(Log.LEVEL_INFO, "Null or Empty sheet tickets with Sheet name: %1", sheetName);
-			reset();
 			return;
 		}
 		
@@ -116,7 +115,6 @@ public class SheetTicketController extends TicketController
 			result.add(genTableRowContent(sheetTicketsMap.get(kpmID), ticket, comments));
 		}
 		
-		
 		ticketNumber = result.size();
 		
 		return result;
@@ -143,7 +141,6 @@ public class SheetTicketController extends TicketController
 
 	private void convertToMap(List<SheetTicketEntity> sheetList)
 	{
-		
 		for(SheetTicketEntity st : sheetList)
 		{
 			sheetTicketsMap.put(st.getKpmID(), st);

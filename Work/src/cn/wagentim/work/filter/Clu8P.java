@@ -3,6 +3,7 @@ package cn.wagentim.work.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.work.TicketEntity;
 
 public class Clu8P extends AbstractSelector
@@ -22,19 +23,24 @@ public class Clu8P extends AbstractSelector
 			
 			int engineerStatus = t.getEnginerringStatus();
 			String swVersion = t.getSw();
+			String supplier = t.getSupplier();
 			
 			if( engineerStatus == 5 || engineerStatus == 6 || engineerStatus == 4 )
 			{
 				continue;
 			}
-			else if(!swVersion.contains("09") )
-			{
-				continue;
-			}
-//			else if( !t.getMarket().equals("CN") )
+//			else if(!swVersion.contains("09") )
 //			{
 //				continue;
 //			}
+			else if( !(t.getMarket().equals("CN")) )
+			{
+				continue;
+			}
+			else if( (!supplier.toLowerCase().contains("esoa")) && (!supplier.toLowerCase().contains(StringConstants.EMPTY_STRING)) )
+			{
+				continue;
+			}
 			
 			result.add(t);
 		}
@@ -54,6 +60,13 @@ public class Clu8P extends AbstractSelector
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<String> getSearchContent()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

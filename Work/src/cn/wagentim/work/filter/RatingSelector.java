@@ -68,4 +68,10 @@ public class RatingSelector extends AbstractSelector
 		}
 	}
 
+	@Override
+	public List<String> getSearchContent()
+	{
+		return selectedRatings;
+	}
+
 }

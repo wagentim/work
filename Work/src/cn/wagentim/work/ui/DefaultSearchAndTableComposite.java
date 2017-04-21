@@ -39,7 +39,7 @@ public class DefaultSearchAndTableComposite extends Composite
 	private ISearchTableListener searchTableListener = null;
 	private Text searchText;
 	private Combo comboBox;
-	private static final String[] SEARCH_ITEM = {StringConstants.EMPTY_STRING, IConstants.STRING_TICKET_ID, IConstants.STRING_SHORT_TEXT};
+	private static final String[] SEARCH_ITEM = {StringConstants.EMPTY_STRING, IConstants.STRING_TICKET_ID, IConstants.STRING_SHORT_TEXT, IConstants.STRING_PROBLEM_SOLVER};
 		
 	public DefaultSearchAndTableComposite(Composite parent, int style)
 	{
@@ -247,7 +247,7 @@ public class DefaultSearchAndTableComposite extends Composite
 			@Override
 			public void modifyText(final ModifyEvent e)
 			{
-				if (table == null)
+				if (table == null || comboBox.getSelectionIndex() == -1)
 				{
 					return;
 				}

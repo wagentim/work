@@ -24,6 +24,7 @@ public class IConstants
 	
 	public static final String STRING_KPM_ID = "KPM ID";
 	public static final String STRING_SHORT_TEXT = "Short Text";
+	public static final String STRING_PROBLEM_SOLVER= "Problem Solver";
 	public static final String STRING_SUPPLIER = "Supplier: ";
 	public static final String STRING_PROBLEM_STATUS = "P Status: ";
 	public static final String STRING_ENGINEER_STATUS = "E Status: ";

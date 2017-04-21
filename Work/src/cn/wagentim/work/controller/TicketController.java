@@ -31,7 +31,8 @@ public class TicketController extends AbstractController
 	
 	protected List<ISelector> selectors = new ArrayList<ISelector>();
 	protected SheetManagerController sheetController;
-	protected List<TicketEntity> ticketList;
+	protected List<TicketEntity> origTicketList;
+	protected List<TicketEntity> currTicketList;
 	protected Map<Integer, TicketEntity> ticketMap = null;
 	
 	protected boolean kpmsort = false;
@@ -53,7 +54,15 @@ public class TicketController extends AbstractController
 	@Override
 	public void addSelectors(ISelector selector)
 	{
-		selectors.add(selector);
+		if(selectors.contains(selector))
+		{
+			ISelector sel = selectors.get(selectors.indexOf(selector));
+			sel.setSearchContent(selector.getSearchContent());
+		}
+		else
+		{
+			selectors.add(selector);
+		}
 	}
 	
 	@Override
@@ -68,11 +77,11 @@ public class TicketController extends AbstractController
 		if(fromDB)
 		{
 			resetTicketList();
-			ticketList = importer.getAllTickets();
+			origTicketList = importer.getAllTickets();
 			convertToMap();
 		}
 		
-		List<TicketEntity> tmp = ticketList;
+		List<TicketEntity> tmp = origTicketList;
 
 		if( null == tmp )
 		{
@@ -94,7 +103,7 @@ public class TicketController extends AbstractController
 
 	private void convertToMap()
 	{
-		for(TicketEntity t : ticketList)
+		for(TicketEntity t : origTicketList)
 		{
 			ticketMap.put(t.getKPMID(), t);
 		}
@@ -180,13 +189,13 @@ public class TicketController extends AbstractController
 	
 	protected void resetTicketList()
 	{
-		if( null == ticketList )
+		if( null == origTicketList )
 		{
-			ticketList = new ArrayList<TicketEntity>();
+			origTicketList = new ArrayList<TicketEntity>();
 		}
 		else
 		{
-			ticketList.clear();
+			origTicketList.clear();
 		}
 		
 		if( null == ticketMap )
@@ -197,6 +206,15 @@ public class TicketController extends AbstractController
 		{
 			ticketMap.clear();
 		}
+		
+		if( null == currTicketList )
+		{
+			currTicketList = new ArrayList<TicketEntity>();
+		}
+		else
+		{
+			currTicketList.clear();
+		}
 	}
 
 	@Override
@@ -205,17 +223,17 @@ public class TicketController extends AbstractController
 		if( IConstants.STRING_HEADER_KPM.equals(columnName) )
 		{
 			kpmsort = !kpmsort;
-			Collections.sort(ticketList, new KPMTicketComparator(kpmsort));
+			Collections.sort(origTicketList, new KPMTicketComparator(kpmsort));
 		}
 		else if( IConstants.STRING_HEADER_RATING.equals(columnName) )
 		{
 			ratingsort = !ratingsort;
-			Collections.sort(ticketList, new RatingTicketComparator(ratingsort));
+			Collections.sort(origTicketList, new RatingTicketComparator(ratingsort));
 		}
 		else if( IConstants.STRING_HEADER_MARKET.equals(columnName) )
 		{
 			marketsort = !marketsort;
-			Collections.sort(ticketList, new MarketTicketComparator(marketsort));
+			Collections.sort(origTicketList, new MarketTicketComparator(marketsort));
 		}
 		
 	}

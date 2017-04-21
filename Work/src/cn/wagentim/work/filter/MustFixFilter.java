@@ -64,5 +64,12 @@ public class MustFixFilter extends AbstractSelector
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public List<String> getSearchContent()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

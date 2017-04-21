@@ -148,13 +148,6 @@ public class ExcelFileImporter implements IImporter
 			{
 				result = "TW";
 			}
-			
-//			if( !Validator.isNullOrEmpty(result) )
-//			{
-//				int start = result.indexOf(index);
-//				
-//				result = result.substring(start);
-//			}
 		}
 		return result;
 	}	

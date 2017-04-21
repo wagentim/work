@@ -7,10 +7,11 @@ import java.util.StringTokenizer;
 import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.work.TicketEntity;
 
-public class EngineerStatusSelector extends AbstractSelector
+public class ProblemSolvertSelector extends AbstractSelector
 {
-	private List<Integer> status = new ArrayList<Integer>();
 	
+	List<String> keywords = new ArrayList<String>();
+
 	@Override
 	public List<TicketEntity> check(List<TicketEntity> list)
 	{
@@ -23,9 +24,13 @@ public class EngineerStatusSelector extends AbstractSelector
 				continue;
 			}
 			
-			for(Integer i : status)
+			String stext = t.getResponsibleProblemSolverUser();
+			
+			for(String s : keywords)
 			{
-				if( i == t.getEnginerringStatus() )
+				boolean contained = stext.contains(s);
+				
+				if( contained )
 				{
 					result.add(t);
 					break;
@@ -37,21 +42,22 @@ public class EngineerStatusSelector extends AbstractSelector
 	}
 
 	@Override
-	public void setSearchContent(List<String> content)
-	{
-		
-	}
-
-	@Override
 	public void setSearchContent(String content)
 	{
-		status.clear();
+		keywords.clear();
 		StringTokenizer st = new StringTokenizer(content, StringConstants.COMMA);
 		
 		while(st.hasMoreTokens())
 		{
-			status.add(Integer.valueOf(st.nextToken().trim()));
+			keywords.add(st.nextToken().trim());
 		}
+	}
+
+	@Override
+	public void setSearchContent(List<String> content)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -60,5 +66,4 @@ public class EngineerStatusSelector extends AbstractSelector
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

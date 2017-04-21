@@ -11,7 +11,7 @@ public interface ISelector
 	
 	void setSearchContent(List<String> content);
 	void setSearchContent(String content);
-	
+	List<String> getSearchContent();
 	boolean isExclusive();
 
 	void setExclusive(boolean isExclusive);
