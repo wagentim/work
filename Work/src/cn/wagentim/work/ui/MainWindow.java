@@ -31,12 +31,8 @@ import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.controller.IController;
 import cn.wagentim.work.controller.SheetTicketController;
 import cn.wagentim.work.controller.TicketController;
-import cn.wagentim.work.filter.Clu8P;
-import cn.wagentim.work.filter.EGGQSelector;
+import cn.wagentim.work.filter.KPMIDSelector;
 import cn.wagentim.work.filter.RatingSelector;
-import cn.wagentim.work.filter.ShortTextSelector;
-import cn.wagentim.work.filter.SupplierSelector;
-import cn.wagentim.work.filter.TicketIDSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
 import cn.wagentim.work.importer.IImporter;
 import cn.wagentim.work.listener.ICommentEditorListener;
@@ -393,11 +389,8 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			@Override
 			public void handleEvent(final Event event)
 			{
-				controller.clearSelectors();
-				RatingSelector rs = new RatingSelector();
-				rs.setSearchContent(IConstants.STRING_RATING_A);
-				controller.addSelectors(rs);
-				updateTableContent(true);
+				controller.addSearchContent(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_A);
+				updateTableContent(false);
 			}
 		});
 		
@@ -406,11 +399,8 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			@Override
 			public void handleEvent(final Event event)
 			{
-				controller.clearSelectors();
-				RatingSelector rs = new RatingSelector();
-				rs.setSearchContent(IConstants.STRING_RATING_B);
-				controller.addSelectors(rs);
-				updateTableContent(true);
+				controller.addSearchContent(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_B);
+				updateTableContent(false);
 			}
 		});
 				
@@ -419,11 +409,8 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			@Override
 			public void handleEvent(final Event event)
 			{
-				controller.clearSelectors();
-				RatingSelector rs = new RatingSelector();
-				rs.setSearchContent(IConstants.STRING_RATING_C);
-				controller.addSelectors(rs);
-				updateTableContent(true);
+				controller.addSearchContent(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_C);
+				updateTableContent(false);
 			}
 		});
 		
@@ -432,11 +419,8 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			@Override
 			public void handleEvent(final Event event)
 			{
-				controller.clearSelectors();
-				RatingSelector rs = new RatingSelector();
-				rs.setSearchContent(IConstants.STRING_RATING_D);
-				controller.addSelectors(rs);
-				updateTableContent(true);
+				controller.addSearchContent(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_D);
+				updateTableContent(false);
 			}
 		});
 		
@@ -470,32 +454,32 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 //		
 		new MenuItem(mFilter, SWT.SEPARATOR);
 		
-		final MenuItem mClu8P = new MenuItem(mFilter, SWT.NONE);
-		mClu8P.setText("Clu8P");
-		mClu8P.addListener(SWT.Selection, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.clearSelectors();
-				controller.addSelectors(new Clu8P());
-				updateTableContent(true);
-			}
-		});
+//		final MenuItem mClu8P = new MenuItem(mFilter, SWT.NONE);
+//		mClu8P.setText("Clu8P");
+//		mClu8P.addListener(SWT.Selection, new Listener()
+//		{
+//			@Override
+//			public void handleEvent(final Event event)
+//			{
+//				controller.clearSelectors();
+//				controller.addSelectors(new Clu8P());
+//				updateTableContent(true);
+//			}
+//		});
+//		
+//		new MenuItem(mFilter, SWT.SEPARATOR);
 		
-		new MenuItem(mFilter, SWT.SEPARATOR);
-		
-		final MenuItem mClearFilter = new MenuItem(mFilter, SWT.NONE);
-		mClearFilter.setText("Clear All Filters");
-		mClearFilter.addListener(SWT.Selection, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.clearSelectors();
-				updateTableContent(true);
-			}
-		});
+//		final MenuItem mClearFilter = new MenuItem(mFilter, SWT.NONE);
+//		mClearFilter.setText("Clear All Filters");
+//		mClearFilter.addListener(SWT.Selection, new Listener()
+//		{
+//			@Override
+//			public void handleEvent(final Event event)
+//			{
+//				controller.clearSelectors();
+//				updateTableContent(true);
+//			}
+//		});
 		
 		
 	}
@@ -599,27 +583,27 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 	@Override
 	public void selectedSearchItem(String item)
 	{
-		controller.clearSelectors();
-		
-		if( StringConstants.EMPTY_STRING.equals(item) )
-		{
-			updateTableContent(true);
-		}
-		else if( IConstants.STRING_TICKET_ID.equals(item) )
-		{
-			controller.addSelectors(new TicketIDSelector());
-		}
-		else if( IConstants.STRING_SHORT_TEXT.equals(item) )
-		{
-			controller.addSelectors(new ShortTextSelector());
-		}
+//		controller.clearSelectors();
+//		
+//		if( StringConstants.EMPTY_STRING.equals(item) )
+//		{
+//			updateTableContent(true);
+//		}
+//		else if( IConstants.STRING_TICKET_ID.equals(item) )
+//		{
+//			controller.addSelectors(new KPMIDSelector());
+//		}
+//		else if( IConstants.STRING_SHORT_TEXT.equals(item) )
+//		{
+//			controller.addSelectors(new ShortTextSelector());
+//		}
 		
 	}
 	@Override
 	public void setSearchContent(String content)
 	{
-		controller.setSearchContent(content);
-		updateTableContent(false);
+//		controller.addSearchContent(content);
+//		updateTableContent(false);
 	}
 
 	@Override

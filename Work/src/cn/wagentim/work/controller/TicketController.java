@@ -29,7 +29,6 @@ public class TicketController extends AbstractController
 			new Header("Problem Solver", 200)
 			};
 	
-	protected List<ISelector> selectors = new ArrayList<ISelector>();
 	protected SheetManagerController sheetController;
 	protected List<TicketEntity> origTicketList;
 	protected List<TicketEntity> currTicketList;
@@ -49,26 +48,6 @@ public class TicketController extends AbstractController
 	public Header[] getColumnHeaders()
 	{
 		return TABLE_HEADERS;
-	}
-	
-	@Override
-	public void addSelectors(ISelector selector)
-	{
-		if(selectors.contains(selector))
-		{
-			ISelector sel = selectors.get(selectors.indexOf(selector));
-			sel.setSearchContent(selector.getSearchContent());
-		}
-		else
-		{
-			selectors.add(selector);
-		}
-	}
-	
-	@Override
-	public void clearSelectors()
-	{
-		selectors.clear();
 	}
 	
 	@Override
@@ -162,15 +141,6 @@ public class TicketController extends AbstractController
 	public void updateRecord(IEntity entity)
 	{
 		
-	}
-
-	@Override
-	public void setSearchContent(String content)
-	{
-		for(ISelector sel : selectors)
-		{
-			sel.setSearchContent(content);
-		}
 	}
 
 	@SuppressWarnings("unchecked")

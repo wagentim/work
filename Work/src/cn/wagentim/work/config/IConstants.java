@@ -75,10 +75,8 @@ public class IConstants
 	public static final String STRING_RATING_C = "C";
 	public static final String STRING_RATING_D = "D";
 
-
-	
-
-	
-
+	/** Selector IDs */
+	public static final int SELECTOR_RATING = 1;
+	public static final int SELECTOR_KPM_ID = 2;
 	
 }

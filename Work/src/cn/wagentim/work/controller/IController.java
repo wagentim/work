@@ -21,11 +21,7 @@ public interface IController
 	
 	void updateRecord(IEntity entity);
 	
-	void addSelectors(ISelector selector);
-	
-	void clearSelectors();
-	
-	void setSearchContent(String content);
+	void addSearchContent(int selector, String content);
 	
 	List<SheetEntity> getAllSheets();
 	

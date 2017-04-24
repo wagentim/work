@@ -1,20 +1,29 @@
 package cn.wagentim.work.filter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.wagentim.basicutils.Validator;
+
 public abstract class AbstractSelector implements ISelector
 {
+	protected List<String> searchContent = new ArrayList<String>();
 	
-	private boolean isExclusive = false;
+	public void addSearchContent(String content)
+	{
+		if( Validator.isNullOrEmpty(content) )
+		{
+			return;
+		}
+		
+		if( !searchContent.contains(content) )
+		{
+			searchContent.add(content);
+		}
+	}
 	
-	@Override
-	public boolean isExclusive()
+	public List<String> getSearchContent()
 	{
-		return isExclusive;
+		return searchContent;
 	}
-
-	@Override
-	public void setExclusive(boolean isExclusive)
-	{
-		this.isExclusive = isExclusive;
-	}
-
 }

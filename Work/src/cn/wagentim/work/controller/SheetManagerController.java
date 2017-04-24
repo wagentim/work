@@ -86,21 +86,7 @@ public class SheetManagerController extends AbstractController
 	}
 
 	@Override
-	public void addSelectors(ISelector selector)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void clearSelectors()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setSearchContent(String content)
+	public void addSearchContent(int selector, String content)
 	{
 		// TODO Auto-generated method stub
 		

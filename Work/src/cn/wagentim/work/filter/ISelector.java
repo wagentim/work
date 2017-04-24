@@ -6,14 +6,8 @@ import cn.wagentim.entities.work.TicketEntity;
 
 public interface ISelector
 {
-
 	List<TicketEntity> check(List<TicketEntity> list);
-	
-	void setSearchContent(List<String> content);
-	void setSearchContent(String content);
+	void addSearchContent(String content);
 	List<String> getSearchContent();
-	boolean isExclusive();
-
-	void setExclusive(boolean isExclusive);
-
+	int getSelectorType();
 }

@@ -3,17 +3,17 @@ package cn.wagentim.work.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.entities.work.TicketEntity;
+import cn.wagentim.work.config.IConstants;
 
-public class TicketIDSelector extends AbstractSelector
+public class KPMIDSelector extends AbstractSelector
 {
-	private String id = StringConstants.EMPTY_STRING;
 
 	@Override
 	public List<TicketEntity> check(List<TicketEntity> list)
 	{
 		List<TicketEntity> result = new ArrayList<TicketEntity>();
+		String id = searchContent.get(0);
 		
 		for( TicketEntity t : list )
 		{
@@ -32,23 +32,15 @@ public class TicketIDSelector extends AbstractSelector
 	}
 
 	@Override
-	public void setSearchContent(String content)
+	public void addSearchContent(String content)
 	{
-		this.id = content;
+		searchContent.clear();
+		searchContent.add(content);
 	}
 
 	@Override
-	public void setSearchContent(List<String> content)
+	public int getSelectorType()
 	{
-		// TODO Auto-generated method stub
-		
+		return IConstants.SELECTOR_KPM_ID;
 	}
-
-	@Override
-	public List<String> getSearchContent()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
