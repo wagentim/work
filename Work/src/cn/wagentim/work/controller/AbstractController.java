@@ -7,6 +7,7 @@ import java.util.List;
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.exporter.ExcelFileExporter;
+import cn.wagentim.work.filter.EngineerStatusSelector;
 import cn.wagentim.work.filter.ISelector;
 import cn.wagentim.work.filter.KPMIDSelector;
 import cn.wagentim.work.filter.RatingSelector;
@@ -85,6 +86,9 @@ public abstract class AbstractController implements IController
 				
 			case IConstants.SELECTOR_SUPPLIER:
 				return new SupplierSelector();
+				
+			case IConstants.SELECTOR_ENGINEER_STATUS:
+				return new EngineerStatusSelector();
 				
 			default:
 				return null;

@@ -32,6 +32,16 @@ public class IConstants
 	public static final String MENU_ITEM_SUPPLER_FP = "FP";
 	public static final String MENU_ITEM_SUPPLIER_CLEAR = "Clear Supplier";
 	
+	public static final String MENU_FILTER_ENGINEER_STATUS = "Engineer Status Filter";
+	public static final String MENU_ITEM_ES_0 = "0";
+	public static final String MENU_ITEM_ES_1 = "1";
+	public static final String MENU_ITEM_ES_2 = "2";
+	public static final String MENU_ITEM_ES_3 = "3";
+	public static final String MENU_ITEM_ES_4 = "4";
+	public static final String MENU_ITEM_ES_5 = "5";
+	public static final String MENU_ITEM_ES_6 = "6";
+	public static final String MENU_ITEM_ENGINEER_STATUS_CLEAR = "Clear Engineer Status";
+	
 	public static final String STRING_KPM_ID = "KPM ID";
 	public static final String STRING_SHORT_TEXT = "Short Text";
 	public static final String STRING_PROBLEM_SOLVER= "Problem Solver";
@@ -89,6 +99,7 @@ public class IConstants
 	public static final int SELECTOR_RATING = 1;
 	public static final int SELECTOR_KPM_ID = 2;
 	public static final int SELECTOR_SUPPLIER = 3;
+	public static final int SELECTOR_ENGINEER_STATUS = 4;
 
 	public static final String STRING_MENU_ITEM_SELECTED_SYMBOL = "x  ";
 
