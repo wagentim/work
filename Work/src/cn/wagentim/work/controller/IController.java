@@ -34,4 +34,8 @@ public interface IController
 	void columnSelected(String columnName);
 
 	void decorateOutput(List<String> headers, List<List<String>> currentTableContent);
+
+	void removeSelector(int selectorRating);
+
+	void clearSelectors();
 }

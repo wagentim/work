@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import cn.wagentim.basicutils.StringConstants;
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.entities.work.SheetEntity;
 import cn.wagentim.entities.work.TicketEntity;
@@ -31,8 +30,6 @@ import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.controller.IController;
 import cn.wagentim.work.controller.SheetTicketController;
 import cn.wagentim.work.controller.TicketController;
-import cn.wagentim.work.filter.KPMIDSelector;
-import cn.wagentim.work.filter.RatingSelector;
 import cn.wagentim.work.importer.Cluster8TicketImporter;
 import cn.wagentim.work.importer.IImporter;
 import cn.wagentim.work.listener.ICommentEditorListener;
@@ -379,11 +376,84 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			}
 		}
 	}
-	private void genFilterMenu(final Menu menu)
+	
+	private void genSupplierFilter(Menu mFilterSupplier)
 	{
-		final Menu mFilter = UIHelper.createTopMenu(menu, IConstants.MENU_FILTER);
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_ESO_EB, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_ESO_EB);
+				updateTableContent(false);
+			}
+		});
 		
-		final Menu mFilterRating = UIHelper.createTopMenu(mFilter, IConstants.MENU_FILTER_RATING);
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_AW, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_AW);
+				updateTableContent(false);
+			}
+		});
+				
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_DELPHI, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_DELPHI);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_EECHINA, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_DELPHI);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_FP, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_FP);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_HARMAN, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_HARMAN);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuSeperator(mFilterSupplier);
+		
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLIER_CLEAR, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.removeSelector(IConstants.SELECTOR_SUPPLIER);
+				updateTableContent(false);
+			}
+		});
+	}
+	
+	private void genRatingFilter(Menu mFilterRating)
+	{
 		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_A, new Listener()
 		{
 			@Override
@@ -424,62 +494,42 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			}
 		});
 		
-//		final MenuItem mEGGQFilter = new MenuItem(mFilter, SWT.NONE);
-//		mEGGQFilter.setText("EG/GQ Ticket Filter");
-//		mEGGQFilter.addListener(SWT.Selection, new Listener()
-//		{
-//			@Override
-//			public void handleEvent(final Event event)
-//			{
-//				controller.clearSelectors();
-//				controller.addSelectors(new EGGQSelector());
-//				updateTableContent(true);
-//			}
-//		});
-//		
-//		final MenuItem mSupplierESO = new MenuItem(mFilter, SWT.NONE);
-//		mSupplierESO.setText("Supplier ESO");
-//		mSupplierESO.addListener(SWT.Selection, new Listener()
-//		{
-//			@Override
-//			public void handleEvent(final Event event)
-//			{
-//				controller.clearSelectors();
-//				SupplierSelector ss = new SupplierSelector();
-//				ss.setSearchContent("ESO");
-//				controller.addSelectors(ss);
-//				updateTableContent(true);
-//			}
-//		});
-//		
+		UIHelper.createMenuSeperator(mFilterRating);
+		
+		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_CLEAR, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.removeSelector(IConstants.SELECTOR_RATING);
+				updateTableContent(false);
+			}
+		});
+	}
+	
+	private void genFilterMenu(final Menu menu)
+	{
+		final Menu mFilter = UIHelper.createTopMenu(menu, IConstants.MENU_FILTER);
+		
+		final Menu mFilterRating = UIHelper.createTopMenu(mFilter, IConstants.MENU_FILTER_RATING);
+		genRatingFilter(mFilterRating);
+		
+		final Menu mFilterSupplier = UIHelper.createTopMenu(mFilter, IConstants.MENU_FILTER_SUPPLIER);
+		genSupplierFilter(mFilterSupplier);
+		
 		new MenuItem(mFilter, SWT.SEPARATOR);
 		
-//		final MenuItem mClu8P = new MenuItem(mFilter, SWT.NONE);
-//		mClu8P.setText("Clu8P");
-//		mClu8P.addListener(SWT.Selection, new Listener()
-//		{
-//			@Override
-//			public void handleEvent(final Event event)
-//			{
-//				controller.clearSelectors();
-//				controller.addSelectors(new Clu8P());
-//				updateTableContent(true);
-//			}
-//		});
-//		
-//		new MenuItem(mFilter, SWT.SEPARATOR);
-		
-//		final MenuItem mClearFilter = new MenuItem(mFilter, SWT.NONE);
-//		mClearFilter.setText("Clear All Filters");
-//		mClearFilter.addListener(SWT.Selection, new Listener()
-//		{
-//			@Override
-//			public void handleEvent(final Event event)
-//			{
-//				controller.clearSelectors();
-//				updateTableContent(true);
-//			}
-//		});
+		final MenuItem mClearFilter = new MenuItem(mFilter, SWT.NONE);
+		mClearFilter.setText("Clear All Filters");
+		mClearFilter.addListener(SWT.Selection, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.clearSelectors();
+				updateTableContent(false);
+			}
+		});
 		
 		
 	}

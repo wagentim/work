@@ -10,6 +10,7 @@ import cn.wagentim.work.exporter.ExcelFileExporter;
 import cn.wagentim.work.filter.ISelector;
 import cn.wagentim.work.filter.KPMIDSelector;
 import cn.wagentim.work.filter.RatingSelector;
+import cn.wagentim.work.filter.SupplierSelector;
 import cn.wagentim.work.importer.ImportTickets;
 
 public abstract class AbstractController implements IController
@@ -36,12 +37,18 @@ public abstract class AbstractController implements IController
 	@Override
 	public void addSearchContent(int selector, String content)
 	{
-		ISelector sele = getSelector(selector);
-		
-		if( Validator.isNull(sele) || Validator.isNull(content) )
+		if( Validator.isNull(content) )
 		{
 			// add log here
 			return;
+		}
+		
+		ISelector sele = getSelector(selector);
+		
+		if( Validator.isNull(sele) )
+		{
+			sele = createNewSelector(selector);
+			selectors.add(sele);
 		}
 		
 		sele.addSearchContent(content);
@@ -59,13 +66,8 @@ public abstract class AbstractController implements IController
 			if( tmp.getSelectorType() == selector )
 			{
 				result = tmp;
+				break;
 			}
-		}
-		
-		if( null == result )
-		{
-			result = createNewSelector(selector);
-			selectors.add(result);
 		}
 		
 		return result;
@@ -81,8 +83,32 @@ public abstract class AbstractController implements IController
 			case IConstants.SELECTOR_RATING:
 				return new RatingSelector();
 				
+			case IConstants.SELECTOR_SUPPLIER:
+				return new SupplierSelector();
+				
 			default:
 				return null;
 		}
+	}
+	
+	public void removeSelector(int selector)
+	{
+		Iterator<ISelector> it = selectors.iterator();
+		
+		while(it.hasNext())
+		{
+			ISelector tmp = it.next();
+			
+			if( tmp.getSelectorType() == selector )
+			{
+				it.remove();
+				break;
+			}
+		}
+	}
+	
+	public void clearSelectors()
+	{
+		selectors.clear();
 	}
 }

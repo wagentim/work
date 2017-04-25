@@ -18,6 +18,13 @@ public class UIHelper
 		return menuItem;
 	}
 	
+	public static MenuItem createMenuItem(final Menu menu, final String name)
+	{
+		final MenuItem menuItem = new MenuItem(menu, SWT.NONE);
+		menuItem.setText(Validator.isNullOrEmpty(name) ? StringConstants.EMPTY_STRING : name);
+		return menuItem;
+	}
+	
 	public static MenuItem createMenuSeperator(final Menu menu)
 	{
 		return new MenuItem(menu, SWT.SEPARATOR);

@@ -21,6 +21,16 @@ public class IConstants
 	public static final String MENU_ITEM_RATING_B = "Rating B";
 	public static final String MENU_ITEM_RATING_C = "Rating C";
 	public static final String MENU_ITEM_RATING_D = "Rating D";
+	public static final String MENU_ITEM_RATING_CLEAR = "Clear Rating";
+	
+	public static final String MENU_FILTER_SUPPLIER = "Supplier Filter";
+	public static final String MENU_ITEM_SUPPLER_ESO_EB = "ESO";
+	public static final String MENU_ITEM_SUPPLER_DELPHI = "DELPHI";
+	public static final String MENU_ITEM_SUPPLER_EECHINA = "EESWDEV";
+	public static final String MENU_ITEM_SUPPLER_HARMAN = "H/B";
+	public static final String MENU_ITEM_SUPPLER_AW = "AW";
+	public static final String MENU_ITEM_SUPPLER_FP = "FP";
+	public static final String MENU_ITEM_SUPPLIER_CLEAR = "Clear Supplier";
 	
 	public static final String STRING_KPM_ID = "KPM ID";
 	public static final String STRING_SHORT_TEXT = "Short Text";
@@ -78,5 +88,10 @@ public class IConstants
 	/** Selector IDs */
 	public static final int SELECTOR_RATING = 1;
 	public static final int SELECTOR_KPM_ID = 2;
+	public static final int SELECTOR_SUPPLIER = 3;
+
+	public static final String STRING_MENU_ITEM_SELECTED_SYMBOL = "x  ";
+
+	
 	
 }
