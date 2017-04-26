@@ -42,7 +42,7 @@ import de.wagentim.qlogger.service.QLoggerService;
 
 public class MainWindow implements ISearchTableListener, ICompositeListener, ICommentEditorListener
 {
-	private static final int SHELL_WIDTH = 950;
+	private static final int SHELL_WIDTH = 1024;
 	private static final int SHELL_HEIGH = 700;
 
 	private static final GridData mainPaneGridData = new GridData(GridData.FILL, GridData.FILL, true, true, 3, 1);
@@ -414,7 +414,7 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			@Override
 			public void handleEvent(final Event event)
 			{
-				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_DELPHI);
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_EECHINA);
 				updateTableContent(false);
 			}
 		});
@@ -507,6 +507,71 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 		});
 	}
 	
+	private void genSupplierStatusFilter(Menu mFilterSupplierStatus)
+	{
+		UIHelper.createMenuItem(mFilterSupplierStatus, IConstants.MENU_ITEM_SUPPLIER_STATUS_EMPTY, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER_STATUS, IConstants.MENU_ITEM_SUPPLIER_STATUS_EMPTY);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterSupplierStatus, IConstants.MENU_ITEM_SUPPLIER_STATUS_SOLVED, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER_STATUS, IConstants.MENU_ITEM_SUPPLIER_STATUS_SOLVED);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterSupplierStatus, IConstants.MENU_ITEM_SUPPLIER_STATUS_TAKEN_OVER, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER_STATUS, IConstants.MENU_ITEM_SUPPLIER_STATUS_TAKEN_OVER);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterSupplierStatus, IConstants.MENU_ITEM_SUPPLIER_STATUS_UNDER_WAY, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER_STATUS, IConstants.MENU_ITEM_SUPPLIER_STATUS_UNDER_WAY);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterSupplierStatus, IConstants.MENU_ITEM_SUPPLIER_STATUS_VERIFICATION, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER_STATUS, IConstants.MENU_ITEM_SUPPLIER_STATUS_VERIFICATION);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuSeperator(mFilterSupplierStatus);
+		
+		UIHelper.createMenuItem(mFilterSupplierStatus, IConstants.MENU_ITEM_SUPPLIER_STATUS_CLEAR, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.removeSelector(IConstants.SELECTOR_SUPPLIER_STATUS);
+				updateTableContent(false);
+			}
+		});
+	}
+	
 	private void genEngineerStatusFilter(Menu mFilterEngineerStatus)
 	{
 		UIHelper.createMenuItem(mFilterEngineerStatus, IConstants.MENU_ITEM_ES_0, new Listener()
@@ -592,6 +657,61 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 		});
 	}
 	
+	private void genMarketFilter(Menu mFilterMarket)
+	{
+		UIHelper.createMenuItem(mFilterMarket, IConstants.MENU_ITEM_MARKET_CN, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_MARKET, IConstants.MENU_ITEM_MARKET_CN);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterMarket, IConstants.MENU_ITEM_MARKET_JP, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_MARKET, IConstants.MENU_ITEM_MARKET_JP);
+				updateTableContent(false);
+			}
+		});
+				
+		UIHelper.createMenuItem(mFilterMarket, IConstants.MENU_ITEM_MARKET_KR, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_MARKET, IConstants.MENU_ITEM_MARKET_KR);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuItem(mFilterMarket, IConstants.MENU_ITEM_MARKET_TW, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.addSearchContent(IConstants.SELECTOR_MARKET, IConstants.MENU_ITEM_MARKET_TW);
+				updateTableContent(false);
+			}
+		});
+		
+		UIHelper.createMenuSeperator(mFilterMarket);
+		
+		UIHelper.createMenuItem(mFilterMarket, IConstants.MENU_ITEM_MARKET_CLEAR, new Listener()
+		{
+			@Override
+			public void handleEvent(final Event event)
+			{
+				controller.removeSelector(IConstants.SELECTOR_MARKET);
+				updateTableContent(false);
+			}
+		});
+	}
+	
 	private void genFilterMenu(final Menu menu)
 	{
 		final Menu mFilter = UIHelper.createTopMenu(menu, IConstants.MENU_FILTER);
@@ -604,6 +724,12 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 		
 		final Menu mFilterEngineerStatus = UIHelper.createTopMenu(mFilter, IConstants.MENU_FILTER_ENGINEER_STATUS);
 		genEngineerStatusFilter(mFilterEngineerStatus);
+		
+		final Menu mFilterMarket = UIHelper.createTopMenu(mFilter, IConstants.MENU_FILTER_MARKET);
+		genMarketFilter(mFilterMarket);
+		
+		final Menu mFilterSupplierStatus = UIHelper.createTopMenu(mFilter, IConstants.MENU_FILTER_SUPPLIER_STATUS);
+		genSupplierStatusFilter(mFilterSupplierStatus);
 		
 		new MenuItem(mFilter, SWT.SEPARATOR);
 		
@@ -718,32 +844,14 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 			sm = null;
 		}
 	}
+	
 	@Override
-	public void selectedSearchItem(String item)
+	public void selectedSearchItem(int selector, String item)
 	{
-//		controller.clearSelectors();
-//		
-//		if( StringConstants.EMPTY_STRING.equals(item) )
-//		{
-//			updateTableContent(true);
-//		}
-//		else if( IConstants.STRING_TICKET_ID.equals(item) )
-//		{
-//			controller.addSelectors(new KPMIDSelector());
-//		}
-//		else if( IConstants.STRING_SHORT_TEXT.equals(item) )
-//		{
-//			controller.addSelectors(new ShortTextSelector());
-//		}
-		
+		controller.addSearchContent(selector, item);
+		updateTableContent(false);
 	}
-	@Override
-	public void setSearchContent(String content)
-	{
-//		controller.addSearchContent(content);
-//		updateTableContent(false);
-	}
-
+	
 	@Override
 	public List<SheetEntity> getAllSheet()
 	{

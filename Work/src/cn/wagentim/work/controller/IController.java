@@ -6,7 +6,6 @@ import cn.wagentim.entities.web.IEntity;
 import cn.wagentim.entities.work.SheetEntity;
 import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.work.entity.Header;
-import cn.wagentim.work.filter.ISelector;
 
 
 public interface IController

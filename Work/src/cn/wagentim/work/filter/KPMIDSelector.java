@@ -6,14 +6,20 @@ import java.util.List;
 import cn.wagentim.entities.work.TicketEntity;
 import cn.wagentim.work.config.IConstants;
 
-public class KPMIDSelector extends AbstractSelector
+public class KPMIDSelector extends TextSelector
 {
 
 	@Override
 	public List<TicketEntity> check(List<TicketEntity> list)
 	{
-		List<TicketEntity> result = new ArrayList<TicketEntity>();
+		
+		if( searchContent.isEmpty() )
+		{
+			return list;
+		}
+		
 		String id = searchContent.get(0);
+		List<TicketEntity> result = new ArrayList<TicketEntity>();
 		
 		for( TicketEntity t : list )
 		{

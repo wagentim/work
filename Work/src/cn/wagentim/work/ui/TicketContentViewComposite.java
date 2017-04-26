@@ -14,11 +14,11 @@ import cn.wagentim.work.config.IConstants;
 public class TicketContentViewComposite extends Composite
 {
 	private Text txtKpmNum, txtShortText, txtSupplier, txtEngineerStatus,
-			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency, txtFFD;
+			txtDescription, txtAnalysis, txtSupplierStatus, txtFrequency, txtFFD, txtEProj, txtFunction;
 	public static final GridLayout GRP_LAYOUT = new GridLayout(1, false);
 	private static final GridData longInfoGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 	
-	private static final int GRID_SHORT = 7;
+	private static final int GRID_SHORT = 8;
 	private static final int GRID_LONG = 3;
 	
 	private Composite shortInfo, longInfo;
@@ -152,6 +152,24 @@ public class TicketContentViewComposite extends Composite
 		GridData gdProblemSolver = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gdProblemSolver.widthHint = 60;
 		txtFFD.setLayoutData(gdProblemSolver);
+		
+		final Group grpEProj = new Group(shortInfo, SWT.NONE);
+		grpEProj.setText("E-Proj");
+		grpEProj.setLayout(GRP_LAYOUT);
+		txtEProj = new Text(grpEProj, SWT.SINGLE);
+		txtEProj.setEditable(false);
+		GridData gdEProj = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gdEProj.widthHint = 60;
+		txtEProj.setLayoutData(gdEProj);
+		
+		final Group grpFunction = new Group(shortInfo, SWT.NONE);
+		grpFunction.setText("Func");
+		grpFunction.setLayout(GRP_LAYOUT);
+		txtFunction = new Text(grpFunction, SWT.SINGLE);
+		txtFunction.setEditable(false);
+		GridData gdFunc = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gdFunc.widthHint = 130;
+		txtFunction.setLayoutData(gdFunc);
 	}
 
 	public void setSelectedTicket(TicketEntity selectedTicket)
@@ -168,6 +186,8 @@ public class TicketContentViewComposite extends Composite
 			txtSupplierStatus.setText(StringConstants.EMPTY_STRING);
 			txtFrequency.setText(StringConstants.EMPTY_STRING);
 			txtFFD.setText(StringConstants.EMPTY_STRING);
+			txtEProj.setText(StringConstants.EMPTY_STRING);
+			txtFunction.setText(StringConstants.EMPTY_STRING);
 		}
 		else
 		{
@@ -181,6 +201,8 @@ public class TicketContentViewComposite extends Composite
 			txtSupplierStatus.setText(selectedTicket.getSupplierInfo() + "\n" + selectedTicket.getSupplierResponse());
 			txtFrequency.setText(selectedTicket.getFaultFrequency());
 			txtFFD.setText(selectedTicket.getImplementationDate());
+			txtEProj.setText(selectedTicket.getEproject());
+			txtFunction.setText(selectedTicket.getFunctionality());
 		}
 	}
 

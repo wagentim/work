@@ -251,8 +251,7 @@ public class DefaultSearchAndTableComposite extends Composite
 				{
 					return;
 				}
-				
-				searchTableListener.setSearchContent(searchText.getText());
+				searchTableListener.selectedSearchItem(getSelector(comboBox.getText()), searchText.getText());
 			}
 		});
 		
@@ -262,22 +261,38 @@ public class DefaultSearchAndTableComposite extends Composite
 			@Override
 			public void widgetSelected(SelectionEvent se)
 			{
-				if( StringConstants.EMPTY_STRING.equals(comboBox.getText()))
-				{
-					searchText.setText(StringConstants.EMPTY_STRING);
-				}
-				searchTableListener.selectedSearchItem(comboBox.getText());
+				searchText.setText(StringConstants.EMPTY_STRING);
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0)
 			{
-				// TODO Auto-generated method stub
 				
 			}
 		});
 	}
 	
+	protected int getSelector(String text)
+	{
+		
+		if( IConstants.STRING_TICKET_ID.equals(text) )
+		{
+			return IConstants.SELECTOR_KPM_ID;
+		}
+		else if ( IConstants.STRING_SHORT_TEXT.equals(text) )
+		{
+			return IConstants.SELECTOR_SHORT_TEXT;
+		}
+		else if( IConstants.STRING_PROBLEM_SOLVER.equals(text) )
+		{
+			return IConstants.SELECTOR_PROBLEM_SOLVER;
+		}
+		else
+		{
+			return IConstants.SELECTOR_TEXT_DISABLE;
+		}
+	}
+
 	private void handleSelectedTicket()
 	{
 		if(table.getSelectionIndex() < 0)

@@ -7,8 +7,7 @@ import cn.wagentim.entities.work.SheetEntity;
 public interface ISearchTableListener
 {
 	void selectedTicketNumber(int selectedTicketNumber);
-	void selectedSearchItem(String item);
-	void setSearchContent(String content);
+	void selectedSearchItem(int selector, String item);
 	List<SheetEntity> getAllSheet();
 	void addTicketToSheet(String dbName, int kpmid);
 	void columnSelection(String columnName);

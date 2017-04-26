@@ -1,53 +1,44 @@
-//package cn.wagentim.work.filter;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import cn.wagentim.entities.work.TicketEntity;
-//
-//public class MarketSelector extends AbstractSelector
-//{
-//
-//	@Override
-//	public List<TicketEntity> check(List<TicketEntity> list)
-//	{
-//		List<TicketEntity> result = new ArrayList<TicketEntity>();
-//		
-//		for( TicketEntity t : list )
-//		{
-//			if( null == t )
-//			{
-//				continue;
-//			}
-//			
-//			if( t.getMarket().equals("CN") )
-//			{
-//				result.add(t);
-//			}
-//		}
-//		
-//		return result;
-//	}
-//
-//	@Override
-//	public void setSearchContent(List<String> content)
-//	{
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void addSearchContent(String content)
-//	{
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public List<String> getSearchContent()
-//	{
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//}
+package cn.wagentim.work.filter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.wagentim.entities.work.TicketEntity;
+import cn.wagentim.work.config.IConstants;
+
+public class MarketSelector extends AbstractSelector
+{
+
+	@Override
+	public List<TicketEntity> check(List<TicketEntity> list)
+	{
+		List<TicketEntity> result = new ArrayList<TicketEntity>();
+		
+		for( TicketEntity t : list )
+		{
+			if( null == t )
+			{
+				continue;
+			}
+			
+			String market = t.getMarket();
+			
+			for(String s : searchContent)
+			{
+				if( market.contains(s) )
+				{
+					result.add(t);
+				}
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int getSelectorType()
+	{
+		return IConstants.SELECTOR_MARKET;
+	}
+
+}

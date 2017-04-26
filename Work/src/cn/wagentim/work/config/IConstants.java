@@ -2,6 +2,8 @@ package cn.wagentim.work.config;
 
 import java.text.SimpleDateFormat;
 
+import cn.wagentim.basicutils.StringConstants;
+
 public class IConstants
 {
 	public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
@@ -42,6 +44,13 @@ public class IConstants
 	public static final String MENU_ITEM_ES_6 = "6";
 	public static final String MENU_ITEM_ENGINEER_STATUS_CLEAR = "Clear Engineer Status";
 	
+	public static final String MENU_FILTER_MARKET = "Market Filter";
+	public static final String MENU_ITEM_MARKET_CN = "CN";
+	public static final String MENU_ITEM_MARKET_JP = "JP";
+	public static final String MENU_ITEM_MARKET_KR = "KR";
+	public static final String MENU_ITEM_MARKET_TW = "TW";
+	public static final String MENU_ITEM_MARKET_CLEAR = "Clear Market";
+	
 	public static final String STRING_KPM_ID = "KPM ID";
 	public static final String STRING_SHORT_TEXT = "Short Text";
 	public static final String STRING_PROBLEM_SOLVER= "Problem Solver";
@@ -49,14 +58,20 @@ public class IConstants
 	public static final String STRING_PROBLEM_STATUS = "P Status: ";
 	public static final String STRING_ENGINEER_STATUS = "E Status: ";
 	
+	public static final String MENU_FILTER_SUPPLIER_STATUS = "Supplier Status Filter";
+	public static final String MENU_ITEM_SUPPLIER_STATUS_TAKEN_OVER = "taken over";
+	public static final String MENU_ITEM_SUPPLIER_STATUS_VERIFICATION = "verification";
+	public static final String MENU_ITEM_SUPPLIER_STATUS_SOLVED = "solved";
+	public static final String MENU_ITEM_SUPPLIER_STATUS_UNDER_WAY = "under way";
+	public static final String MENU_ITEM_SUPPLIER_STATUS_EMPTY = "EMPTY";
+	public static final String MENU_ITEM_SUPPLIER_STATUS_CLEAR = "Clear Supplier Status";
+	
 	
 	public static final String STRING_TICKET_ID = "Ticket ID";
 
 
-	public static final String DB_MUAS_FIX = "mustfix.odb";
 	public static final String DB_TICKET = "tickets.odb";
 	public static final String DB_TICKET_COMMENT = "ticketcomments.odb";
-	public static final String DB_SVEN = "sven.odb";
 	public static final String DB_SHEET = "sheet.odb";
 	public static final String DB_SURFIX = ".odb";
 
@@ -96,10 +111,15 @@ public class IConstants
 	public static final String STRING_RATING_D = "D";
 
 	/** Selector IDs */
+	public static final int SELECTOR_TEXT_DISABLE = 0;
 	public static final int SELECTOR_RATING = 1;
 	public static final int SELECTOR_KPM_ID = 2;
 	public static final int SELECTOR_SUPPLIER = 3;
 	public static final int SELECTOR_ENGINEER_STATUS = 4;
+	public static final int SELECTOR_MARKET = 5;
+	public static final int SELECTOR_SHORT_TEXT = 6;
+	public static final int SELECTOR_PROBLEM_SOLVER = 7;
+	public static final int SELECTOR_SUPPLIER_STATUS = 8;
 
 	public static final String STRING_MENU_ITEM_SELECTED_SYMBOL = "x  ";
 

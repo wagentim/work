@@ -10,13 +10,17 @@ import cn.wagentim.work.exporter.ExcelFileExporter;
 import cn.wagentim.work.filter.EngineerStatusSelector;
 import cn.wagentim.work.filter.ISelector;
 import cn.wagentim.work.filter.KPMIDSelector;
+import cn.wagentim.work.filter.MarketSelector;
+import cn.wagentim.work.filter.ProblemSolvertSelector;
 import cn.wagentim.work.filter.RatingSelector;
+import cn.wagentim.work.filter.ShortTextSelector;
 import cn.wagentim.work.filter.SupplierSelector;
 import cn.wagentim.work.importer.ImportTickets;
 
 public abstract class AbstractController implements IController
 {
 	protected List<ISelector> selectors = new ArrayList<ISelector>();
+	protected List<ISelector> savedSelectors = null;
 	
 	protected final ImportTickets importer = new ImportTickets();
 	protected final ExcelFileExporter excelExporter = new ExcelFileExporter();
@@ -38,9 +42,13 @@ public abstract class AbstractController implements IController
 	@Override
 	public void addSearchContent(int selector, String content)
 	{
-		if( Validator.isNull(content) )
+		if( IConstants.SELECTOR_KPM_ID == selector )
 		{
-			// add log here
+			saveCurrentSelectors();
+		}
+		else if( IConstants.SELECTOR_TEXT_DISABLE == selector )
+		{
+			restoreSelectors();
 			return;
 		}
 		
@@ -52,7 +60,10 @@ public abstract class AbstractController implements IController
 			selectors.add(sele);
 		}
 		
-		sele.addSearchContent(content);
+		if( !Validator.isNullOrEmpty(content) )
+		{
+			sele.addSearchContent(content);
+		}
 	}
 	
 	protected ISelector getSelector(int selector)
@@ -90,6 +101,15 @@ public abstract class AbstractController implements IController
 			case IConstants.SELECTOR_ENGINEER_STATUS:
 				return new EngineerStatusSelector();
 				
+			case IConstants.SELECTOR_MARKET:
+				return new MarketSelector();
+				
+			case IConstants.SELECTOR_SHORT_TEXT:
+				return new ShortTextSelector();
+				
+			case IConstants.SELECTOR_PROBLEM_SOLVER:
+				return new ProblemSolvertSelector();
+				
 			default:
 				return null;
 		}
@@ -114,5 +134,37 @@ public abstract class AbstractController implements IController
 	public void clearSelectors()
 	{
 		selectors.clear();
+	}
+	
+	public void saveCurrentSelectors()
+	{
+		savedSelectors = selectors;
+		selectors.clear();
+	}
+	
+	public void restoreSelectors()
+	{
+		if( null != savedSelectors )
+		{
+			selectors = savedSelectors;
+			savedSelectors = null;
+		}
+		
+		removeTextSelector();
+	}
+
+	private void removeTextSelector()
+	{
+		Iterator<ISelector> it = selectors.iterator();
+		
+		while(it.hasNext())
+		{
+			ISelector tmp = it.next();
+			
+			if( tmp.getSelectorType() == IConstants.SELECTOR_KPM_ID || tmp.getSelectorType() == IConstants.SELECTOR_SHORT_TEXT )
+			{
+				it.remove();
+			}
+		}
 	}
 }
