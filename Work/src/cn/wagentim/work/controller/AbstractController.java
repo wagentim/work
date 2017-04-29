@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Icon;
+
 import cn.wagentim.basicutils.Validator;
 import cn.wagentim.work.config.IConstants;
 import cn.wagentim.work.exporter.ExcelFileExporter;
@@ -15,6 +17,7 @@ import cn.wagentim.work.filter.ProblemSolvertSelector;
 import cn.wagentim.work.filter.RatingSelector;
 import cn.wagentim.work.filter.ShortTextSelector;
 import cn.wagentim.work.filter.SupplierSelector;
+import cn.wagentim.work.filter.SupplierStatusSelector;
 import cn.wagentim.work.importer.ImportTickets;
 
 public abstract class AbstractController implements IController
@@ -110,6 +113,9 @@ public abstract class AbstractController implements IController
 			case IConstants.SELECTOR_PROBLEM_SOLVER:
 				return new ProblemSolvertSelector();
 				
+			case IConstants.SELECTOR_SUPPLIER_STATUS:
+				return new SupplierStatusSelector();
+				
 			default:
 				return null;
 		}
@@ -161,7 +167,7 @@ public abstract class AbstractController implements IController
 		{
 			ISelector tmp = it.next();
 			
-			if( tmp.getSelectorType() == IConstants.SELECTOR_KPM_ID || tmp.getSelectorType() == IConstants.SELECTOR_SHORT_TEXT )
+			if( tmp.getSelectorType() == IConstants.SELECTOR_KPM_ID || tmp.getSelectorType() == IConstants.SELECTOR_SHORT_TEXT || tmp.getSelectorType() == IConstants.SELECTOR_PROBLEM_SOLVER)
 			{
 				it.remove();
 			}
