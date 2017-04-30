@@ -34,7 +34,7 @@ public interface IController
 
 	void decorateOutput(List<String> headers, List<List<String>> currentTableContent);
 
-	void removeSelector(int selectorRating);
+	void removeSelector(int selector);
 
 	void clearSelectors();
 }

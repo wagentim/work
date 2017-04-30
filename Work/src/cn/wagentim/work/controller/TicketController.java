@@ -117,7 +117,7 @@ public class TicketController extends AbstractController
 	{
 		List<TicketEntity> result = list;
 		
-		for(ISelector selector : selectors )
+		for(ISelector selector : selMgr.getSelectors() )
 		{
 			result = selector.check(result);
 		}
