@@ -198,7 +198,7 @@ public class SheetTicketController extends TicketController
 			{
 				if( null != ce )
 				{
-					result.add(new String[]{IConstants.SINGLE_DATE_FORMAT.format(new Date(ce.getTime())), ce.getAuthor(), ce.getComment()});
+					result.add(new String[]{IConstants.SIMPLE_DATE_FORMAT.format(new Date(ce.getTime())), ce.getAuthor(), ce.getComment()});
 				}
 			}
 		}

@@ -37,4 +37,6 @@ public interface IController
 	void removeSelector(int selector);
 
 	void clearSelectors();
+
+	void removeSelector(int selector, String selectorName);
 }

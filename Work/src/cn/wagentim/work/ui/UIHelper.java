@@ -10,6 +10,13 @@ import cn.wagentim.basicutils.Validator;
 
 public class UIHelper
 {
+	public static SelectionIndicationMenuItem createMenuItem(final Menu menu, final String name, final IMenuItemSelectionListener listener)
+	{
+		final SelectionIndicationMenuItem menuItem = new SelectionIndicationMenuItem(menu, SWT.NONE, listener);
+		menuItem.setText(Validator.isNullOrEmpty(name) ? StringConstants.EMPTY_STRING : name);
+		return menuItem;
+	}
+	
 	public static MenuItem createMenuItem(final Menu menu, final String name, final Listener listener)
 	{
 		final MenuItem menuItem = new MenuItem(menu, SWT.NONE);

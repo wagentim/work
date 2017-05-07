@@ -53,6 +53,20 @@ public abstract class AbstractController implements IController
 		}
 	}
 	
+	public void removeSelector(int selector, String content)
+	{	
+		ISelector sele = selMgr.getSelector(selector);
+		
+		if( !Validator.isNullOrEmpty(content) )
+		{
+			sele.removeSearchContent(content);
+		}
+		
+		if( sele.getSearchContent().size() == 0 )
+		{
+			removeSelector(selector);
+		}
+	}
 	
 	public void removeSelector(int selector)
 	{

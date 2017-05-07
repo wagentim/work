@@ -22,6 +22,19 @@ public abstract class AbstractSelector implements ISelector
 		}
 	}
 	
+	public void removeSearchContent(String content)
+	{
+		if( Validator.isNullOrEmpty(content) )
+		{
+			return;
+		}
+		
+		if( searchContent.contains(content) )
+		{
+			searchContent.remove(content);
+		}
+	}
+	
 	public List<String> getSearchContent()
 	{
 		return searchContent;

@@ -379,65 +379,17 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 	
 	private void genSupplierFilter(Menu mFilterSupplier)
 	{
-		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_ESO_EB, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_ESO_EB);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_ESO_EB, new FilterSelectionListener(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_ESO_EB));
 		
-		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_AW, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_AW);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_AW, new FilterSelectionListener(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_AW));
 				
-		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_DELPHI, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_DELPHI);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_DELPHI, new FilterSelectionListener(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_DELPHI));
 		
-		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_EECHINA, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_EECHINA);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_EECHINA, new FilterSelectionListener(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_EECHINA));
 		
-		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_FP, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_FP);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_FP, new FilterSelectionListener(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_FP));
 		
-		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_HARMAN, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_HARMAN);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterSupplier, IConstants.MENU_ITEM_SUPPLER_HARMAN, new FilterSelectionListener(IConstants.SELECTOR_SUPPLIER, IConstants.MENU_ITEM_SUPPLER_HARMAN));
 		
 		UIHelper.createMenuSeperator(mFilterSupplier);
 		
@@ -452,47 +404,43 @@ public class MainWindow implements ISearchTableListener, ICompositeListener, ICo
 		});
 	}
 	
+	class FilterSelectionListener implements IMenuItemSelectionListener
+	{
+		final private int selector;
+		final private String selectorName;
+		
+		public FilterSelectionListener(final int selector, final String selectorName)
+		{
+			this.selector = selector;
+			this.selectorName = selectorName;
+		}
+		
+		@Override
+		public void exec(boolean isSelected)
+		{
+			if( isSelected )
+			{
+				controller.addSearchContent(selector, selectorName);
+			}
+			else
+			{
+				controller.removeSelector(selector, selectorName);
+			}
+			
+			updateTableContent(false);
+		}
+		
+	}
+	
 	private void genRatingFilter(Menu mFilterRating)
 	{
-		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_A, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_A);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_A, new FilterSelectionListener(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_A));
 		
-		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_B, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_B);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_B, new FilterSelectionListener(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_B));
 				
-		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_C, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_C);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_C, new FilterSelectionListener(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_C));
 		
-		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_D, new Listener()
-		{
-			@Override
-			public void handleEvent(final Event event)
-			{
-				controller.addSearchContent(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_D);
-				updateTableContent(false);
-			}
-		});
+		UIHelper.createMenuItem(mFilterRating, IConstants.MENU_ITEM_RATING_D, new FilterSelectionListener(IConstants.SELECTOR_RATING, IConstants.STRING_RATING_D));
 		
 		UIHelper.createMenuSeperator(mFilterRating);
 		

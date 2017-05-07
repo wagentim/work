@@ -58,7 +58,7 @@ public class SheetManagerController extends AbstractController
 			else
 			{
 				id = counter++;
-				date = IConstants.SINGLE_DATE_FORMAT.format(new Date(t.getTime()));
+				date = IConstants.SIMPLE_DATE_FORMAT.format(new Date(t.getTime()));
 				sheetName = t.getName();
 			}
 			

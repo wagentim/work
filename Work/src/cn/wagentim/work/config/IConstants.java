@@ -2,8 +2,6 @@ package cn.wagentim.work.config;
 
 import java.text.SimpleDateFormat;
 
-import cn.wagentim.basicutils.StringConstants;
-
 public class IConstants
 {
 	public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
@@ -76,29 +74,16 @@ public class IConstants
 	public static final String DB_SURFIX = ".odb";
 
 	public static final String String_SHEET_INDEX = "Sheet Index";
-
 	public static final String String_IGNORE_LINES = "Ignore Lines";
-
 	public static final String String_KPM_ID_INDEX = "KPM ID Index";
-
 	public static final String String_COMMENT_INDEX = "Comment Index";
-
 	public static final String String_STATUS_INDEX = "Status Index";
-
 	public static final String String_PRIORITY_INDEX = "Priority Index";
-
 	public static final String String_NEXT_STEP_INDEX = "NextStep Index";
-
 	public static final String String_NO_TICKET_FIND_IN_DB = "Cannot find ticket in the DB";
-	
 	public static final String STRING_SAVE_TO_EXCEL = "Save To Excel File";
-	
 	public static final String STRING_IMPORT_TICKETS = "Import Tickets";
-	
-	public static final SimpleDateFormat SINGLE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
-
 	public static final String STRING_HEADER_KPM = "KPM";
-
 	public static final String STRING_HEADER_MARKET = "Market";
 
 	public static final String LOAD_MAIN_TICKET = "Load Main DB";
@@ -111,6 +96,7 @@ public class IConstants
 	public static final String STRING_RATING_D = "D";
 
 	/** Selector IDs */
+	public static final int SELECTOR_NONE = -1;
 	public static final int SELECTOR_TEXT_DISABLE = 0;
 	public static final int SELECTOR_RATING = 1;
 	public static final int SELECTOR_KPM_ID = 2;
