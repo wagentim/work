@@ -106,6 +106,7 @@ public class IConstants
 	public static final int SELECTOR_SHORT_TEXT = 6;
 	public static final int SELECTOR_PROBLEM_SOLVER = 7;
 	public static final int SELECTOR_SUPPLIER_STATUS = 8;
+	public static final int SELECTOR_TEMP = 9;
 
 	public static final String STRING_MENU_ITEM_SELECTED_SYMBOL = "x  ";
 

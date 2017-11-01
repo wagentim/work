@@ -10,8 +10,11 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import cn.wagentim.basicutils.StringConstants;
+import cn.wagentim.work.event.EventManager;
+import cn.wagentim.work.event.IEvent;
+import cn.wagentim.work.event.IEventComponent;
 
-public class SelectionIndicationMenuItem extends MenuItem
+public class SelectionIndicationMenuItem extends MenuItem implements IEventComponent
 {
 
 	private boolean isSelected = false;
@@ -21,6 +24,7 @@ public class SelectionIndicationMenuItem extends MenuItem
 	private void updateText(String text)
 	{
 		super.setText(text);
+		EventManager.registComponent(this);
 	}
 	
 	protected void checkSubclass()
@@ -84,6 +88,20 @@ public class SelectionIndicationMenuItem extends MenuItem
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void receiveEvent(IEvent event)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sentEvent(IEvent event)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

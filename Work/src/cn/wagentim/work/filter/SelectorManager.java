@@ -121,6 +121,9 @@ public class SelectorManager
 			case IConstants.SELECTOR_SUPPLIER_STATUS:
 				return new SupplierStatusSelector();
 				
+			case IConstants.SELECTOR_TEMP:
+				return new TempSelector();
+				
 			default:
 				return null;
 		}
