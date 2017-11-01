@@ -1,0 +1,46 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2017-08-14 10:35:17 #1 store] 
+Database 'D:\db\sheet.odb' is opened by 9076@VWAPBJLAU2719
+
+[2017-08-14 10:35:17 #2 type] 
+Type cn.wagentim.entities.work.SheetEntity is not enhanced.
+
+[2017-08-14 10:35:22 #3 store] 
+Database 'D:\db\tickets.odb' is opened by 9076@VWAPBJLAU2719
+
+[2017-08-14 10:35:22 #4 type.registry] 
+New type cn.wagentim.entities.web.IEntity
+
+[2017-08-14 10:35:22 #5 type.registry] 
+New type cn.wagentim.entities.work.ITicketStatus
+
+[2017-08-14 10:35:22 #6 type.registry] 
+New type cn.wagentim.entities.work.TicketEntity
+
+[2017-08-14 10:35:22 #7 type] 
+Type cn.wagentim.entities.work.TicketEntity is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2017-08-14 11:21:36 #1 store] 
+Database 'D:\db\sheet.odb' is opened by 8376@VWAPBJLAU2719
+
+[2017-08-14 11:21:36 #2 type] 
+Type cn.wagentim.entities.work.SheetEntity is not enhanced.
+
+[2017-08-14 11:22:36 #3 store] 
+Database 'D:\db\tickets.odb' is opened by 8376@VWAPBJLAU2719
+
+[2017-08-14 11:22:36 #4 type.registry] 
+New type cn.wagentim.entities.web.IEntity
+
+[2017-08-14 11:22:36 #5 type.registry] 
+New type cn.wagentim.entities.work.ITicketStatus
+
+[2017-08-14 11:22:36 #6 type.registry] 
+New type cn.wagentim.entities.work.TicketEntity
+
+[2017-08-14 11:22:36 #7 type] 
+Type cn.wagentim.entities.work.TicketEntity is not enhanced.
+
